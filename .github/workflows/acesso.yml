@@ -81,7 +81,9 @@ concurrency:
 
 jobs:
   acesso:
-    # Trava do site em espanhol: só roda com HEBREO_PUBLICAR = true (wrangler.toml).
+    # Trava do repositório do site em espanhol: nada roda contra a Cloudflare
+    # até a variável do repositório HEBREO_PUBLICAR valer 'true' (Settings >
+    # Secrets and variables > Actions > Variables). Ver CLAUDE.md, "Este repositório".
     if: ${{ vars.HEBREO_PUBLICAR == 'true' }}
     runs-on: ubuntu-latest
     environment: producao
@@ -119,7 +121,7 @@ jobs:
           # acima). `wrangler@4` resolvia para a mais nova a cada execução, com
           # o token da Cloudflare no ambiente - um pacote comprometido rodaria
           # com acesso de escrita ao banco inteiro.
-          W="node_modules/.bin/wrangler d1 execute hebraico-fluente --remote"
+          W="node_modules/.bin/wrangler d1 execute hebreo-fluido --remote"
           say() { echo "$*" >> "$GITHUB_STEP_SUMMARY"; }
 
           # Primeiro caractere, três asteriscos, domínio. Vale para tudo que

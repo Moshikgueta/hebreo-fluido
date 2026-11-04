@@ -12,7 +12,9 @@ permissions:
   contents: write
 jobs:
   buscar:
-    # Trava do site em espanhol: só roda com HEBREO_PUBLICAR = true (wrangler.toml).
+    # Trava do repositório do site em espanhol (CLAUDE.md, "Este repositório"):
+    # a busca das fotos é feita no repositório brasileiro, e as fotos chegam
+    # aqui com o resto do código.
     if: ${{ vars.HEBREO_PUBLICAR == 'true' }}
     runs-on: ubuntu-latest
     steps:
