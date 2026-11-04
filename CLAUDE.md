@@ -12,8 +12,8 @@ comum; o que muda é a configuração. As notas abaixo desta seção são as do 
 - **Como receber melhorias:** `git merge` da `main` do brasileiro (o histórico é comum), resolvendo os
   arquivos da lista acima a favor deste repositório.
 - **A build daqui é a em espanhol:** `cd app && NEXT_PUBLIC_LOCALE=es HF_I18N_ESTRITO=1 npm run build`.
-- **Nada se publica ainda.** Faltam: o domínio, o banco (`npx wrangler d1 create hebreo-fluido` e o id no
-  `wrangler.toml`), adaptar o `deploy-worker.yml` para montar `app/out-es`, os segredos e a variável
+- **Banco criado** (04/11/2026, Action "Criar o banco"): `hebreo-fluido`, id no `wrangler.toml`, 36 tabelas.
+- **Nada se publica ainda.** Faltam: o domínio, adaptar o `deploy-worker.yml` para montar `app/out-es`, os segredos e a variável
   `HEBREO_PUBLICAR = true`. Plano e pendências do dono: `PLANO-ESPANHOL.md`.
 - Nas seções abaixo, "o site em produção" e "hebraicofluente.com.br" falam do site BRASILEIRO.
 
