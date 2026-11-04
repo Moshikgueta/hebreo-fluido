@@ -1,0 +1,58 @@
+# Criar o banco do site em espanhol (D1 `hebreo-fluido`), uma vez.
+#
+# À mão: Actions > "Criar o banco" > Run workflow. Precisa dos segredos
+# CLOUDFLARE_API_TOKEN (com a permissão "D1: Edit") e CLOUDFLARE_ACCOUNT_ID
+# neste repositório (Settings > Secrets and variables > Actions).
+#
+# Cria o banco se ele não existir (se já existe, só o encontra), aplica o
+# worker/schema.sql e escreve no resumo o id para o wrangler.toml. Não publica
+# nada e não toca no banco do site brasileiro: por isso não leva a trava
+# HEBREO_PUBLICAR, que segura as publicações.
+name: Criar o banco
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  criar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - name: Instalar o wrangler do lockfile
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Criar (ou achar) o banco e aplicar o schema
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID}" ]; then
+            echo "::error::Faltam os segredos CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID neste repositório."
+            exit 1
+          fi
+          W=node_modules/.bin/wrangler
+          achar() { "$W" d1 list --json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const b=JSON.parse(s).find(x=>x.name==="hebreo-fluido");process.stdout.write(b?b.uuid:"")})'; }
+          ID=$(achar)
+          if [ -z "$ID" ]; then
+            "$W" d1 create hebreo-fluido >/dev/null
+            ID=$(achar)
+            NOVO="criado agora"
+          else
+            NOVO="já existia"
+          fi
+          [ -n "$ID" ] || { echo "::error::O banco não apareceu na lista depois de criado."; exit 1; }
+          sed -i "s/^database_id = \"A-CRIAR\"/database_id = \"$ID\"/" wrangler.toml
+          "$W" d1 execute hebreo-fluido --file=worker/schema.sql --remote -y
+          TABELAS=$("$W" d1 execute hebreo-fluido --remote --json --command "SELECT count(*) AS n FROM sqlite_master WHERE type='table'" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>process.stdout.write(String(JSON.parse(s)[0].results[0].n)))')
+          {
+            echo "## Banco hebreo-fluido ($NOVO)"
+            echo ""
+            echo "- database_id: \`$ID\` (vai no wrangler.toml, no lugar de A-CRIAR)"
+            echo "- tabelas depois do schema: $TABELAS"
+          } >> "$GITHUB_STEP_SUMMARY"
