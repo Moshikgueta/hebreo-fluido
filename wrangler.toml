@@ -8,9 +8,8 @@
 # AINDA NÃO SE PUBLICA. Faltam, nesta ordem:
 #   1. o domínio em espanhol (decisão do dono): entram as `routes`, o
 #      SITE_ORIGIN e o EMAIL_FROM;
-#   2. o banco: `npx wrangler d1 create hebreo-fluido`, e o id que ele devolve
-#      no lugar de A-CRIAR abaixo; depois
-#      `npx wrangler d1 execute hebreo-fluido --file=worker/schema.sql --remote`;
+#   2. (FEITO em 04/11/2026: o banco hebreo-fluido existe, com o schema, pela
+#      Action "Criar o banco"; o id está abaixo);
 #   3. a variável de repositório HEBREO_PUBLICAR = true (Settings > Secrets and
 #      variables > Actions > Variables): sem ela nenhuma Action deste
 #      repositório roda.
@@ -44,7 +43,7 @@ not_found_handling = "404-page"
 [[d1_databases]]
 binding = "DB"
 database_name = "hebreo-fluido"
-database_id = "A-CRIAR"
+database_id = "ee049821-2fdb-406f-a32e-a459673d6c90"
 
 # Banco próprio, então a varredura (pagamentos, alertas, faxina, lembretes)
 # roda aqui, sobre este banco.
