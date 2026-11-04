@@ -110,12 +110,15 @@ describe('o Worker em espanhol', () => {
   });
 });
 
-/* No repositório brasileiro é o wrangler.es.toml; no do site em espanhol
-   (Moshikgueta/hebreo-fluido), o próprio wrangler.toml. */
-const TOML_ES = existsSync(raiz('wrangler.es.toml')) ? 'wrangler.es.toml' : 'wrangler.toml';
+/* Três sites, o mesmo código (decisão do dono): o português (hebraicofluente),
+   o inglês (fluent-hebrew) e o espanhol (hebreo-fluido). A configuração do
+   Worker em espanhol é o wrangler.toml do hebreo-fluido, ou o wrangler.es.toml
+   do brasileiro (só para montar à mão); no do inglês não há nenhuma. */
+const TOML_ES = ['wrangler.es.toml', 'wrangler.toml']
+  .find(f => existsSync(raiz(f)) && /^LOCALE = "es"$/m.test(readFileSync(raiz(f), 'utf8')));
 
-describe(`o Worker do site em espanhol (${TOML_ES})`, () => {
-  const toml = readFileSync(raiz(TOML_ES), 'utf8');
+describe.skipIf(!TOML_ES)(`o Worker do site em espanhol (${TOML_ES ?? 'nenhum aqui'})`, () => {
+  const toml = TOML_ES ? readFileSync(raiz(TOML_ES), 'utf8') : '';
   const lista = (s: string) => (s.match(/run_worker_first = \[([\s\S]*?)\]/) || [])[1]?.replace(/\s+/g, '');
 
   it('serve app/out-es, com LOCALE = "es"', () => {
