@@ -33,7 +33,7 @@ const AUDIO = join(ROOT, 'audio');
    versão. */
 const LOCAL = join(ROOT, 'node_modules', '.bin', 'wrangler');
 const [CMD, ...BASE] = existsSync(LOCAL) ? [LOCAL] : ['npx', '--yes', 'wrangler@4.135.0'];
-const WRANGLER = [...BASE, 'd1', 'execute', 'hebraico-fluente', '--remote', '--json', '--command'];
+const WRANGLER = [...BASE, 'd1', 'execute', 'hebreo-fluido', '--remote', '--json', '--command'];
 const LOTE = 4;
 
 const PAD_HEAD_MS = 80;

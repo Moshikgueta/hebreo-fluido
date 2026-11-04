@@ -14,7 +14,7 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 
-DB_NAME="hebraico-fluente"
+DB_NAME="hebreo-fluido"
 # Versão fixa. Este script roda com TODOS os segredos de produção no ambiente
 # (token da Cloudflare, Mercado Pago, Resend); `wrangler@4` resolvia para a
 # versão mais nova a cada execução, e um pacote comprometido rodaria com tudo
@@ -388,7 +388,7 @@ fi
 # wrangler imprime a tabela de bindings, e ela contém a nossa própria
 # variável SITE_ORIGIN -
 #
-#   env.SITE_ORIGIN ("https://hebraico-fluente.workers.dev")   Environment Variable
+#   env.SITE_ORIGIN ("https://hebreo-fluido.workers.dev")   Environment Variable
 #
 # - que é justamente o valor de exemplo que estamos tentando substituir. Pegar
 # essa linha faz o script "achar" uma URL que não existe, gravar o mesmo
@@ -405,7 +405,7 @@ URL="$(printf '%s' "$DEPLOY" \
 # igual ao SITE_ORIGIN que já estava no arquivo, é sinal de que pegamos a
 # linha de binding em vez do endereço publicado. Parar aqui é melhor do que
 # seguir e conferir um endereço morto - que foi o sintoma original.
-if [ "$URL" = "${HAVE_BEFORE:-}" ] && [ "${HAVE_BEFORE:-}" = "https://hebraico-fluente.workers.dev" ]; then
+if [ "$URL" = "${HAVE_BEFORE:-}" ] && [ "${HAVE_BEFORE:-}" = "https://hebreo-fluido.workers.dev" ]; then
   morre "A URL extraída é o valor de exemplo, não o endereço publicado." \
         "É um defeito deste script na leitura da saída do wrangler.
        Me mande a saída inteira de 'npx wrangler deploy'."

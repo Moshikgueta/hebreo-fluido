@@ -23,7 +23,7 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 
-DB_NAME="hebraico-fluente"
+DB_NAME="hebreo-fluido"
 # Mesma versão fixa do script de publicação, pelo mesmo motivo: este comando
 # roda com o token da Cloudflare no ambiente.
 # O wrangler do package-lock.json da raiz (auditoria de 01/10/2026,
@@ -41,7 +41,7 @@ W="$WRANGLER_LOCAL"
 
 DESTINO="${HF_BACKUP_DIR:-backups}"
 CARIMBO="$(date +%Y%m%d-%H%M%S)"
-ARQUIVO="$DESTINO/hebraico-fluente-$CARIMBO.sql"
+ARQUIVO="$DESTINO/hebreo-fluido-$CARIMBO.sql"
 
 vermelho() { printf '\033[31m%s\033[0m\n' "$*"; }
 verde()    { printf '\033[32m%s\033[0m\n' "$*"; }

@@ -38,7 +38,7 @@ const idDe = c => String(c.file || '').replace(/\.mp3$/, '');
 
 function consulta(sql) {
   const out = execFileSync(process.env.WRANGLER || 'node_modules/.bin/wrangler',
-    ['d1', 'execute', 'hebraico-fluente', '--remote', '--json', '--command', sql],
+    ['d1', 'execute', 'hebreo-fluido', '--remote', '--json', '--command', sql],
     { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'inherit'] });
   return JSON.parse(out)[0]?.results ?? [];
 }

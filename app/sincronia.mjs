@@ -60,7 +60,7 @@ if (!/^http:\/\/(127\.0\.0\.1|localhost)(:|\/|$)/.test(BASE)) {
   console.error('sincronia.mjs concede o curso pelo D1 local; aponte HF_BASE para o wrangler dev.');
   process.exit(1);
 }
-execFileSync('npx', ['wrangler', 'd1', 'execute', 'hebraico-fluente', '--local', '--command',
+execFileSync('npx', ['wrangler', 'd1', 'execute', 'hebreo-fluido', '--local', '--command',
   `INSERT INTO entitlements (account_id, course_slug, granted_at, expires_at, order_id)
    SELECT id, 'alfabetizacao', unixepoch()*1000, unixepoch()*1000 + 31536000000, 'SINCRONIA'
      FROM accounts WHERE email = '${email}'`], { cwd: '..', stdio: 'ignore' });

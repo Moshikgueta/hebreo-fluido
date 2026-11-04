@@ -28,9 +28,22 @@ function origemDoToml(arquivo = '../wrangler.toml'): string {
   } catch { return ''; }
 }
 const ORIGEM_EN = EM_INGLES ? (process.env.NEXT_PUBLIC_SITE_ORIGIN || origemDoToml()) : '';
-/* O espanhol lê o wrangler.es.toml (o do Worker dele); sem domínio ainda, sem
-   origem: lib/seo.ts usa então o padrão, e a build é só para conferência. */
-const ORIGEM_ES = EM_ESPANHOL ? (process.env.NEXT_PUBLIC_SITE_ORIGIN || origemDoToml('../wrangler.es.toml')) : '';
+/* O espanhol lê a configuração do Worker dele: o wrangler.es.toml no
+   repositório brasileiro, ou o wrangler.toml do repositório do site em
+   espanhol (Moshikgueta/hebreo-fluido), quando ele diz LOCALE = "es". Sem
+   domínio ainda, sem origem: lib/seo.ts usa o padrão, e a build é só para
+   conferência. */
+function tomlDoEspanhol(): string {
+  for (const arquivo of ['../wrangler.es.toml', '../wrangler.toml']) {
+    try {
+      const toml = readFileSync(new URL(arquivo, import.meta.url), 'utf8');
+      if (/^\s*LOCALE\s*=\s*"es"/m.test(toml)) return arquivo;
+    } catch { /* sem o arquivo */ }
+  }
+  return '';
+}
+const TOML_ES = EM_ESPANHOL ? tomlDoEspanhol() : '';
+const ORIGEM_ES = EM_ESPANHOL ? (process.env.NEXT_PUBLIC_SITE_ORIGIN || (TOML_ES ? origemDoToml(TOML_ES) : '')) : '';
 const ORIGEM = ORIGEM_EN || ORIGEM_ES;
 
 const nextConfig: NextConfig = {
