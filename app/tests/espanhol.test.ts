@@ -6,7 +6,7 @@
      e-mails em espanhol e a mesma lista do que só existe no Brasil;
    - o terceiro Worker serve app/out-es com a mesma lista de ativos. */
 import { describe, expect, it } from 'vitest';
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { translitEs as doApp } from '@/i18n/translit';
 // @ts-expect-error - script de build, sem tipos
 import { translitEs as doExportador } from '../../tools/translit-es.mjs';
@@ -110,8 +110,12 @@ describe('o Worker em espanhol', () => {
   });
 });
 
-describe('o terceiro Worker (wrangler.es.toml)', () => {
-  const toml = readFileSync(raiz('wrangler.es.toml'), 'utf8');
+/* No repositório brasileiro é o wrangler.es.toml; no do site em espanhol
+   (Moshikgueta/hebreo-fluido), o próprio wrangler.toml. */
+const TOML_ES = existsSync(raiz('wrangler.es.toml')) ? 'wrangler.es.toml' : 'wrangler.toml';
+
+describe(`o Worker do site em espanhol (${TOML_ES})`, () => {
+  const toml = readFileSync(raiz(TOML_ES), 'utf8');
   const lista = (s: string) => (s.match(/run_worker_first = \[([\s\S]*?)\]/) || [])[1]?.replace(/\s+/g, '');
 
   it('serve app/out-es, com LOCALE = "es"', () => {
@@ -119,7 +123,7 @@ describe('o terceiro Worker (wrangler.es.toml)', () => {
     expect(toml).toMatch(/^LOCALE = "es"$/m);
   });
 
-  it('a lista de ativos que saem sem Worker é a mesma do site brasileiro', () => {
-    expect(lista(toml)).toBe(lista(readFileSync(raiz('wrangler.toml'), 'utf8')));
+  it('a lista de ativos que saem sem Worker é a de sempre', () => {
+    expect(lista(toml)).toBe('"/*","!/_next/static/*","!/fonts/*","!/media/*","!/tracado-amostra/*"');
   });
 });

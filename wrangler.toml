@@ -1,80 +1,37 @@
-# Hebraico Fluente - Cloudflare Worker.
+# Hebreo Fluido - o site em espanhol do Hebraico Fluente (PLANO-ESPANHOL.md).
 #
-# O Worker roda ANTES dos arquivos estáticos e faz três coisas: responde a
-# /api/*, aplica o portão das rotas pagas e entrega o export do Next.
+# Este repositório é o do site em espanhol, com BANCO PRÓPRIO (decisão do dono,
+# 04/11/2026): as contas e os dados dos alunos de fora não se misturam com os do
+# site brasileiro. O código é o mesmo do Moshikgueta/hebraicofluente; o que muda
+# é esta configuração (LOCALE = "es", o export app/out-es, o banco, o domínio).
 #
-# Publicar:
-#   cd app && NEXT_PUBLIC_PLATFORM_API=worker npm run build   # gera app/out
-#   npx wrangler deploy
+# AINDA NÃO SE PUBLICA. Faltam, nesta ordem:
+#   1. o domínio em espanhol (decisão do dono): entram as `routes`, o
+#      SITE_ORIGIN e o EMAIL_FROM;
+#   2. o banco: `npx wrangler d1 create hebreo-fluido`, e o id que ele devolve
+#      no lugar de A-CRIAR abaixo; depois
+#      `npx wrangler d1 execute hebreo-fluido --file=worker/schema.sql --remote`;
+#   3. a variável de repositório HEBREO_PUBLICAR = true (Settings > Secrets and
+#      variables > Actions > Variables): sem ela nenhuma Action deste
+#      repositório roda.
 #
-# Criar o banco, uma vez:
-#   npx wrangler d1 create hebraico-fluente
-#   # cole o database_id devolvido abaixo
-#   npx wrangler d1 execute hebraico-fluente --file=worker/schema.sql --remote
+# Montar à mão, para conferir:
+#   cd app && NEXT_PUBLIC_LOCALE=es HF_I18N_ESTRITO=1 npm run build   # gera app/out-es
+#   npx wrangler dev --local
 
-name = "hebraico-fluente"
+name = "hebreo-fluido"
 main = "worker/src/worker.js"
 compatibility_date = "2026-09-01"
 
-# ── o endereço do site ────────────────────────────────────────────────────
-# O domínio próprio é declarado AQUI, e não apontado no painel, porque assim
-# ele é parte da publicação: quem clonar este repositório e publicar recebe o
-# mesmo endereço, e ninguém precisa lembrar de um passo manual.
-#
-# `custom_domain = true` faz o wrangler criar o registro DNS e emitir o
-# certificado sozinho - exige que a zona esteja na mesma conta Cloudflare.
-#
-# O www entra na lista para ser REDIRECIONADO, e não para servir o site: o
-# Worker devolve 301 para o endereço sem www (ver worker/src/worker.js). Sem
-# a rota, quem digitasse www receberia erro; com ela servindo o site, o mesmo
-# conteúdo existiria em dois endereços.
-#
-routes = [
-  { pattern = "hebraicofluente.com.br", custom_domain = true },
-  { pattern = "www.hebraicofluente.com.br", custom_domain = true }
-]
-
-# O `*.workers.dev` fica DESLIGADO desde que a produção foi confirmada no
-# domínio próprio.
-#
-# Ele existia como rede de segurança para conferir a publicação quando
-# houvesse dúvida de DNS ou de certificado, e cumpriu esse papel. O motivo de
-# desligar é outro: as regras de proteção da Cloudflare (Rate Limiting, WAF)
-# valem para a ZONA `hebraicofluente.com.br`, e o endereço `workers.dev` não
-# está nela. Ele é o mesmo site, com o mesmo banco e o mesmo login, atrás de
-# uma porta onde essas regras não se aplicam.
-#
-# A linha é OBRIGATÓRIA enquanto existir `routes`: sem ela o wrangler decide
-# sozinho e avisa num WARNING no meio da saída ("Because 'workers_dev' is not
-# in your Wrangler file, it will be disabled for this deployment by default").
-# Escrita, a decisão é nossa e está aqui.
-#
-# Para reativar num aperto (conferir uma publicação com o DNS em dúvida):
-# troque para `true`, publique, confira, volte para `false`.
-workers_dev = false
+# Sem domínio ainda: só o workers.dev, para conferência. Quando o domínio
+# entrar, as `routes` vêm para cá (como no wrangler.toml do site brasileiro) e
+# esta linha volta para false.
+workers_dev = true
 
 [assets]
-# O export estático do Next. `run_worker_first` é obrigatório: sem ele os
-# arquivos são servidos antes de o portão rodar, e a aula sai sem cookie.
-directory = "./app/out"
+directory = "./app/out-es"
 binding = "ASSETS"
-# Uma lista, e não `true` (01/10/2026, auditoria PERF-001): `"/*"` manda tudo
-# para o Worker, e cada `"!..."` é uma exceção que o servidor de ativos
-# responde sozinho, sem invocar o Worker (não conta na cota do plano Free,
-# que custava de 47 a 70 invocações por carga de página). Só entra na lista
-# de exceções o que é PÚBLICO e IMUTÁVEL:
-#   /_next/static/*     chunks e CSS com o hash do conteúdo no nome
-#   /fonts/*            as fontes (next/font/local)
-#   /media/*            as imagens da capa e o og.jpg
-#   /tracado-amostra/*  os 2 traçados que a capa mostra (Álef e Shin)
-# /amostra-audio (os 7 clipes da capa) FICA no Worker de propósito: o
-# Safari só toca mp3 que responde 206 a `Range`, e o Worker garante a fatia
-# (worker/src/lib/range.js) em vez de depender do servidor de ativos.
-# NUNCA ponha aqui /audio nem /stroke-order: são conteúdo pago, atrás do
-# portão (worker/src/gate.js). Os cabeçalhos de segurança e de cache do que
-# sai sem Worker vêm de app/public/_headers (copiado para app/out na build).
-# Sintaxe (wrangler 4.x): array de globs; `!` nega; o wrangler recusa a
-# lista acima do limite de regras.
+# A mesma lista do site brasileiro, pelos mesmos motivos (ver lá).
 run_worker_first = [
   "/*",
   "!/_next/static/*",
@@ -82,88 +39,26 @@ run_worker_first = [
   "!/media/*",
   "!/tracado-amostra/*"
 ]
-# O 404 do próprio site, com o layout do site - e não a página crua do
-# servidor.
 not_found_handling = "404-page"
-
-# No plano GRATUITO são 10 ms de CPU por requisição, e não há o que
-# configurar. No Workers Paid, descomente para permitir o PBKDF2 forte
-# (ver PBKDF2_ITERATIONS em [vars]).
-# [limits]
-# cpu_ms = 300
 
 [[d1_databases]]
 binding = "DB"
-database_name = "hebraico-fluente"
-database_id = "af5fad4b-8a1d-4512-8024-f13d698ddd73"
+database_name = "hebreo-fluido"
+database_id = "A-CRIAR"
 
-# A varredura de pagamentos pendentes. O webhook da Mercado Pago é assinado e
-# confiável, e mesmo assim pode não chegar - ver worker/src/reconcile.js.
+# Banco próprio, então a varredura (pagamentos, alertas, faxina, lembretes)
+# roda aqui, sobre este banco.
 [triggers]
 crons = ["*/5 * * * *"]
 
-# ⚠ REGRA DE PROPRIEDADE - cada nome de variável vive em UM lugar só.
-#
-#   · Os nomes abaixo pertencem a ESTE ARQUIVO. Nunca os acrescente também
-#     como variável ou segredo no painel: cada publicação reaplica esta lista,
-#     e um segredo de mesmo nome no painel faz a publicação falhar.
-#
-#   · SESSION_SECRET, MP_ACCESS_TOKEN e MP_WEBHOOK_SECRET pertencem ao PAINEL
-#     (Worker → Settings → Variables and Secrets, tipo Secret) e nunca podem
-#     aparecer aqui. Ver .env.example.
-#
-# PREÇO NÃO ESTÁ AQUI, de propósito: ele vem de data/courses.json, lido pelo
-# próprio Worker (worker/src/lib/catalog.js). Um preço em dois lugares vira
-# dois preços.
 [vars]
-# Origem absoluta do site. O cron não tem requisição de onde deduzi-la - e o
-# link de recuperação de senha sai DAQUI, nunca do cabeçalho Host, que é
-# escolhido por quem chama (ver a nota em worker/src/api/auth.js).
-SITE_ORIGIN = "https://hebraicofluente.com.br"
-# A origem do site em inglês (PLANO-INGLES.md). Este Worker roda o
-# agendamento para as contas dos DOIS sites (lembretes, vencimento, estorno),
-# e os links de uma conta do site em inglês saem daqui (lib/idioma.js). Entra
-# quando o domínio em inglês existir; sem ela, os links ficam no SITE_ORIGIN.
-# SITE_ORIGIN_EN = "https://<dominio-em-ingles>"
-# De quem sai o e-mail de recuperação de senha. Precisa ser de um domínio
-# verificado na Resend: sem a verificação ela recusa a entrega com 403, e o
-# sintoma é "ninguém recebe o link" com tudo o mais funcionando.
-EMAIL_FROM = "Hebraico Fluente <contato@hebraicofluente.com.br>"
-# Aparece dentro do e-mail, como "qualquer dúvida, escreva para". É o mesmo
-# endereço do rodapé do site (data/empresa.json) - repetido aqui porque o
-# Worker não lê o JSON do app.
-SUPPORT_EMAIL = "contato@hebraicofluente.com.br"
-# Para onde o Worker encaminha o que chega em contato@ (worker/src/email.js),
-# quando a regra do Email Routing manda contato@ "para o Worker". Precisa ser
-# um endereço de destino VERIFICADO no Email Routing da Cloudflare.
+# O idioma do site: o Worker escreve e-mails e páginas de erro em espanhol, e
+# cobra pelo Paddle (worker/src/lib/idioma.js, api/pay.js).
+LOCALE = "es"
+# Pendentes do domínio em espanhol. Sem eles o Worker não manda e-mail nem
+# monta link absoluto, e é por isso que este arquivo ainda não se publica.
+# SITE_ORIGIN = "https://<dominio-em-espanhol>"
+# EMAIL_FROM = "Hebreo Fluido <contacto@<dominio-em-espanhol>>"
+SUPPORT_EMAIL = "languageswithmoshik@gmail.com"
 CONTATO_DESTINO = "languageswithmoshik@gmail.com"
-# "1" usa o checkout de teste da Mercado Pago (não cobra nada). Em produção,
-# "0" - e a diferença é visível: o sandbox manda o comprador para uma tela
-# que não cobra, o que passa despercebido por semanas se ficar ligado sem querer.
-#
-# Esta variável é só o DESEMPATE. Quem decide é o prefixo do token (`TEST-` é
-# teste, `APP_USR-` é produção - ver `isSandbox` em
-# worker/src/lib/mercadopago.js), e ela só é consultada quando o prefixo é
-# DESCONHECIDO. Com a credencial de hoje, que começa com `APP_USR-`, trocar o
-# valor aqui não muda nada.
-#
-# Ficou em "1" enquanto não havia credencial de produção. Passou para "0"
-# porque, com um token de forma estranha na mão, os dois erros possíveis não
-# custam a mesma coisa: "1" mandaria o comprador para um checkout que não
-# cobra - ninguém reclama, afinal não pagaram, e são semanas de venda perdida
-# sem nenhum sintoma; "0" faz a Mercado Pago recusar na hora, na primeira
-# tentativa, onde dá para ver. Entre falhar calado e falhar alto, alto.
-MP_SANDBOX = "0"
-# Quem pode gravar, substituir e remover pronúncias em /admin/gravar
-# (worker/src/api/audio.js). Separados por vírgula. Não é segredo: a conta
-# ainda exige a senha. Não criar um Secret com este nome no painel.
 ADMIN_EMAILS = "languageswithmoshik@gmail.com"
-# Custo do hash de senha. O padrão do código (25.000) foi dimensionado para o
-# limite de 10 ms de CPU do plano GRATUITO - acima disso o Worker é morto no
-# meio do cálculo e toda conta/login devolve 500.
-#
-# No Workers Paid, descomente as duas linhas abaixo e o bloco [limits] acima
-# para chegar ao valor recomendado pelo OWASP. Ninguém é deslogado: cada conta
-# guarda as iterações com que foi gravada, e se atualiza sozinha no primeiro
-# login. Ver a nota em worker/src/lib/crypto.js.
-# PBKDF2_ITERATIONS = "600000"

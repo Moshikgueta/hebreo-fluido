@@ -1,3 +1,22 @@
+# Hebreo Fluido - o site em espanhol do Hebraico Fluente
+
+## Este repositório (04/11/2026, decisão do dono)
+Este é o repositório do **site em espanhol** (`Moshikgueta/hebreo-fluido`, privado), com **banco próprio**
+(`hebreo-fluido`). O código é o MESMO do site brasileiro (`Moshikgueta/hebraicofluente`), com o histórico
+comum; o que muda é a configuração. As notas abaixo desta seção são as do projeto inteiro e valem aqui.
+- **O que é só daqui** (nunca copiar do brasileiro): `wrangler.toml` (`LOCALE = "es"`, `app/out-es`, banco
+  `hebreo-fluido`, ainda sem domínio), `.github/workflows/` (todos com a trava `HEBREO_PUBLICAR`), os
+  scripts com o nome do banco (`scripts/cloudflare-setup.sh`, `backup-d1.sh`, `backup-nuvem.sh`,
+  `conferir-gravacoes.mjs`, `tools/exportar-gravacoes.mjs`, `app/sincronia.mjs`), `package.json`,
+  `.env.example` e este `CLAUDE.md`. Aqui não existem `wrangler.en.toml` nem `wrangler.es.toml`.
+- **Como receber melhorias:** `git merge` da `main` do brasileiro (o histórico é comum), resolvendo os
+  arquivos da lista acima a favor deste repositório.
+- **A build daqui é a em espanhol:** `cd app && NEXT_PUBLIC_LOCALE=es HF_I18N_ESTRITO=1 npm run build`.
+- **Nada se publica ainda.** Faltam: o domínio, o banco (`npx wrangler d1 create hebreo-fluido` e o id no
+  `wrangler.toml`), adaptar o `deploy-worker.yml` para montar `app/out-es`, os segredos e a variável
+  `HEBREO_PUBLICAR = true`. Plano e pendências do dono: `PLANO-ESPANHOL.md`.
+- Nas seções abaixo, "o site em produção" e "hebraicofluente.com.br" falam do site BRASILEIRO.
+
 # Hebraico Fluente - notas do projeto
 
 ## Os dois sites iguais (28/10/2026, decisão do dono)

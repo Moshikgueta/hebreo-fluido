@@ -14,9 +14,9 @@
 # acidente leva todos os alunos de uma vez.
 #
 # ONDE FICA. No R2, um bucket PRIVADO da mesma conta Cloudflare
-# (`hebraico-fluente-backups`), criado por este script na primeira vez:
-#   diario/hebraico-fluente-AAAAMMDD-HHMMSS.sql.gz   uma por dia, 90 dias
-#   ultimo/hebraico-fluente.sql.gz                   sempre a mais recente
+# (`hebreo-fluido-backups`), criado por este script na primeira vez:
+#   diario/hebreo-fluido-AAAAMMDD-HHMMSS.sql.gz   uma por dia, 90 dias
+#   ultimo/hebreo-fluido.sql.gz                   sempre a mais recente
 # As diárias somem sozinhas depois de 90 dias (regra de ciclo de vida do
 # bucket). A política de privacidade precisa dizer esse prazo (LEGAL-007).
 #
@@ -29,7 +29,7 @@
 #     envia se todas as tabelas voltarem com o mesmo número de linhas que
 #     saíram. Uma cópia que não restaura faz a Action falhar - e avisar.
 #   · `ensaiar` baixa uma cópia do R2 e restaura num banco de TESTE na
-#     Cloudflare (`hebraico-fluente-ensaio`), confere as contagens e apaga o
+#     Cloudflare (`hebreo-fluido-ensaio`), confere as contagens e apaga o
 #     banco de teste. É a prova de que dá para voltar do zero. Rodar uma vez
 #     agora e depois uma vez por mês.
 #
@@ -60,9 +60,9 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 
-DB="hebraico-fluente"
-ENSAIO_DB="hebraico-fluente-ensaio"
-BUCKET="${HF_BACKUP_BUCKET:-hebraico-fluente-backups}"
+DB="hebreo-fluido"
+ENSAIO_DB="hebreo-fluido-ensaio"
+BUCKET="${HF_BACKUP_BUCKET:-hebreo-fluido-backups}"
 REGRA="expira-diarias-90-dias"
 DIAS=90
 # Mesma versão fixa da publicação: estes comandos rodam com o token da conta.
@@ -256,8 +256,8 @@ garantir_bucket() {
 copiar() {
   local carimbo arq tamanho chave n_grav faltam id
   carimbo="$(date -u +%Y%m%d-%H%M%S)"
-  arq="$TMP/hebraico-fluente-$carimbo.sql"
-  chave="diario/hebraico-fluente-$carimbo.sql.gz"
+  arq="$TMP/hebreo-fluido-$carimbo.sql"
+  chave="diario/hebreo-fluido-$carimbo.sql.gz"
 
   verde "1. O bucket"
   garantir_bucket
@@ -293,7 +293,7 @@ copiar() {
   $W r2 object put "$BUCKET/$chave" --file="$arq.gz" --remote \
       --content-type application/gzip >"$TMP/put.log" 2>&1 \
     || morre "O envio ao R2 falhou." "$(tail -15 "$TMP/put.log")"
-  $W r2 object put "$BUCKET/ultimo/hebraico-fluente.sql.gz" --file="$arq.gz" --remote \
+  $W r2 object put "$BUCKET/ultimo/hebreo-fluido.sql.gz" --file="$arq.gz" --remote \
       --content-type application/gzip >>"$TMP/put.log" 2>&1 \
     || morre "O envio da cópia 'ultimo' ao R2 falhou." "$(tail -15 "$TMP/put.log")"
   verde "✓ $BUCKET/$chave ($(wc -c < "$arq.gz" | tr -d ' ') bytes compactado)"
@@ -316,7 +316,7 @@ copiar() {
 
   resumo "## ✅ Backup do banco"
   resumo ""
-  resumo "- Guardado em \`$BUCKET/$chave\` e em \`$BUCKET/ultimo/hebraico-fluente.sql.gz\`."
+  resumo "- Guardado em \`$BUCKET/$chave\` e em \`$BUCKET/ultimo/hebreo-fluido.sql.gz\`."
   resumo "- Restaurado num banco local antes do envio: todas as tabelas voltaram com o mesmo número de linhas."
   resumo "- As cópias diárias somem sozinhas depois de $DIAS dias."
   resumo "- gravacoes: fora da cópia, $n_grav linha(s) na produção, recuperáveis de \`audio/<id>.mp3\` no git (o curso toca o arquivo do git quando a linha não existe; \`exportar_gravacoes\` no deploy-worker.yml leva o banco para o git)."
@@ -339,11 +339,11 @@ copiar() {
 #   RCLONE_DRIVE_TOKEN    o token do Google Drive gerado com `rclone authorize "drive"`.
 # O arquivo vai CIFRADO (AES-256, chave derivada com PBKDF2): o Drive guarda
 # só bytes ilegíveis, nunca e-mail ou hash de senha de aluno em claro. Fica
-# na pasta `hebraico-fluente-backups` do Drive, uma por dia, e as de mais de
+# na pasta `hebreo-fluido-backups` do Drive, uma por dia, e as de mais de
 # 90 dias são apagadas, o mesmo prazo do R2 e da Política de Privacidade.
 # Para abrir uma cópia (RUNBOOK-ATENDIMENTO.md, "Restaurar do Drive"):
 #   openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -in ARQ.sql.gz.enc -out ARQ.sql.gz
-DRIVE_PASTA="hebraico-fluente-backups"
+DRIVE_PASTA="hebreo-fluido-backups"
 CIFRA=(-aes-256-cbc -pbkdf2 -iter 600000 -salt)
 
 cifrar() { # entrada saida  (senha em BACKUP_SENHA)
@@ -423,10 +423,10 @@ provar_gravacoes() {
 
 # ── ensaiar ───────────────────────────────────────────────────────────────
 ensaiar() {
-  local chave="${1:-ultimo/hebraico-fluente.sql.gz}" arq="$TMP/ensaio.sql"
+  local chave="${1:-ultimo/hebreo-fluido.sql.gz}" arq="$TMP/ensaio.sql"
   # A chave vem de um campo digitado no Actions: só o formato das nossas.
   printf '%s' "$chave" | grep -qE '^(diario|ultimo)/[A-Za-z0-9._-]+\.sql\.gz$' \
-    || morre "Chave inválida: $chave" "Use uma como diario/hebraico-fluente-AAAAMMDD-HHMMSS.sql.gz, ou deixe vazio."
+    || morre "Chave inválida: $chave" "Use uma como diario/hebreo-fluido-AAAAMMDD-HHMMSS.sql.gz, ou deixe vazio."
   # A tranca que importa: este modo APAGA e recria o banco de destino.
   [ "$ENSAIO_DB" != "$DB" ] || morre "O banco de ensaio tem o nome da produção. Parando."
 

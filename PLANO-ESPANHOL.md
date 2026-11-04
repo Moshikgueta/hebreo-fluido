@@ -32,6 +32,12 @@ cd app && NEXT_PUBLIC_LOCALE=es HF_I18N_ESTRITO=1 npm run build   # app/out-es
 npx wrangler dev -c wrangler.es.toml --local
 ```
 
+## O repositório (04/11/2026, decisão do dono)
+O site em espanhol mora em **`Moshikgueta/hebreo-fluido`** (privado), com o histórico comum com o
+brasileiro e **banco próprio** (`hebreo-fluido`, ainda por criar na Cloudflare). Lá, o `wrangler.toml` é o do
+espanhol, e toda Action fica parada até a variável `HEBREO_PUBLICAR = true`. Falta adaptar o
+`deploy-worker.yml` de lá para montar `app/out-es` (hoje ele monta o português), na etapa da publicação.
+
 ## Onde estamos
 
 **Etapas 1 e 2 feitas (04/11/2026):** a estrutura e a PRIMEIRA versão de toda a tradução

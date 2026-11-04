@@ -116,7 +116,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.exportar_gravacoes) }}
+    if: ${{ vars.HEBREO_PUBLICAR == 'true' && (!(github.event_name == 'workflow_dispatch' && inputs.exportar_gravacoes)) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -734,7 +734,7 @@ jobs:
   # Não publica nada: a publicação vem quando o PR entra em main (audio/**
   # está nos caminhos que disparam o deploy).
   exportar-gravacoes:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.exportar_gravacoes }}
+    if: ${{ vars.HEBREO_PUBLICAR == 'true' && (github.event_name == 'workflow_dispatch' && inputs.exportar_gravacoes) }}
     runs-on: ubuntu-latest
     timeout-minutes: 40
     permissions:

@@ -1,5 +1,5 @@
 {
-  "name": "hebraico-fluente",
+  "name": "hebreo-fluido",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,8 +14,8 @@
 
     "build:platform": "cd app && NEXT_PUBLIC_PLATFORM_API=worker npm run build",
     "deploy": "npm run build:platform && wrangler deploy",
-    "db:init": "wrangler d1 execute hebraico-fluente --file=worker/schema.sql --remote",
-    "db:init:local": "wrangler d1 execute hebraico-fluente --file=worker/schema.sql --local",
+    "db:init": "wrangler d1 execute hebreo-fluido --file=worker/schema.sql --remote",
+    "db:init:local": "wrangler d1 execute hebreo-fluido --file=worker/schema.sql --local",
     "db:backup": "bash scripts/backup-d1.sh",
     "db:backup:ensaio": "bash scripts/backup-d1.sh --ensaiar",
     "db:backup:nuvem": "bash scripts/backup-nuvem.sh copiar",

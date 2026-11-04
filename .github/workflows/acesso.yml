@@ -81,6 +81,8 @@ concurrency:
 
 jobs:
   acesso:
+    # Trava do site em espanhol: só roda com HEBREO_PUBLICAR = true (wrangler.toml).
+    if: ${{ vars.HEBREO_PUBLICAR == 'true' }}
     runs-on: ubuntu-latest
     environment: producao
     steps:
