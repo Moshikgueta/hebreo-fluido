@@ -50,7 +50,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'My Library - Hebraico Fluente',
+  metaTitulo: 'My Library - Hebrew Unlocked',
   metaDescricao: 'The courses and experiences in your account, all in one place.',
 
   resumoCurso: 'Read and write Hebrew from zero, letter by letter.',
@@ -84,7 +84,7 @@ const en: Traducao<typeof pt> = {
   naoPagueDeNovo: 'Do not pay again.',
   pagoSemAcesso: ' Access has not shown up on this account yet: contact us and we will unlock it.',
   comecarCurso: 'Start the Hebrew course',
-  verTudo: 'See everything Hebraico Fluente offers',
+  verTudo: 'See everything Hebrew Unlocked offers',
   outroEmail: 'Bought with a different email? The course stays in the account of the email that paid.',
   entrarComOutro: 'Sign in with another email',
   jaPagou: 'Already paid and the course does not show up? ',

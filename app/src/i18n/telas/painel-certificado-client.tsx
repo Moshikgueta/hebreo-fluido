@@ -94,7 +94,7 @@ const en: Traducao<typeof pt> = {
   aprovadoEm: 'Passed on {data}',
   seuCertificado: 'Your certificate',
   geradoAqui: 'The image is generated right here on your device. Pick the format, check the name, and download or share it.',
-  imagemAria: 'Certificate of completion of the Hebraico Fluente course issued to {nome}, {data}.',
+  imagemAria: 'Certificate of completion of the Hebrew Unlocked course issued to {nome}, {data}.',
   alunoReserva: 'student',
   nomeNoCertificado: 'Name on the certificate',
   comoAparecer: 'How you want your name to appear',

@@ -22,7 +22,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'New password - Hebraico Fluente',
+  metaTitulo: 'New password - Hebrew Unlocked',
   metaDescricao: 'Choose a new password and get back to the course.',
   senhasDiferentes: 'The two passwords do not match.',
   titulo: 'Choose a new password',

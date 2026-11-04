@@ -34,7 +34,7 @@ const en: Traducao<typeof pt> = {
   termosArtigo5: 'Terms of Use, article 5',
 
   instagram: 'Instagram',
-  instagramSr: ' of Hebraico Fluente (opens in a new tab)',
+  instagramSr: ' of Hebrew Unlocked (opens in a new tab)',
   linkedin: 'LinkedIn',
   linkedinSr: ' of the teacher (opens in a new tab)',
 
@@ -43,7 +43,7 @@ const en: Traducao<typeof pt> = {
     'This version has no server: accounts and payments stay only in this browser, nothing is ' +
     'charged and access does not work on another device.',
 
-  marca: 'Hebraico Fluente'
+  marca: 'Hebrew Unlocked'
 };
 
 const es: Traducao<typeof pt> = {

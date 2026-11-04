@@ -22,7 +22,7 @@ const pt = {
 // rever: o blog é em português; a build em inglês sai sem artigos
 const en: Traducao<typeof pt> = {
   blog: 'Blog',
-  metaTitulo: 'Hebraico Fluente blog: learn to read Hebrew',
+  metaTitulo: 'Hebrew Unlocked blog: learn to read Hebrew',
   metaDescricao: 'Articles for anyone who wants to read Hebrew: the alphabet, the vowels, the reading direction and words for a trip to Israel.',
   titulo: 'Learn to read Hebrew',
   lead: 'Short articles for beginners: the alphabet, the vowels, the reading direction and the first words.',

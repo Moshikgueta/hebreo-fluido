@@ -23,7 +23,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Confirm subscription - Hebraico Fluente',
+  metaTitulo: 'Confirm subscription - Hebrew Unlocked',
   metaDescricao: 'Confirm that you want to receive the emails you asked for.',
   oQueCurso: 'the next letters of the alphabet and the course news',
   oQueIsrael: 'the notice for when Israel Alem do Obvio opens',
@@ -37,7 +37,7 @@ const en: Traducao<typeof pt> = {
   site: 'site',
   toqueNoBotao:
     'Tap the button to confirm that you want to receive the emails you asked for on the ' +
-    'Hebraico Fluente site. You can leave the list whenever you want, through the link in any of them.',
+    'Hebrew Unlocked site. You can leave the list whenever you want, through the link in any of them.',
   erro: 'I could not do it right now. Try again in a moment.',
   confirmando: 'Confirming…',
   confirmar: 'Confirm'

@@ -41,7 +41,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'The method - Hebraico Fluente',
+  metaTitulo: 'The method - Hebrew Unlocked',
   metaDescricao:
     'One letter at a time, in the order that pays off most; no word with a letter you ' +
     'have not seen yet; review on the right day; transliteration that fades.',

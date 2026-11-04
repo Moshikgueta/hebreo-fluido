@@ -19,18 +19,18 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  historiaTitulo: 'A journey through the history of Hebrew - Hebraico Fluente',
+  historiaTitulo: 'A journey through the history of Hebrew - Hebrew Unlocked',
   historiaDescricao: 'Where the alphabet comes from, where the little dots came from, and how a language came to be spoken again.',
-  meuHebraicoTitulo: 'My Hebrew - Hebraico Fluente',
+  meuHebraicoTitulo: 'My Hebrew - Hebrew Unlocked',
   meuHebraicoDescricao: 'Your courses, your progress and today\'s lesson.',
-  dominioTitulo: 'My letter mastery - Hebraico Fluente',
+  dominioTitulo: 'My letter mastery - Hebrew Unlocked',
   dominioDescricao: 'The letters you have mastered, the ones you almost have and what is worth practicing now.',
-  depoimentoTitulo: 'Your testimonial - Hebraico Fluente',
+  depoimentoTitulo: 'Your testimonial - Hebrew Unlocked',
   depoimentoDescricao: 'Tell us what it is like learning to read Hebrew with the course.',
-  certificadoTitulo: 'Certificate - Hebraico Fluente',
+  certificadoTitulo: 'Certificate - Hebrew Unlocked',
   certificadoDescricao: 'The certificate of completion for the Hebrew reading course.',
-  verificarTitulo: 'Verify a certificate - Hebraico Fluente',
-  verificarDescricao: 'Check whether a Hebraico A1 course certificate was issued by Hebraico Fluente.'
+  verificarTitulo: 'Verify a certificate - Hebrew Unlocked',
+  verificarDescricao: 'Check whether a Hebraico A1 course certificate was issued by Hebrew Unlocked.'
 };
 
 const es: Traducao<typeof pt> = {

@@ -33,7 +33,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'My vocabulary - Hebraico Fluente',
+  metaTitulo: 'My vocabulary - Hebrew Unlocked',
   metaDescricao: 'The Hebrew words you can already read with the letters you have learned.',
 
   meuVocabulario: 'My vocabulary',

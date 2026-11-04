@@ -25,7 +25,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Hebrew Courses - Hebraico Fluente',
+  metaTitulo: 'Hebrew Courses - Hebrew Unlocked',
   metaDescricao:
     'Learn to read Hebrew from zero, for English speakers: the 22 letters, the vowel signs and ' +
     'real words, at your own pace. Available today.',

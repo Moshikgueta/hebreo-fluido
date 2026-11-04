@@ -39,6 +39,8 @@ type Item = {
 type Gravacao = {
   tipo: string; tamanho: number; inicio: number | null; fim: number | null;
   duracao: number | null; autor: string; em: number; arquivo: string;
+  /** Marcada para regravar (migração 0005): o aluno ouve esta até a nova. */
+  pendente?: boolean;
 };
 type Carga = 'carregando' | 'sem-sessao' | 'nao-admin' | 'codigo' | 'erro' | 'pronto';
 type Mic = 'parado' | 'pedindo' | 'gravando' | 'analisando' | 'revisar' | 'salvando' | 'negado' | 'sem-suporte' | 'erro';
@@ -46,7 +48,7 @@ type Revisao = {
   blob: Blob; url: string; corte: Corte | null; corteVisual: Corte | null;
   duracao: number; diag: Diagnostico; ondas: number[]; convertido: boolean;
 };
-type Filtro = 'todos' | 'sem' | 'com';
+type Filtro = 'todos' | 'sem' | 'com' | 'pendentes';
 
 const DO_ESTUDIO = new Set(AUDIO_MANIFEST);
 
@@ -121,8 +123,11 @@ export function GravarClient() {
 
   const visiveis = useMemo(() => catalogo.filter(c =>
     (!grupo || c.where[0] === grupo)
-    && (filtro === 'todos' || (filtro === 'sem') === (status(c.id) === 'nenhum'))
-  ), [catalogo, grupo, filtro, status]);
+    && (filtro === 'todos'
+      || (filtro === 'pendentes' ? !!gravacoes[c.id]?.pendente : (filtro === 'sem') === (status(c.id) === 'nenhum')))
+  ), [catalogo, grupo, filtro, status, gravacoes]);
+
+  const pendentes = useMemo(() => Object.values(gravacoes).filter(x => x.pendente).length, [gravacoes]);
 
   const contagem = useMemo(() => {
     let painel = 0, estudio = 0;
@@ -325,6 +330,19 @@ export function GravarClient() {
     }
   };
 
+  /* Marca para regravar, ou tira a marca. O som continua no ar até a nova. */
+  const marcarPendente = async (marca: boolean) => {
+    if (!item || !gravacoes[item.id]) return;
+    const r = await fetch(asset('/api/admin/audio/pendente'), {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: item.id, pendente: marca })
+    }).catch(() => null);
+    if (!r || !r.ok) { setAviso('Não consegui marcar. Tente de novo.'); return; }
+    setGravacoes({ ...gravacoes, [item.id]: { ...gravacoes[item.id]!, pendente: marca } });
+    setAviso(marca ? 'Marcada como PENDENTE. Os alunos ouvem a gravação atual até você salvar a nova.' : 'Tirada de PENDENTE.');
+  };
+
   const remover = async () => {
     if (!item || !gravacoes[item.id]) return;
     const volta = DO_ESTUDIO.has(item.id) ? ' O arquivo do estúdio volta a tocar.' : ' O item fica sem áudio.';
@@ -417,7 +435,7 @@ export function GravarClient() {
           </select>
         </label>
         <div className="flex gap-2 self-end" role="group" aria-label="Filtro">
-          {([['sem', 'Sem áudio'], ['com', 'Com áudio'], ['todos', 'Todos']] as const).map(([k, r]) => (
+          {([['sem', 'Sem áudio'], ['com', 'Com áudio'], ['pendentes', `Pendentes (${pendentes})`], ['todos', 'Todos']] as const).map(([k, r]) => (
             <button key={k} type="button" aria-pressed={filtro === k} onClick={() => setFiltro(k)}
                     className={`min-h-[44px] px-3.5 rounded-full border font-ui text-[14px]
                       ${filtro === k ? 'bg-[var(--navy)] border-[var(--navy)] text-white' : 'border-line bg-surface text-ink-body'}`}>
@@ -429,7 +447,8 @@ export function GravarClient() {
 
       {visiveis.length === 0 ? (
         <p className="font-ui text-[15px] text-ink-muted m-0">
-          {filtro === 'sem' ? 'Nenhum item sem áudio neste grupo. 🎉' : 'Nenhum item aqui.'}
+          {filtro === 'sem' ? 'Nenhum item sem áudio neste grupo. 🎉'
+            : filtro === 'pendentes' ? 'Nenhuma gravação PENDENTE. 🎉' : 'Nenhum item aqui.'}
         </p>
       ) : (
         <ul className="list-none p-0 m-0 grid gap-1.5">
@@ -450,6 +469,7 @@ export function GravarClient() {
                       <span className="text-ink-muted"> · {c.gloss}</span>
                     </span>
                     <span className="block font-ui text-[12.5px] text-ink-muted">
+                      {gravacoes[c.id]?.pendente && <strong className="text-[#B3261E]">PENDENTE · regravar · </strong>}
                       {s === 'painel' ? `gravado aqui · ${gravacoes[c.id]!.arquivo}`
                         : s === 'estudio' ? 'arquivo do estúdio' : 'sem áudio'} · nº {c.num}
                     </span>
@@ -488,6 +508,9 @@ export function GravarClient() {
                     arquivo: <code>{g ? g.arquivo : `${item.nome}.mp4`}</code>
                     {st === 'estudio' && !g && ' · tem arquivo do estúdio'}
                   </p>
+                  {g?.pendente && (
+                    <p className="font-ui text-[13px] font-semibold text-[#B3261E] m-0">PENDENTE: grave de novo. Salvar a nova tira a marca.</p>
+                  )}
                 </div>
               </div>
 
@@ -579,6 +602,9 @@ export function GravarClient() {
                            className="min-h-[44px] inline-flex items-center px-3 font-ui text-[14px] text-[var(--accent)] underline">
                           Baixar {g.arquivo}
                         </a>
+                        <Button variant="ghost" size="sm" onClick={() => marcarPendente(!g.pendente)}>
+                          {g.pendente ? 'Tirar de PENDENTE' : 'Marcar como PENDENTE'}
+                        </Button>
                         <Button variant="ghost" size="sm" onClick={remover}>Remover</Button>
                       </>
                     )}

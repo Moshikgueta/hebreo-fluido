@@ -39,7 +39,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'My name in Hebrew - Hebraico Fluente',
+  metaTitulo: 'My name in Hebrew - Hebrew Unlocked',
   metaDescricao: 'Write your name in Hebrew, in print and by hand.',
 
   bonus: 'Bonus',

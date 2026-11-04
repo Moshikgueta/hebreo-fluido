@@ -12,6 +12,7 @@
  * Primeira versão escrita pelo Claude; a revisão por nativos é a etapa 4.
  */
 
+import { MARCA } from './idioma.js';
 import { nomeSeguro } from './nome.js';
 import { escapar } from './mail.js';
 
@@ -38,7 +39,7 @@ const contato = suporte => (suporte ? `Any questions? Just reply to this email o
 
 export function mensagemDeRecuperacao({ nome, link, minutos, marca, suporte }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
 
   const text = [
     ola,
@@ -77,7 +78,7 @@ export function mensagemDeRecuperacao({ nome, link, minutos, marca, suporte }) {
    dona do endereço mesmo quando não foi ela quem criou a conta. */
 export function mensagemDeConfirmacao({ nome, link, dias, esqueci, marca, suporte }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
 
   const text = [
     ola,
@@ -121,7 +122,7 @@ export function mensagemDeEstorno({
   nome, curso, valor, pedido, cartao, contestacao = false, restaAte = '', marca, suporte
 }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
   const abertura = contestacao
     ? `Your purchase of the course ${curso} was disputed with your bank or card issuer, and the amount has been returned.`
     : `The refund for your purchase of the course ${curso} is complete.`;
@@ -178,7 +179,7 @@ export function mensagemDeVencimento({
   nome, curso, quando, dias, marco, meses, renovar, marca, suporte
 }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
   const fim = marco === 'fim';
   const faltam = Number(dias) === 1 ? 'tomorrow' : `in ${dias} days`;
   const abertura = fim
@@ -226,7 +227,7 @@ export function mensagemDeVencimento({
 /* Os três lembretes dos primeiros dias depois da compra (ver ativacao.js). */
 export function mensagemDeAtivacao({ nome, curso, marco, concluidas, inicio, primeira, painel, marca, suporte }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
   const feitas = Number(concluidas) || 0;
   const fecho = 'There are only three of these reminders, in the first days after your purchase.';
   const ajuda = suporte
@@ -284,7 +285,7 @@ export function mensagemDeCompra({
   termos, reembolso, versao, desistir
 }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
   const abertura = renovacao
     ? `Your access to the course ${curso} has been renewed.`
     : `Your access to the course ${curso} is now open.`;
@@ -379,7 +380,7 @@ export function mensagemDeArrependimento({
   nome, curso, valor, pedido, pedidoEm, marca, suporte, estornoPedido = false
 }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
   const devolucao = (estornoPedido ? 'The refund has already been requested from Paddle. ' : '') +
     'It goes back through the payment method you used, on your bank\'s or card issuer\'s timeline.';
   const fim = 'Your access to the course ends when the refund is processed; your study progress ' +
@@ -444,7 +445,7 @@ export const SEGUNDA_LETRA = {
 
 export function mensagemDaSegundaLetra({ site, suporte, marca, confirmar }) {
   const L = SEGUNDA_LETRA;
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
   const rodapeTexto = confirmar
     ? ['You also asked to receive the next letters and news by email. To confirm, open this link and tap "Confirm":',
        confirmar,
@@ -520,7 +521,7 @@ export const INTERESSE_EN = {
 };
 
 export function mensagemDeConfirmacaoDaLista({ interesses, confirmar, suporte, marca }) {
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
   const oQue = (interesses || []).map(i => INTERESSE_EN[i]).filter(Boolean).join('; ') || 'our news';
   const text = [
     'Hi,',
@@ -566,7 +567,7 @@ export const ASSUNTOS_DA_SEQUENCIA = [
 ];
 
 export function mensagemDaSequencia({ passo, site, sair, preco, suporte, marca }) {
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
   const curso = `${site}/curso-de-hebraico/`;
   const T = TERCEIRA_LETRA;
   const he = t => `<span dir="rtl" lang="he" style="font-size:1.25em">${escapar(t)}</span>`;
@@ -641,7 +642,7 @@ export function mensagemDaSequencia({ passo, site, sair, preco, suporte, marca }
 /** The study reminder (worker/src/lembrete.js); see the Portuguese version. */
 export function mensagemDeLembrete({ nome, painel, praticar, sair, marca }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || MARCA.en;
   const subject = 'Ten minutes of Hebrew today?';
   const corpo = [
     'No Hebrew yet today. A letter takes about ten minutes, and the course keeps your place.',

@@ -25,7 +25,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Account deleted - Hebraico Fluente',
+  metaTitulo: 'Account deleted - Hebrew Unlocked',
   metaDescricao: 'Confirmation that the account and personal data were deleted.',
   titulo: 'Account deleted',
   feito: 'It is done, and there is nothing else you need to do.',

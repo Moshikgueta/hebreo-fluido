@@ -12,7 +12,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Hebrew keyboard - Hebraico Fluente',
+  metaTitulo: 'Hebrew keyboard - Hebrew Unlocked',
   metaDescricao: 'How to add the Hebrew keyboard on iPhone, Android, Windows and Mac.',
   ferramentas: 'Tools',
   titulo: 'The Hebrew keyboard on your device',

@@ -10,9 +10,9 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  /* O nome da marca em inglês ainda é decisão do dono, junto com o domínio. */
-  marca: 'Hebraico Fluente',
-  titulo: 'Hebraico Fluente - learn to read Hebrew from zero',
+  /* O nome da marca em inglês: Hebrew Unlocked (04/11/2026, decisão do dono). */
+  marca: 'Hebrew Unlocked',
+  titulo: 'Hebrew Unlocked - learn to read Hebrew from zero',
   descricao:
     'Learn to read and write Hebrew, starting with the alphabet: interactive lessons, ' +
     'instant feedback and progress that picks up where you left off.'

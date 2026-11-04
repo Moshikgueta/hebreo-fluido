@@ -53,7 +53,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Support - Hebraico Fluente',
+  metaTitulo: 'Support - Hebrew Unlocked',
   metaDescricao:
     'How to reach the people who make the course: support email, hours, response ' +
     'time, and shortcuts for the most common problems.',

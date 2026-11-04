@@ -62,7 +62,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Reading Lab - Hebraico Fluente',
+  metaTitulo: 'Reading Lab - Hebrew Unlocked',
   metaDescricao: 'Read Hebrew words with the letters you have already learned, with more or less help.',
 
   laboratorio: 'Reading Lab',

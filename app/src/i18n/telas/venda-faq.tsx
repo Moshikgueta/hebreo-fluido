@@ -99,7 +99,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Frequently asked questions - Hebraico Fluente',
+  metaTitulo: 'Frequently asked questions - Hebrew Unlocked',
   metaDescricao:
     'Payment, access, timing, phone, audio, certificate and refunds - the questions ' +
     'that come up before buying, answered straight.',

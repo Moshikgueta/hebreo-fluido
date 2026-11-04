@@ -88,7 +88,7 @@ const en: Traducao<typeof pt> = {
   toqueMicrofone: (palavra: ReactNode): ReactNode => (
     <>Tap the microphone and say {palavra}. The course listens and tells you if it matched.</>
   ),
-  notaFala: 'To correct you, your voice goes to your browser\'s speech service (Google or Apple). Hebraico Fluente does not keep anything.'
+  notaFala: 'To correct you, your voice goes to your browser\'s speech service (Google or Apple). Hebrew Unlocked does not keep anything.'
 };
 
 const es: Traducao<typeof pt> = {

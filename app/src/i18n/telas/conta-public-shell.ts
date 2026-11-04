@@ -59,7 +59,7 @@ const en: Traducao<typeof pt> = {
   linkMetodo: 'The method',
   linkSobre: 'About',
   linkDuvidas: 'FAQ',
-  paginaInicial: 'Hebraico Fluente, home page',
+  paginaInicial: 'Hebrew Unlocked, home page',
   navegacao: 'Site navigation',
   meuHebraico: 'My Hebrew',
   minhaConta: 'My account',

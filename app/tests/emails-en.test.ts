@@ -106,7 +106,7 @@ describe('o Worker em inglês manda em inglês', () => {
     const env = envEn();
     expect((await post(env, '/api/segunda-letra', { email: 'ann@example.com', lista: true })).status).toBe(200);
     const mem = enviados.at(-1)!;
-    expect(mem.subject).toBe('The second letter: Mem (מ) - Hebraico Fluente');
+    expect(mem.subject).toBe('The second letter: Mem (מ) - Hebrew Unlocked');
     expect(mem.text).toContain('Here it is.');
     expect(mem.text).toContain('Confirm');
     expect(mem.text).toContain(`${SITE}/curso-de-hebraico/`);
@@ -141,7 +141,7 @@ describe('o Worker em inglês manda em inglês', () => {
     const env = envEn();
     await post(env, '/api/interessados', { email: 'bob@example.com', consentiu: true, interesse: 'curso' });
     const m = enviados.at(-1)!;
-    expect(m.subject).toBe('Confirm your subscription - Hebraico Fluente');
+    expect(m.subject).toBe('Confirm your subscription - Hebrew Unlocked');
     expect(m.text).toContain('the next letters of the alphabet');
   });
 

@@ -24,7 +24,7 @@ const en: Traducao<typeof pt> = {
   conferindo: 'Checking…',
   conferir: 'Verify',
   valido: '✓ Valid certificate',
-  concluiu: 'Completed the {curso} course from Hebraico Fluente, passing the final exam on {data}.',
+  concluiu: 'Completed the {curso} course from Hebrew Unlocked, passing the final exam on {data}.',
   codigoNota: 'Code {id}. This is not an official level certification.',
   naoAchou: 'We could not find a public certificate with this code. Check the code, or ask the person to turn on public verification.',
   erro: 'Could not check right now. Please try again in a moment.'

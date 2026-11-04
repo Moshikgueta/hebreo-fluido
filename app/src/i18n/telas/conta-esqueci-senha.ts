@@ -25,7 +25,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Reset your password - Hebraico Fluente',
+  metaTitulo: 'Reset your password - Hebrew Unlocked',
   metaDescricao: 'We send you a link to choose a new password.',
   titulo: 'Reset your password',
   olheCaixa: 'Check your inbox - and your spam folder, which is where this kind of message tends to land.',
