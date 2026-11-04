@@ -76,7 +76,7 @@ const en: Traducao<typeof pt> = {
   cidade: 'City (optional)',
   comoApareceria: 'How it would appear',
 
-  autorizo: 'I authorize Hebraico Fluente to publish this testimonial, exactly as shown in the preview above, on the website and in the course\'s promotional materials, without payment. I can withdraw this permission whenever I want, on this same page.',
+  autorizo: 'I authorize Hebrew Unlocked to publish this testimonial, exactly as shown in the preview above, on the website and in the course\'s promotional materials, without payment. I can withdraw this permission whenever I want, on this same page.',
   aceitoEmail: 'I agree to receive an email from the course author about this testimonial.',
   regras: (link: Link) => <>Without your permission, only the course author reads the text. We publish the text as you wrote it, without changing a single word; if it needs to be shortened, the cut is marked with [...]. If you withdraw your permission, the testimonial is removed from wherever it is published within 7 days. More details in the {link('Privacy Policy')}.</>,
 

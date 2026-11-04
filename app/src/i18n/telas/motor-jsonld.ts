@@ -14,7 +14,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  professorDescricao: 'Israeli language teacher and educator, creator of Hebraico Fluente.',
+  professorDescricao: 'Israeli language teacher and educator, creator of Hebrew Unlocked.',
   inicio: 'Home',
   nivel: 'Beginner',
   preRequisito: 'None: the course starts from zero.',

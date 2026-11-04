@@ -52,7 +52,7 @@ const en: Traducao<typeof pt> = {
   verResultado: 'See the result',
   resultado: (n, total) => `You got ${n} of ${total}.`,
   falaFim: 'A few lessons in, you read these words on your own.',
-  convite: 'These are words from the Hebraico Fluente course, written only with letters it teaches.',
+  convite: 'These are words from the Hebrew Unlocked course, written only with letters it teaches.',
   experimentar: 'Try the course for free',
   conhecer: 'See the course',
   desafiar: 'Challenge a friend',

@@ -59,7 +59,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'The Hebrew alphabet: the 22 letters, their sounds and how to read - Hebraico Fluente',
+  metaTitulo: 'The Hebrew alphabet: the 22 letters, their sounds and how to read - Hebrew Unlocked',
   metaDescricao:
     'The 22 letters of the Hebrew alphabet with their names and sounds, the five final forms and ' +
     'how the vowels work. A free test of the first letter.',
@@ -88,7 +88,7 @@ const en: Traducao<typeof pt> = {
   ctaLinha: 'Start with the free Alef test on the course page: 6 short exercises, no sign-up.',
 
   letraMetaTitulo: (nome: string, letra: string) =>
-    `${nome} (${letra}): the Hebrew alphabet letter and how to read it - Hebraico Fluente`,
+    `${nome} (${letra}): the Hebrew alphabet letter and how to read it - Hebrew Unlocked`,
   // etapa 3: pronúncia, rever (o erro descrito hoje é o de quem fala português)
   letraMetaDescricao: (nome: string, ordem: number, som: string) =>
     `${nome}, letter ${ordem} in the course order: the sound (${som}), a word recorded ` +

@@ -19,7 +19,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Learn to read Hebrew from zero - Hebraico Fluente',
+  metaTitulo: 'Learn to read Hebrew from zero - Hebrew Unlocked',
   metaDescricao:
     'Learn to read Hebrew from zero with an Israeli teacher: the 22 letters, the vowels and ' +
     'real words, with instant feedback. Free trial of the first letter.',

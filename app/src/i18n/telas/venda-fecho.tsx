@@ -104,14 +104,14 @@ const en: Traducao<typeof pt> = {
   resumo2: 'Hebrew teacher for beginners',
   resumo3: 'Academic Manager in Tel Aviv',
   resumo4: 'CELTA certificate and studies in Languages and Literature',
-  rubricaProfessor: 'Who is behind Hebraico Fluente',
+  rubricaProfessor: 'Who is behind Hebrew Unlocked',
   tituloProfessor: 'An Israeli teacher who knows where beginners get stuck.',
-  apresentacao: 'I am Moshik Gueta. It was while teaching Hebrew to beginners that I understood where people who start from zero get stuck. Hebraico Fluente turns what worked in my classes into a method you follow at your own pace.',
+  apresentacao: 'I am Moshik Gueta. It was while teaching Hebrew to beginners that I understood where people who start from zero get stuck. Hebrew Unlocked turns what worked in my classes into a method you follow at your own pace.',
   historia: 'Read my story',
   linkedin: 'See my LinkedIn profile',
   abreAba: ' (opens in a new tab)',
   instagram: 'Instagram',
-  instagramSr: ' of Hebraico Fluente (opens in a new tab)',
+  instagramSr: ' of Hebrew Unlocked (opens in a new tab)',
   metodo: (autor: ReactNode, obra: ReactNode, translit: string, adaptacoes: string): ReactNode => (
     <>The method builds on the work of {autor}, author of{' '}{obra}{' '}({translit}). The content of his book is the foundation of what this platform teaches. {adaptacoes}</>
   ),

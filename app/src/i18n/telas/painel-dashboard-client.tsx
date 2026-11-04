@@ -232,7 +232,7 @@ const en: Traducao<typeof pt> = {
   passo3Titulo: 'Module 1: {titulo}',
   passo3Reserva: 'The first letter',
   passo3Texto: 'One letter per lesson, with sound, handwriting and the first words.',
-  bemVindo: 'Welcome to Hebraico Fluente',
+  bemVindo: 'Welcome to Hebrew Unlocked',
   liberado: 'Your course is unlocked.',
   boasVindasTexto: 'There are {letras} letters, in {modulos} modules. Before the first one, four quick questions so the course fits you.',
   comecar: 'Start',

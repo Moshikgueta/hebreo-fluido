@@ -31,13 +31,13 @@ export function TermsEn() {
       documento="termos"
       titulo="Terms of Use"
       resumo={
-        'These terms apply between you and Hebraico Fluente. They describe what you buy, ' +
+        'These terms apply between you and Hebrew Unlocked. They describe what you buy, ' +
         'how access works and what happens if you want to leave.'
       }
     >
       <Artigo n={1} titulo="What you are buying">
         <p>
-          Hebraico Fluente{empresa.razaoSocial ? `, operated by ${empresa.razaoSocial} (Brazil),` : ''} offers{' '}
+          Hebrew Unlocked{empresa.razaoSocial ? `, operated by ${empresa.razaoSocial} (Brazil),` : ''} offers{' '}
           <strong>online Hebrew courses</strong>. What you buy is <strong>access to a course</strong> for
           the period shown, studied on the platform in your web browser. The course is self-paced: you
           study at your own rhythm, and the platform checks every exercise right away.
@@ -162,7 +162,7 @@ export function TermsEn() {
 
       <Artigo n={8} titulo="If the platform shuts down">
         <p>
-          If Hebraico Fluente stops operating before your access period ends, we tell you by email at least{' '}
+          If Hebrew Unlocked stops operating before your access period ends, we tell you by email at least{' '}
           <strong>30 days</strong> in advance, and access continues as normal until then. After it shuts
           down, we refund the amount proportional to the access time you had left, through the original
           payment method.

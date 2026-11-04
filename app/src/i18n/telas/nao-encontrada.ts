@@ -8,7 +8,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  tituloDaAba: 'Page not found - Hebraico Fluente',
+  tituloDaAba: 'Page not found - Hebrew Unlocked',
   titulo: 'This page does not exist',
   texto: 'The link may be out of date.',
   voltar: 'Back to the start'

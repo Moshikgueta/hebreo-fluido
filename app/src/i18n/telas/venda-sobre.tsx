@@ -37,10 +37,10 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'About Moshik - Hebraico Fluente',
+  metaTitulo: 'About Moshik - Hebrew Unlocked',
   metaDescricao:
     'Moshik Gueta, Israeli Hebrew and language teacher: the path through ' +
-    'Israel and Buenos Aires behind Hebraico Fluente.',
+    'Israel and Buenos Aires behind Hebrew Unlocked.',
   trilha: 'About',
 
   porqueEyebrow: 'How the course was designed',

@@ -144,6 +144,7 @@ const ROUTES = {
   'GET /api/admin/audio': audio.lista,
   'PUT /api/admin/audio': audio.salvar,
   'DELETE /api/admin/audio': audio.apagar,
+  'POST /api/admin/audio/pendente': audio.pendente,
   'GET /api/admin/audio/arquivo': audio.arquivo,
 
   /* De qual conta saiu uma cópia do curso: lê a marca invisível de um

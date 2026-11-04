@@ -105,13 +105,13 @@ describe('os e-mails pedidos agora saem na língua do site', () => {
     await cadastro(env, 'us@example.com', SITE_EN);
     await esperarEnvios();
     const confirmacao = enviados.at(-1)!;
-    expect(confirmacao.subject).toBe('Confirm your email - Hebraico Fluente');
+    expect(confirmacao.subject).toBe('Confirm your email - Hebrew Unlocked');
     expect(confirmacao.text).toContain(`${SITE_EN}/confirmar-email/?token=`);
 
     await auth.forgot({ request: pedido(`${SITE_EN}/api/auth/forgot`, { email: 'us@example.com' }), env, ctx });
     await esperarEnvios();
     const recuperacao = enviados.at(-1)!;
-    expect(recuperacao.subject).toBe('Reset your password - Hebraico Fluente');
+    expect(recuperacao.subject).toBe('Reset your password - Hebrew Unlocked');
     expect(recuperacao.text).toContain(`${SITE_EN}/nova-senha/?token=`);
   });
 
@@ -221,5 +221,14 @@ describe('o que o site em inglês não tem', () => {
     const br = envCom({ ASSETS: assets });
     const naoBloqueia = await worker.fetch(new Request(`${SITE}/api/content/raizes`), br, ctx);
     expect(naoBloqueia.status).not.toBe(404);
+  });
+});
+
+describe('a marca de cada site (04/11/2026)', () => {
+  it('o inglês é Hebrew Unlocked, o brasileiro continua Hebraico Fluente', async () => {
+    // @ts-expect-error - módulo JS do Worker, sem tipos
+    const { marcaDoIdioma } = await import('../../worker/src/lib/idioma.js');
+    expect(marcaDoIdioma('en')).toBe('Hebrew Unlocked');
+    expect(marcaDoIdioma('pt')).toBe('Hebraico Fluente');
   });
 });

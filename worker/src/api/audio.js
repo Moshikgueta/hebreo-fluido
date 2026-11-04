@@ -36,7 +36,7 @@
  * sessão válida ou não.
  */
 
-import { json, fail, readBytes } from '../lib/http.js';
+import { json, fail, readBytes, readJson } from '../lib/http.js';
 import { normalizeEmail } from '../lib/db.js';
 import { exigirAdmin, isAdmin } from '../lib/admin.js';
 import { nomesOrganizados, idDoClipe, EXTENSAO } from '../lib/nomes-audio.js';
@@ -146,13 +146,13 @@ export async function lista({ request, env }) {
   const { erro } = await exigirAdmin(request, env);
   if (erro) return erro;
   const r = await env.DB.prepare(
-    'SELECT audio_id, tipo, tamanho, inicio_ms, fim_ms, duracao_ms, autor, atualizado_em FROM gravacoes'
+    'SELECT audio_id, tipo, tamanho, inicio_ms, fim_ms, duracao_ms, autor, atualizado_em, pendente FROM gravacoes'
   ).all();
   const gravacoes = {};
   for (const l of r.results || []) {
     gravacoes[l.audio_id] = {
       tipo: l.tipo, tamanho: l.tamanho, inicio: l.inicio_ms, fim: l.fim_ms,
-      duracao: l.duracao_ms, autor: l.autor, em: l.atualizado_em,
+      duracao: l.duracao_ms, autor: l.autor, em: l.atualizado_em, pendente: !!l.pendente,
       arquivo: `${NOMES[l.audio_id]}.${EXTENSAO[l.tipo] || 'bin'}`
     };
   }
@@ -190,7 +190,8 @@ export async function salvar({ request, env }) {
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(audio_id) DO UPDATE SET tipo = excluded.tipo, dados = excluded.dados,
        tamanho = excluded.tamanho, inicio_ms = excluded.inicio_ms, fim_ms = excluded.fim_ms,
-       duracao_ms = excluded.duracao_ms, autor = excluded.autor, atualizado_em = excluded.atualizado_em`
+       duracao_ms = excluded.duracao_ms, autor = excluded.autor, atualizado_em = excluded.atualizado_em,
+       pendente = 0`
   ).bind(id, tipo, dados, dados.length, corte ? inicio : null, corte ? fim : null,
     duracao, normalizeEmail(account.email), agora).run();
 
@@ -208,6 +209,21 @@ export async function apagar({ request, env }) {
   if (!ID_RE.test(id)) return fail('unknown-clip', 404);
   await env.DB.prepare('DELETE FROM gravacoes WHERE audio_id = ?').bind(id).run();
   return json({ ok: true, id });
+}
+
+/** Marca (ou desmarca) uma gravação para regravar: `{ id, pendente }`.
+    Só gravação do painel; o aluno continua ouvindo a que existe até a nova
+    ser salva, e salvar tira a marca (migração 0005). */
+export async function pendente({ request, env }) {
+  const { erro } = await exigirAdmin(request, env);
+  if (erro) return erro;
+  const b = await readJson(request, 1024);
+  const id = typeof b?.id === 'string' ? b.id : '';
+  if (!ID_RE.test(id) || !IDS.has(id)) return fail('unknown-clip', 404);
+  const marca = b?.pendente === false ? 0 : 1;
+  const r = await env.DB.prepare('UPDATE gravacoes SET pendente = ? WHERE audio_id = ?').bind(marca, id).run();
+  if (!r.meta || !r.meta.changes) return fail('not-recorded', 404);
+  return json({ ok: true, id, pendente: !!marca });
 }
 
 /** O arquivo guardado, para o painel ouvir - ou baixar com o nome

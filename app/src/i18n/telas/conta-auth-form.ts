@@ -34,10 +34,10 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaEntrarTitulo: 'Sign in - Hebraico Fluente',
+  metaEntrarTitulo: 'Sign in - Hebrew Unlocked',
   metaEntrarDescricao: 'Sign in to your account and pick up where you left off.',
-  metaCriarTitulo: 'Create account - Hebraico Fluente',
-  metaCriarDescricao: 'Create your Hebraico Fluente account.',
+  metaCriarTitulo: 'Create account - Hebrew Unlocked',
+  metaCriarDescricao: 'Create your Hebrew Unlocked account.',
   motivoAparelhos:
     'You signed in on another device and this session was ended. ' +
     'The limit is 3 devices at the same time.',

@@ -38,7 +38,7 @@ import empresa from '../../../data/empresa.json';
 import { mailReady, mensagemDeConvitePendente, sendMail } from '../lib/mail.js';
 import { mensagens } from '../lib/mensagens.js';
 import { lembreteLigado } from './lembrete.js';
-import { idiomaDoWorker } from '../lib/idioma.js';
+import { idiomaDoWorker, marcaDoIdioma } from '../lib/idioma.js';
 import {
   activeEntitlements, bumpSessionVersion, lembreteQuer, novidadesQuer, changePassword, createAccount, deleteAccount,
   emailVerified, estourou, findAccountByEmail, findAccountById, invitesPendentes, log,
@@ -226,7 +226,7 @@ async function avisarConvitePendente(env, ctx, account, email) {
     email: account.email,
     nome: account.name || '',
     cursos,
-    marca: 'Hebraico Fluente',
+    marca: marcaDoIdioma(idiomaDoWorker(env)),
     painel: 'GitHub → Actions → Acesso → liberar'
   });
 
@@ -300,7 +300,7 @@ async function enviarConfirmacao(env, ctx, request, account) {
     link: `${site}/confirmar-email/?token=${encodeURIComponent(token)}`,
     dias: VERIFY_TTL_DIAS,
     esqueci: `${site}/esqueci-senha/`,
-    marca: 'Hebraico Fluente',
+    marca: marcaDoIdioma(idiomaDoWorker(env)),
     suporte: env.SUPPORT_EMAIL || ''
   });
 
@@ -625,7 +625,7 @@ export async function forgot({ request, env, ctx }) {
       nome: await emailVerified(env, account.id, account.email) === true ? account.name || '' : '',
       link,
       minutos: RESET_TTL_MIN,
-      marca: 'Hebraico Fluente',
+      marca: marcaDoIdioma(idiomaDoWorker(env)),
       suporte: env.SUPPORT_EMAIL || ''
     });
     const r = await sendMail(env, { to: account.email, ...msg });

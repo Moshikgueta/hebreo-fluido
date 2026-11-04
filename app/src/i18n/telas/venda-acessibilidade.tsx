@@ -55,7 +55,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Accessibility Statement - Hebraico Fluente',
+  metaTitulo: 'Accessibility Statement - Hebrew Unlocked',
   metaDescricao:
     'What the platform does so everyone can use it, what it does not do yet, ' +
     'how it was tested and how to report a barrier.',

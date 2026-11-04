@@ -28,7 +28,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Readings - Hebraico Fluente',
+  metaTitulo: 'Readings - Hebrew Unlocked',
   metaDescricao: 'All the reading exercises of the course in one place: the lab, the First Reading, the short texts and the review readings.',
 
   titulo: 'Readings',

@@ -36,6 +36,13 @@ export function origemDoIdioma(env, idioma) {
   return semBarra((env && env.SITE_ORIGIN_PT) || (env && env.SITE_ORIGIN));
 }
 
+/* O nome da marca em cada site (04/11/2026, decisão do dono): o site em
+   inglês se chama Hebrew Unlocked; o brasileiro continua Hebraico Fluente. */
+export const MARCA = Object.freeze({ pt: 'Hebraico Fluente', en: 'Hebrew Unlocked' });
+
+/** A marca no idioma dado. */
+export const marcaDoIdioma = idioma => (idioma === 'en' ? MARCA.en : MARCA.pt);
+
 /** O nome do curso no idioma: `titleEn` (ou `titleEs`) do catálogo, quando existe. */
 export const tituloDoCurso = (curso, idioma, reserva = '') =>
   (idioma === 'en' && curso && curso.titleEn) || (idioma === 'es' && curso && curso.titleEs)

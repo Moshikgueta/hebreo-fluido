@@ -178,7 +178,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Your account - Hebraico Fluente',
+  metaTitulo: 'Your account - Hebrew Unlocked',
   metaDescricao: 'Your details, your courses, your progress and your purchases.',
   fraseDeVencido: (data: string) => `Your access ended on ${data}.`,
 

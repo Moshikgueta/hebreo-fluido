@@ -76,7 +76,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  naoEncontrado: 'Course not found - Hebraico Fluente',
+  naoEncontrado: 'Course not found - Hebrew Unlocked',
 
   voceEstaEm: 'You are here',
   cursos: 'Courses',

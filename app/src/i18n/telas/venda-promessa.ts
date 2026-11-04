@@ -24,7 +24,7 @@ const en: Traducao<typeof pt> = {
   aprendePalavras: 'real words, step by step',
   nadaTabela: 'No memorizing a whole chart on day one.',
   nadaTransliteracao: 'No depending on transliteration forever.',
-  titulo: 'What you learn at Hebraico Fluente',
+  titulo: 'What you learn at Hebrew Unlocked',
   exercicios: 'With interactive exercises and instant feedback at every step, in English, made for English speakers.',
   numeros: (letras: number, licoes: number, meses: number) =>
     `${letras} letters in ${licoes} lessons · progress saved to your account · ${meses} months of access`,

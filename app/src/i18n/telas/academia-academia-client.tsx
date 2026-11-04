@@ -147,7 +147,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Reading Academy - Hebraico Fluente',
+  metaTitulo: 'Reading Academy - Hebrew Unlocked',
   metaDescricao: 'Practice letters, vowels, syllables, words and writing with what you have already learned.',
 
   jogoMatchTitulo: 'Match',

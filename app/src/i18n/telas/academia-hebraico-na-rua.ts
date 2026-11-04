@@ -22,7 +22,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Hebrew on the street - Hebraico Fluente',
+  metaTitulo: 'Hebrew on the street - Hebrew Unlocked',
   metaDescricao: 'Real signs from Israel with words you can already read.',
   titulo: 'Hebrew on the street',
   intro: 'Real signs, photographed in Israel. Each one has a word you can already read. On the street words come without the vowel points: compare the letters.',

@@ -28,7 +28,7 @@ const en: Traducao<typeof pt> = {
   nome: 'Moshik Gueta',
   credenciais: 'Israeli · Hebrew teacher · Hundreds of students',
   fotoAlt: 'Moshik Gueta, Israeli Hebrew teacher',
-  mockupAlt: 'Screen of the Hebraico Fluente interactive platform on a phone',
+  mockupAlt: 'Screen of the Hebrew Unlocked interactive platform on a phone',
 };
 
 const es: Traducao<typeof pt> = {

@@ -8,7 +8,7 @@ const pt = {
 
 const en: Traducao<typeof pt> = {
   // a imagem do cartão ainda é a do site em português (tools/og.mjs)
-  ogCurso: 'Hebraico Fluente: learn to read Hebrew from zero',
+  ogCurso: 'Hebrew Unlocked: learn to read Hebrew from zero',
   ogLivro: 'Israel Alem do Obvio, by Moshik Gueta: coming soon'
 };
 

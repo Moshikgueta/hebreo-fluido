@@ -26,7 +26,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Leave the list - Hebraico Fluente',
+  metaTitulo: 'Leave the list - Hebrew Unlocked',
   metaDescricao: 'Stop receiving the next course notice.',
   titulo: 'Leave the list',
   saiuInteressado: 'Done: you left the list and will not receive any more emails from it.',

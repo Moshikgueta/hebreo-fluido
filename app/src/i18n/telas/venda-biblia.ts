@@ -51,7 +51,7 @@ const pt = {
 } as const;
 
 const en: Traducao<typeof pt> = {
-  metaTitulo: 'Will I be able to read the Bible in Hebrew? - Hebraico Fluente',
+  metaTitulo: 'Will I be able to read the Bible in Hebrew? - Hebrew Unlocked',
   metaDescricao:
     'Yes, you will read the text aloud; no, you will not understand it without vocabulary and grammar. ' +
     'Genesis 1:1, word by word, so you can judge.',

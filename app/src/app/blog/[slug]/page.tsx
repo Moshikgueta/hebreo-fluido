@@ -9,6 +9,7 @@ import { jsonLdTexto, migalhas } from '@/lib/jsonld';
 import { LOCALE_INTL } from '@/i18n';
 import { BlocosDoArtigo, Texto } from '../BlocosDoArtigo';
 import { tx } from '@/i18n/telas/blog';
+import { tx as txGeral } from '@/i18n/telas/geral';
 
 /* Um artigo do blog (29/10/2026). Só existem as páginas dos aprovados. */
 
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const a = artigo(slug);
   if (!a) return {};
-  return meta({ rota: `/blog/${a.slug}`, title: `${a.titulo} - Hebraico Fluente`, description: semMarcas(a.descricao), tipo: 'article' });
+  return meta({ rota: `/blog/${a.slug}`, title: `${a.titulo} - ${txGeral.marca}`, description: semMarcas(a.descricao), tipo: 'article' });
 }
 
 const dataBr = (iso: string) =>
@@ -44,8 +45,8 @@ export default async function ArtigoPage({ params }: { params: Promise<{ slug: s
     dateModified: a.atualizadoEm,
     inLanguage: 'pt-BR',
     mainEntityOfPage: url(`/blog/${a.slug}`),
-    author: { '@type': 'Organization', name: 'Hebraico Fluente', url: url('/') },
-    publisher: { '@type': 'Organization', name: 'Hebraico Fluente', url: url('/') }
+    author: { '@type': 'Organization', name: txGeral.marca, url: url('/') },
+    publisher: { '@type': 'Organization', name: txGeral.marca, url: url('/') }
   };
   return (
     <>

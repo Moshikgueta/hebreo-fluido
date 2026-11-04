@@ -49,7 +49,7 @@ const en: Traducao<typeof pt> = {
     'What you just did is saved on this device, but has not reached your account yet. As soon ' +
     'as the connection comes back, it uploads on its own. If you are switching devices now, open ' +
     'the course once with internet first.',
-  marca: 'Hebraico Fluente',
+  marca: 'Hebrew Unlocked',
   xpAbrirRecompensas: (xp: number) => `${xp} XP. Open rewards`,
   ajudaEInformacoes: 'Help and information',
   precisaDeAjuda: 'Need help?',
