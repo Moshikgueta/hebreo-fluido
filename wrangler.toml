@@ -55,9 +55,12 @@ crons = ["*/5 * * * *"]
 # O idioma do site: o Worker escreve e-mails e páginas de erro em espanhol, e
 # cobra pelo Paddle (worker/src/lib/idioma.js, api/pay.js).
 LOCALE = "es"
-# Pendentes do domínio em espanhol. Sem eles o Worker não manda e-mail nem
-# monta link absoluto, e é por isso que este arquivo ainda não se publica.
-# SITE_ORIGIN = "https://<dominio-em-espanhol>"
+# O endereço do site: enquanto não há domínio em espanhol, o workers.dev da
+# conta (como o site em inglês faz). Quando o domínio entrar, trocar aqui e
+# acrescentar as `routes`. A build em espanhol lê esta linha (app/next.config.ts)
+# para o endereço canônico, o sitemap e o cartão do link.
+SITE_ORIGIN = "https://hebreo-fluido.moshikg10.workers.dev"
+# Pendente do domínio em espanhol: sem ele o Worker não manda e-mail.
 # EMAIL_FROM = "Hebreo Fluido <contacto@<dominio-em-espanhol>>"
 SUPPORT_EMAIL = "languageswithmoshik@gmail.com"
 CONTATO_DESTINO = "languageswithmoshik@gmail.com"
