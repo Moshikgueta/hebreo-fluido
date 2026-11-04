@@ -6,7 +6,7 @@
 #
 #   · todo dia às 03:17 (Brasília): exporta o banco, restaura a cópia num
 #     banco local e confere tabela por tabela, e só então guarda no R2
-#     (bucket privado `hebraico-fluente-backups`, cópias diárias por 90 dias);
+#     (bucket privado `hebreo-fluido-backups`, cópias diárias por 90 dias);
 #   · à mão, com "ensaiar": baixa uma cópia do R2, restaura do zero num banco
 #     de TESTE na Cloudflare, confere e apaga o banco de teste. Rodar uma vez
 #     depois de ligar e depois uma vez por mês.
@@ -31,7 +31,7 @@
 #
 # Cópia fora da Cloudflare (01/10/2026): com os segredos BACKUP_SENHA e
 # RCLONE_DRIVE_TOKEN, cada backup diário vai também, CIFRADO, para a pasta
-# `hebraico-fluente-backups` do Google Drive do dono (90 dias). Sem eles,
+# `hebreo-fluido-backups` do Google Drive do dono (90 dias). Sem eles,
 # tudo funciona como antes e o resumo avisa que a cópia no Drive está
 # desligada. Como ligar: RUNBOOK-ATENDIMENTO.md, "Cópia do backup no Drive".
 #
@@ -40,8 +40,11 @@
 name: Backup do banco
 
 on:
+  # O banco do site em espanhol existe desde 04/11/2026 (Action "Criar o banco").
+  # O agendamento só roda com HEBREO_PUBLICAR = true. 74 minutos depois do
+  # brasileiro (27 depois do inglês), para não disputarem o mesmo token na mesma hora.
   schedule:
-    - cron: '17 6 * * *'
+    - cron: '31 7 * * *'
   workflow_dispatch:
     inputs:
       acao:
@@ -50,7 +53,7 @@ on:
         options: [copiar, ensaiar]
         default: copiar
       chave:
-        description: 'Só em "ensaiar": qual cópia (vazio = a mais recente). Ex.: diario/hebraico-fluente-20261001-061700.sql.gz'
+        description: 'Só em "ensaiar": qual cópia (vazio = a mais recente). Ex.: diario/hebreo-fluido-20261001-061700.sql.gz'
         required: false
         type: string
 
@@ -65,7 +68,9 @@ concurrency:
 
 jobs:
   backup:
-    # Trava do site em espanhol: só roda com HEBREO_PUBLICAR = true (wrangler.toml).
+    # Trava do repositório do site em espanhol: nada roda contra a Cloudflare
+    # até a variável do repositório HEBREO_PUBLICAR valer 'true' (Settings >
+    # Secrets and variables > Actions > Variables). Ver CLAUDE.md, "Este repositório".
     if: ${{ vars.HEBREO_PUBLICAR == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30

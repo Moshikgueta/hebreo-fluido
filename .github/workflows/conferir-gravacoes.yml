@@ -31,7 +31,9 @@ concurrency:
 
 jobs:
   conferir:
-    # Trava do site em espanhol: só roda com HEBREO_PUBLICAR = true (wrangler.toml).
+    # Trava do repositório do site em espanhol: nada roda contra a Cloudflare
+    # até a variável do repositório HEBREO_PUBLICAR valer 'true' (Settings >
+    # Secrets and variables > Actions > Variables). Ver CLAUDE.md, "Este repositório".
     if: ${{ vars.HEBREO_PUBLICAR == 'true' }}
     runs-on: ubuntu-latest
     environment: producao

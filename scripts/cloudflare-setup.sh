@@ -220,6 +220,18 @@ bold "4. Segredos"
 # (`|| true`), lia a lista como vazia, concluía que SESSION_SECRET não existia
 # e gerava OUTRO - e cada aluno logado caía fora no meio de uma publicação
 # verde. Uma listagem que não deu certo não prova ausência de nada.
+#
+# A exceção é a primeira publicação de um Worker novo: ele só nasce no
+# `wrangler deploy` (passo 5), e a lista responde "run `wrangler deploy`
+# first". Um Worker que não existe não tem segredo nem aluno logado, então
+# não há o que derrubar: ele é criado aqui, e a lista é pedida de novo.
+if ! SECRETS="$($W secret list 2>&1)" \
+   && printf '%s' "$SECRETS" | grep -qiE 'wrangler deploy. first|code: 10007'; then
+  info "O Worker ainda não existe (primeira publicação) - criando antes dos segredos…"
+  $W deploy >/dev/null 2>&1 \
+    || morre "Não consegui criar o Worker." "Rode à mão para ver a mensagem: npx wrangler deploy"
+  ok "Worker criado"
+fi
 if ! SECRETS="$($W secret list 2>&1)"; then
   morre "Não consegui listar os segredos do Worker." \
         "Sem a lista não dá para saber se SESSION_SECRET existe, e gerar um
@@ -292,6 +304,11 @@ empurra MP_ACCESS_TOKEN   "${MP_ACCESS_TOKEN:-}" \
        info "MP_ACCESS_TOKEN ausente - pagamento fica desligado (o site funciona)."; }
 empurra MP_WEBHOOK_SECRET "${MP_WEBHOOK_SECRET:-}" \
   || info "MP_WEBHOOK_SECRET ausente - o webhook recusa tudo, de propósito."
+# O Paddle do site em espanhol (PLANO-INGLES.md, etapa 5; worker/src/lib/paddle.js).
+empurra PADDLE_API_KEY        "${PADDLE_API_KEY:-}" \
+  || info "PADDLE_API_KEY ausente - o checkout em espanhol diz que o pagamento não está ligado."
+empurra PADDLE_WEBHOOK_SECRET "${PADDLE_WEBHOOK_SECRET:-}" \
+  || info "PADDLE_WEBHOOK_SECRET ausente - o aviso do Paddle recusa tudo, de propósito."
 empurra RESEND_API_KEY    "${RESEND_API_KEY:-}" \
   || info "RESEND_API_KEY ausente - ninguém recupera a senha sozinho (ver .env.example)."
 
@@ -301,18 +318,20 @@ empurra RESEND_API_KEY    "${RESEND_API_KEY:-}" \
 # falha de build apareça como falha de build, e não como falha de publicação.
 echo
 bold "5. Construir o site"
-if [ "${HF_SKIP_BUILD:-0}" = "1" ] && [ -d app/out ]; then
-  # Um app/out construído sem NEXT_PUBLIC_PLATFORM_API é a DEMONSTRAÇÃO: as
+if [ "${HF_SKIP_BUILD:-0}" = "1" ] && [ -d app/out-es ]; then
+  # Este repositório publica o site em espanhol: o wrangler.toml serve
+  # app/out-es, que só a build com NEXT_PUBLIC_LOCALE=es escreve.
+  # Um build construído sem NEXT_PUBLIC_PLATFORM_API é a DEMONSTRAÇÃO: as
   # contas moram no navegador e qualquer pedido se aprova sozinho. Publicar
   # isso por cima da loja seria entregar o curso de graça com a tarja de
   # "demonstração" como único aviso. A tarja é prerenderizada no HTML, então
   # ela mesma é a prova.
-  if grep -q 'Ambiente de demonstra' app/out/index.html 2>/dev/null; then
-    morre "app/out é um build de DEMONSTRAÇÃO, não de plataforma." \
-          "Reconstrua com: cd app && NEXT_PUBLIC_PLATFORM_API=worker npm run build
+  if grep -q 'Entorno de demostraci' app/out-es/index.html 2>/dev/null; then
+    morre "app/out-es é um build de DEMONSTRAÇÃO, não de plataforma." \
+          "Reconstrua com: cd app && NEXT_PUBLIC_LOCALE=es NEXT_PUBLIC_PLATFORM_API=worker npm run build
        (ou rode este script sem HF_SKIP_BUILD, que ele constrói certo)."
   fi
-  ok "Já construído ($(find app/out -type f | wc -l | tr -d ' ') arquivos)"
+  ok "Já construído ($(find app/out-es -type f | wc -l | tr -d ' ') arquivos)"
 else
   if [ ! -d app/node_modules ]; then
     info "Instalando dependências (demora na primeira vez)…"
@@ -320,8 +339,8 @@ else
       "Rode 'cd app && npm ci' para ver o erro."
   fi
   info "next build em modo plataforma…"
-  if (cd app && NEXT_PUBLIC_PLATFORM_API=worker npm run build) >/tmp/hf-build.log 2>&1; then
-    ok "app/out pronto ($(find app/out -type f | wc -l | tr -d ' ') arquivos)"
+  if (cd app && NEXT_PUBLIC_LOCALE=es HF_I18N_ESTRITO=1 NEXT_PUBLIC_PLATFORM_API=worker npm run build) >/tmp/hf-build.log 2>&1; then
+    ok "app/out-es pronto ($(find app/out-es -type f | wc -l | tr -d ' ') arquivos)"
   else
     morre "O build falhou. Últimas linhas:
 
@@ -414,7 +433,7 @@ fi
 # O domínio próprio sai do wrangler.toml, e não da saída do wrangler: é o
 # arquivo que manda em qual endereço o site atende. O www é descartado aqui
 # porque ele existe para redirecionar, não para ser o endereço.
-# Só as linhas de verdade: o exemplo comentado no toml do site em inglês
+# Só as linhas de verdade: o exemplo comentado no toml do site em espanhol
 # ("<dominio>") virou SITE_ORIGIN em 29/10/2026 e o link do e-mail saiu quebrado.
 DOMINIO="$(grep -vE '^\s*#' wrangler.toml \
   | grep -oP 'pattern\s*=\s*"\K[^"]+(?="\s*,\s*custom_domain\s*=\s*true)' \

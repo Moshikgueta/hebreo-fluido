@@ -116,8 +116,18 @@ concurrency:
 
 jobs:
   deploy:
+    # Trava do repositório do site em espanhol: nada roda contra a Cloudflare
+    # até a variável do repositório HEBREO_PUBLICAR valer 'true' (Settings >
+    # Secrets and variables > Actions > Variables). Ver CLAUDE.md, "Este repositório".
     if: ${{ vars.HEBREO_PUBLICAR == 'true' && (!(github.event_name == 'workflow_dispatch' && inputs.exportar_gravacoes)) }}
     runs-on: ubuntu-latest
+    # O site deste repositório é o em espanhol: a build sai em app/out-es (o que o
+    # wrangler.toml publica), estrita (nenhum texto sem tradução), e toda
+    # conferência lê o out-es (app/saida.mjs). Só os testes rodam em português,
+    # que é a fonte de cada dicionário (passo Test).
+    env:
+      NEXT_PUBLIC_LOCALE: es
+      HF_I18N_ESTRITO: '1'
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
@@ -196,36 +206,10 @@ jobs:
             app/package-lock.json
             package-lock.json
 
-      # Raízes Sefarditas (22/10/2026): o CONTEÚDO mora num repositório
-      # PRIVADO (Moshikgueta/hebraicofluente-raizes), como o editorial. O
-      # segredo RAIZES_TOKEN é um token fino, SÓ LEITURA, só daquele
-      # repositório. Antes do Install, porque os testes e o exportador
-      # (tools/export-content.mjs) leem raizes/data/.
-      #
-      # Sem o segredo a publicação NÃO para: Raízes ainda não é vendido, e o
-      # site inteiro builda com um raizes.json vazio (as telas dizem que o
-      # conteúdo não veio). Fica um aviso no resumo.
-      - name: Há o conteúdo de Raízes?
-        id: raizes
-        if: steps.guard.outputs.ok == 'true'
-        env:
-          TEM_TOKEN: ${{ secrets.RAIZES_TOKEN != '' }}
-        run: |
-          if [ "$TEM_TOKEN" = "true" ]; then
-            echo "ok=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "ok=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::Sem o segredo RAIZES_TOKEN: Raízes Sefarditas publica sem conteúdo."
-            echo "- ⚠ Raízes Sefarditas: sem o segredo \`RAIZES_TOKEN\`, publicado sem conteúdo." >> "$GITHUB_STEP_SUMMARY"
-          fi
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        if: steps.guard.outputs.ok == 'true' && steps.raizes.outputs.ok == 'true'
-        with:
-          repository: Moshikgueta/hebraicofluente-raizes
-          token: ${{ secrets.RAIZES_TOKEN }}
-          path: raizes
-          persist-credentials: false
-
+      # Sem Raízes Sefarditas, sem o e-book e sem a prévia: o site em espanhol não
+      # os tem (o Worker responde 404, FORA_DO_SITE_EN em worker/src/lib/idioma.js),
+      # então a publicação não busca os repositórios privados de conteúdo. O
+      # exportador sai com um raizes.json vazio, como já fazia sem o segredo.
       - name: Install
         if: steps.guard.outputs.ok == 'true'
         working-directory: app
@@ -276,6 +260,9 @@ jobs:
       - name: Test
         if: steps.guard.outputs.ok == 'true'
         working-directory: app
+        env:
+          NEXT_PUBLIC_LOCALE: pt
+          HF_I18N_ESTRITO: ''
         run: npm test
 
       - name: Mercado Pago autentica?
@@ -283,6 +270,7 @@ jobs:
         if: steps.guard.outputs.ok == 'true'
         env:
           MP_ACCESS_TOKEN: ${{ secrets.MP_ACCESS_TOKEN }}
+          PADDLE_API_KEY: ${{ secrets.PADDLE_API_KEY }}
         run: node scripts/pagamento-ativo.mjs
 
       # Rebaixada para PIX direto, a publicação continua verde: o site vende
@@ -331,70 +319,6 @@ jobs:
       # domínio é uma edição. `checa-seo.mjs` reprova se os dois divergirem,
       # que é o que aconteceria se este `export` sumisse - o Next cairia no
       # padrão embutido em lib/seo.ts e passaria a anunciar o domínio velho.
-      # O e-book "Israel Além do Óbvio" (21/10/2026): a versão interativa (sem
-      # PDF desde 23/10/2026) sai de editorial/ a cada publicação e vai para app/public/israel/,
-      # que o build copia para o site. O portão (prefixo /israel em
-      # worker/src/gate.js) só abre para quem comprou o e-book ou o pacote.
-      # Nada disso entra no git. ANTES do build, porque é ele que copia.
-      #
-      # O editorial mora num repositório PRIVADO (Moshikgueta/hebraicofluente-editorial)
-      # desde 21/10/2026: o conteúdo é vendido, e este repositório é público.
-      # O segredo EDITORIAL_TOKEN é um token de acesso fino, SÓ LEITURA, só
-      # daquele repositório. Sem ele, a publicação para aqui em vez de pôr no ar
-      # uma página de venda de um e-book que não abre.
-      - name: Buscar o editorial (repositório privado)
-        if: steps.guard.outputs.ok == 'true'
-        env:
-          TEM_TOKEN: ${{ secrets.EDITORIAL_TOKEN != '' }}
-        run: |
-          if [ "$TEM_TOKEN" != "true" ]; then
-            echo "::error::Falta o segredo EDITORIAL_TOKEN (leitura de Moshikgueta/hebraicofluente-editorial). Sem ele o e-book não é montado."
-            exit 1
-          fi
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        if: steps.guard.outputs.ok == 'true'
-        with:
-          repository: Moshikgueta/hebraicofluente-editorial
-          token: ${{ secrets.EDITORIAL_TOKEN }}
-          path: editorial
-          persist-credentials: false
-
-      # O Chromium do editorial guardado entre publicações (26/10/2026): o
-      # download pendurou de novo em 23/10 e 26/10 e derrubou uma publicação.
-      # Com o navegador no cache, o `install` abaixo acha o que já existe e não
-      # baixa nada; o download só acontece quando a versão do Playwright muda.
-      - name: Versão do Playwright do editorial
-        id: pw
-        if: steps.guard.outputs.ok == 'true'
-        run: echo "v=$(cd editorial && node -p "require('./package.json').dependencies['playwright-core']")" >> "$GITHUB_OUTPUT"
-      - uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
-        if: steps.guard.outputs.ok == 'true'
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.v }}
-
-      # Teto do passo (23/10/2026): o download do Chromium pendurou duas vezes no
-      # mesmo dia e a publicação ficou parada até ser cancelada à mão, segurando
-      # a fila das seguintes. Com o teto, ela falha em vez de travar.
-      - name: E-book no site
-        if: steps.guard.outputs.ok == 'true'
-        timeout-minutes: 20
-        run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick >/dev/null
-          ( cd editorial && npm ci --ignore-scripts --no-audit --no-fund )
-          # Cada tentativa tem 5 minutos; um download pendurado é morto e tentado de novo.
-          PW="playwright@$(cd editorial && node -p "require('./package.json').dependencies['playwright-core']")"
-          for tentativa in 1 2 3; do
-            if ( cd editorial && timeout 300 npx --yes "$PW" install --with-deps chromium >/dev/null 2>&1 ); then break; fi
-            echo "Chromium: a tentativa $tentativa falhou ou passou de 5 minutos."
-            if [ "$tentativa" = 3 ]; then echo "Chromium não instalou em 3 tentativas." >&2; exit 1; fi
-          done
-          export HF_CHROMIUM="$(cd editorial && node -e "import('playwright-core').then(m => console.log(m.chromium.executablePath()))")"
-          bash scripts/ebook-no-site.sh
-          # As imagens da página de venda do livro, tiradas do livro montado
-          # (scripts/vitrine-do-livro.mjs): nunca entram no git.
-          node scripts/vitrine-do-livro.mjs
-
       - name: Build (modo plataforma)
         if: steps.guard.outputs.ok == 'true'
         working-directory: app
@@ -590,6 +514,9 @@ jobs:
           # checkout fica desligado, dizendo isso na tela.
           MP_ACCESS_TOKEN: ${{ secrets.MP_ACCESS_TOKEN }}
           MP_WEBHOOK_SECRET: ${{ secrets.MP_WEBHOOK_SECRET }}
+          # O Paddle do site em espanhol, pela mesma porta (worker/src/lib/paddle.js).
+          PADDLE_API_KEY: ${{ secrets.PADDLE_API_KEY }}
+          PADDLE_WEBHOOK_SECRET: ${{ secrets.PADDLE_WEBHOOK_SECRET }}
           # A chave da Resend, pela mesma porta. Vazia, o site sobe inteiro e
           # "esqueci minha senha" não entrega o link - os detalhes de
           # /api/health reportam "email": false (a conferência os lê com o
@@ -703,7 +630,7 @@ jobs:
           # roda com `always()`, também quando a publicação caiu ANTES de
           # aplicá-lo. Aí uma tabela nova pode ainda não existir, e um DELETE
           # numa tabela ausente derrubaria o comando inteiro abaixo.
-          $W d1 execute hebraico-fluente --remote --command \
+          $W d1 execute hebreo-fluido --remote --command \
             "DELETE FROM email_verifications WHERE account_id IN ($ALVO);
              DELETE FROM registros_acesso    WHERE account_id IN ($ALVO);
              DELETE FROM arrependimentos     WHERE account_id IN ($ALVO);
@@ -717,7 +644,7 @@ jobs:
              DELETE FROM provas_a1           WHERE account_id IN ($ALVO);
              DELETE FROM certificados        WHERE account_id IN ($ALVO);
              DELETE FROM estornos            WHERE order_id IN (SELECT id FROM orders WHERE account_id IN ($ALVO));" || true
-          $W d1 execute hebraico-fluente --remote --command \
+          $W d1 execute hebreo-fluido --remote --command \
             "DELETE FROM access_log       WHERE account_id IN ($ALVO);
              DELETE FROM payment_events   WHERE order_id IN (SELECT id FROM orders WHERE account_id IN ($ALVO));
              DELETE FROM orders           WHERE account_id IN ($ALVO);
@@ -734,6 +661,9 @@ jobs:
   # Não publica nada: a publicação vem quando o PR entra em main (audio/**
   # está nos caminhos que disparam o deploy).
   exportar-gravacoes:
+    # Trava do repositório do site em espanhol: nada roda contra a Cloudflare
+    # até a variável do repositório HEBREO_PUBLICAR valer 'true' (Settings >
+    # Secrets and variables > Actions > Variables). Ver CLAUDE.md, "Este repositório".
     if: ${{ vars.HEBREO_PUBLICAR == 'true' && (github.event_name == 'workflow_dispatch' && inputs.exportar_gravacoes) }}
     runs-on: ubuntu-latest
     timeout-minutes: 40
