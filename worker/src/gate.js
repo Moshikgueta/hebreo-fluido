@@ -59,6 +59,8 @@ const GATED = [
   '/hebraico-na-rua',
   /* 05/11/2026: ler cardápios. */
   '/cardapios',
+  /* 05/11/2026: Um dia em Israel (o mapa e as paradas). */
+  '/um-dia-em-israel',
   /* Os clipes de áudio ainda não existem; quando chegarem, nascem atrás do
      portão em vez de serem descobertos públicos depois. Atenção: o
      AudioButton também aparece em página livre (a landing, `Fecho.tsx`), e

@@ -14,7 +14,7 @@
 
 import Link from 'next/link';
 import { useProgress } from '@/lib/state/store';
-import { cardapiosDoCurso, course, placasDaRua } from '@/lib/content';
+import { cardapiosDoCurso, course, placasDaRua, umDiaEmIsrael } from '@/lib/content';
 import { leiturasDoModulo } from '@/lib/leituras-do-curso';
 import { Cenario, type IdDoCenario } from '@/components/aventura/Cenarios';
 import { He } from '@/components/hebrew/He';
@@ -60,6 +60,24 @@ export function LeiturasClient() {
           <span className="grid gap-0.5 min-w-0 flex-1">
             <span className="font-display text-[18px] font-semibold text-ink">{tx.rua}</span>
             <span className="font-ui text-[14px] text-ink-muted">{tx.ruaDesc}</span>
+          </span>
+          <span aria-hidden className="font-ui text-[20px] text-ink-muted">→</span>
+        </Link>
+      )}
+
+      {/* Um dia em Israel (05/11/2026): o mapa das paradas. */}
+      {umDiaEmIsrael().placas.length > 0 && (
+        <Link href="/um-dia-em-israel"
+              className="flex items-center gap-4 rounded-[18px] border border-line bg-[var(--card)] p-5 shadow-[var(--sh)]
+                         transition-transform duration-200 hover:-translate-y-[2px] active:scale-[.98]">
+          <span aria-hidden className="grid place-items-center w-12 h-12 rounded-full bg-[var(--teal-soft)] text-[var(--teal-ink)]">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 5l5-2 6 2 5-2v14l-5 2-6-2-5 2zM8 3v14M14 5v14" />
+            </svg>
+          </span>
+          <span className="grid gap-0.5 min-w-0 flex-1">
+            <span className="font-display text-[18px] font-semibold text-ink">{tx.umDia}</span>
+            <span className="font-ui text-[14px] text-ink-muted">{tx.umDiaDesc}</span>
           </span>
           <span aria-hidden className="font-ui text-[20px] text-ink-muted">→</span>
         </Link>

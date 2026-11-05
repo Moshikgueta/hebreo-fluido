@@ -827,6 +827,28 @@ function main() {
     cardapios.push({ ...publico, he: NFC(c.he), itens: c.itens.map(it => ({ ...it, he: NFC(it.he) })) });
   }
 
+  /* ── Um dia em Israel (05/11/2026): as placas desenhadas ───────────────
+     A primeira parada do mapa (lib/engine/um-dia.ts). Só sai o que o dono
+     revisou; as mesmas regras de nikud dos cardápios. */
+  const TIPOS_DE_PLACA = ['verde', 'azul', 'branca', 'amarela', 'vermelha', 'loja', 'neon', 'neon-r'];
+  const placasDoDia = [];
+  const idsDoDia = new Set();
+  for (const p of readJson('data/um-dia-em-israel.json').placas) {
+    if (p.revisado !== true) continue;
+    for (const campo of ['id', 'he', 'translit', 'pt', 'tipo', 'icone', 'missaoPt']) {
+      if (!p[campo]) throw new Error(`um-dia-em-israel.json: a placa ${p.id ?? '?'} não tem ${campo}`);
+    }
+    if (idsDoDia.has(p.id)) throw new Error(`um-dia-em-israel.json: id repetido ${p.id}`);
+    idsDoDia.add(p.id);
+    if (!TIPOS_DE_PLACA.includes(p.tipo)) throw new Error(`um-dia-em-israel.json: tipo desconhecido em ${p.id}: ${p.tipo}`);
+    const comPonto = [...NFC(p.he).matchAll(/([\u05D0-\u05EA])[\u05B0-\u05BB\u05C1\u05C2\u05C7]*\u05BC/gu)].map(m => m[1]);
+    if (comPonto.some(l => !'בכךפףו'.includes(l))) throw new Error(`um-dia-em-israel.json: daguesh fora de בּ/כּ/פּ em ${p.id}: ${p.he}`);
+    if (/[\u05B1-\u05B3]/u.test(p.he)) throw new Error(`um-dia-em-israel.json: chataf em ${p.id}: ${p.he} (use a vogal simples)`);
+    const { revisado, ...publico } = p;
+    void revisado;
+    placasDoDia.push({ ...publico, he: NFC(p.he) });
+  }
+
   /* ── os mini-textos de leitura corrida ─────────────────────────────
      Um texto curto por módulo, do 3 ao 7. São as únicas frases do curso
      escritas para ele, e por isso cada um nasce com `revisado: false`: o
@@ -941,7 +963,8 @@ function main() {
       }))
     })),
     rua: placasDaRua,
-    cardapios
+    cardapios,
+    umDia: { placas: placasDoDia }
   }, null, 2) + '\n');
 
   /* ── o curso Hebraico A1 (06/10/2026) ────────────────────────────────

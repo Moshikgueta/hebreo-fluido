@@ -1,0 +1,23 @@
+{
+  "_nota": "Um dia em Israel (05/11/2026, aprovado pelo dono): um mapa com as paradas de um dia em Israel, cada uma um jogo de leitura. Aqui ficam os dados das paradas que já existem fora dos cardápios (que moram em data/cardapios.json). `placas`: as placas desenhadas da primeira parada (lib/engine/um-dia.ts, components/learn/PlacaDesenhada.tsx). Cada placa só aparece quando o aluno já lê todas as letras dela, pela régua do curso. `tipo` é o estilo do desenho; `icone` é o desenho pequeno que aparece em Ler as placas. Sem chataf e com daguesh só em בּ/כּ/פּ, como no resto do curso. `revisado` só é true depois de o dono conferir o hebraico. `pt` e `missaoPt` têm tradução em data/en e data/es.",
+  "placas": [
+    { "id": "knisa", "he": "כְּנִיסָה", "translit": "knisá", "pt": "entrada", "tipo": "verde", "icone": "entrar", "missaoPt": "entrar no shopping", "revisado": true },
+    { "id": "yetsia", "he": "יְצִיאָה", "translit": "yetsiá", "pt": "saída", "tipo": "verde", "icone": "sair", "missaoPt": "sair do prédio", "revisado": true },
+    { "id": "mirkachat", "he": "בֵּית מִרְקַחַת", "translit": "beit mirkáchat", "pt": "farmácia", "tipo": "loja", "icone": "farmacia", "missaoPt": "comprar um remédio para dor de cabeça", "revisado": true },
+    { "id": "sherutim", "he": "שֵׁרוּתִים", "translit": "sherutím", "pt": "banheiros", "tipo": "azul", "icone": "banheiro", "missaoPt": "ir ao banheiro", "revisado": true },
+    { "id": "chanaya", "he": "חַנָיָה", "translit": "chanayá", "pt": "estacionamento", "tipo": "azul", "icone": "carro", "missaoPt": "estacionar o carro", "revisado": true },
+    { "id": "tachana", "he": "תַחַנַת אוֹטוֹבּוּס", "translit": "tachanát otobús", "pt": "ponto de ônibus", "tipo": "amarela", "icone": "onibus", "missaoPt": "pegar o ônibus para Jerusalém", "revisado": true },
+    { "id": "chof", "he": "חוֹף יָם", "translit": "chof yam", "pt": "praia", "tipo": "azul", "icone": "praia", "missaoPt": "tomar sol e nadar no mar", "revisado": true },
+    { "id": "cholim", "he": "בֵּית חוֹלִים", "translit": "beit cholím", "pt": "hospital", "tipo": "branca", "icone": "hospital", "missaoPt": "levar um amigo ao pronto-socorro", "revisado": true },
+    { "id": "mishtara", "he": "מִשְׁטָרָה", "translit": "mishtará", "pt": "polícia", "tipo": "azul", "icone": "policia", "missaoPt": "avisar que perdeu o passaporte", "revisado": true },
+    { "id": "kaspomat", "he": "כַּסְפּוֹמָט", "translit": "kaspomát", "pt": "caixa eletrônico", "tipo": "loja", "icone": "dinheiro", "missaoPt": "sacar dinheiro", "revisado": true },
+    { "id": "maalit", "he": "מַעַלִית", "translit": "ma'alít", "pt": "elevador", "tipo": "branca", "icone": "elevador", "missaoPt": "subir ao oitavo andar sem escada", "revisado": true },
+    { "id": "super", "he": "סוּפֶּרְמַרְקֶט", "translit": "súpermarket", "pt": "supermercado", "tipo": "loja", "icone": "carrinho", "missaoPt": "comprar pão, leite e frutas", "revisado": true },
+    { "id": "patuach", "he": "פָּתוּחַ", "translit": "patúach", "pt": "aberto", "tipo": "neon", "icone": "aberto", "missaoPt": "achar uma loja que esteja aberta agora", "revisado": true },
+    { "id": "sagur", "he": "סָגוּר", "translit": "sagúr", "pt": "fechado", "tipo": "neon-r", "icone": "fechado", "missaoPt": "saber qual loja não abre hoje", "revisado": true },
+    { "id": "atsor", "he": "עַצוֹר", "translit": "atsór", "pt": "pare", "tipo": "vermelha", "icone": "mao", "missaoPt": "saber onde o carro tem que parar", "revisado": true },
+    { "id": "asur", "he": "אָסוּר לְעַשֵׁן", "translit": "asúr le'ashén", "pt": "proibido fumar", "tipo": "branca", "icone": "cigarro", "missaoPt": "saber onde não se pode fumar", "revisado": true },
+    { "id": "zehirut", "he": "זְהִירוּת", "translit": "zehirút", "pt": "cuidado", "tipo": "amarela", "icone": "atencao", "missaoPt": "ver o aviso de chão molhado", "revisado": true },
+    { "id": "rechov", "he": "רְחוֹב הֶרְצֵל", "translit": "rechóv Hertsel", "pt": "rua Herzl", "tipo": "azul", "icone": "rua", "missaoPt": "achar a rua Herzl", "revisado": true }
+  ]
+}

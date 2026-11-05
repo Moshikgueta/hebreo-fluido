@@ -1,0 +1,146 @@
+{
+  "placas/knisa/pt": {
+    "pt": "entrada",
+    "es": "entrada"
+  },
+  "placas/knisa/missaoPt": {
+    "pt": "entrar no shopping",
+    "es": "entrar al centro comercial"
+  },
+  "placas/yetsia/pt": {
+    "pt": "saída",
+    "es": "salida"
+  },
+  "placas/yetsia/missaoPt": {
+    "pt": "sair do prédio",
+    "es": "salir del edificio"
+  },
+  "placas/mirkachat/pt": {
+    "pt": "farmácia",
+    "es": "farmacia"
+  },
+  "placas/mirkachat/missaoPt": {
+    "pt": "comprar um remédio para dor de cabeça",
+    "es": "comprar un remedio para el dolor de cabeza"
+  },
+  "placas/sherutim/pt": {
+    "pt": "banheiros",
+    "es": "baños"
+  },
+  "placas/sherutim/missaoPt": {
+    "pt": "ir ao banheiro",
+    "es": "ir al baño"
+  },
+  "placas/chanaya/pt": {
+    "pt": "estacionamento",
+    "es": "estacionamiento"
+  },
+  "placas/chanaya/missaoPt": {
+    "pt": "estacionar o carro",
+    "es": "estacionar el auto"
+  },
+  "placas/tachana/pt": {
+    "pt": "ponto de ônibus",
+    "es": "parada de autobús"
+  },
+  "placas/tachana/missaoPt": {
+    "pt": "pegar o ônibus para Jerusalém",
+    "es": "tomar el autobús a Jerusalén"
+  },
+  "placas/chof/pt": {
+    "pt": "praia",
+    "es": "playa"
+  },
+  "placas/chof/missaoPt": {
+    "pt": "tomar sol e nadar no mar",
+    "es": "tomar sol y nadar en el mar"
+  },
+  "placas/cholim/pt": {
+    "pt": "hospital",
+    "es": "hospital"
+  },
+  "placas/cholim/missaoPt": {
+    "pt": "levar um amigo ao pronto-socorro",
+    "es": "llevar a un amigo a urgencias"
+  },
+  "placas/mishtara/pt": {
+    "pt": "polícia",
+    "es": "policía"
+  },
+  "placas/mishtara/missaoPt": {
+    "pt": "avisar que perdeu o passaporte",
+    "es": "avisar que perdiste el pasaporte"
+  },
+  "placas/kaspomat/pt": {
+    "pt": "caixa eletrônico",
+    "es": "cajero automático"
+  },
+  "placas/kaspomat/missaoPt": {
+    "pt": "sacar dinheiro",
+    "es": "sacar dinero"
+  },
+  "placas/maalit/pt": {
+    "pt": "elevador",
+    "es": "ascensor"
+  },
+  "placas/maalit/missaoPt": {
+    "pt": "subir ao oitavo andar sem escada",
+    "es": "subir al octavo piso sin escalera"
+  },
+  "placas/super/pt": {
+    "pt": "supermercado",
+    "es": "supermercado"
+  },
+  "placas/super/missaoPt": {
+    "pt": "comprar pão, leite e frutas",
+    "es": "comprar pan, leche y frutas"
+  },
+  "placas/patuach/pt": {
+    "pt": "aberto",
+    "es": "abierto"
+  },
+  "placas/patuach/missaoPt": {
+    "pt": "achar uma loja que esteja aberta agora",
+    "es": "encontrar una tienda que esté abierta ahora"
+  },
+  "placas/sagur/pt": {
+    "pt": "fechado",
+    "es": "cerrado"
+  },
+  "placas/sagur/missaoPt": {
+    "pt": "saber qual loja não abre hoje",
+    "es": "saber qué tienda no abre hoy"
+  },
+  "placas/atsor/pt": {
+    "pt": "pare",
+    "es": "pare"
+  },
+  "placas/atsor/missaoPt": {
+    "pt": "saber onde o carro tem que parar",
+    "es": "saber dónde tiene que parar el auto"
+  },
+  "placas/asur/pt": {
+    "pt": "proibido fumar",
+    "es": "prohibido fumar"
+  },
+  "placas/asur/missaoPt": {
+    "pt": "saber onde não se pode fumar",
+    "es": "saber dónde no se puede fumar"
+  },
+  "placas/zehirut/pt": {
+    "pt": "cuidado",
+    "es": "cuidado"
+  },
+  "placas/zehirut/missaoPt": {
+    "pt": "ver o aviso de chão molhado",
+    "es": "ver el aviso de piso mojado"
+  },
+  "placas/rechov/pt": {
+    "pt": "rua Herzl",
+    "es": "calle Herzl"
+  },
+  "placas/rechov/missaoPt": {
+    "pt": "achar a rua Herzl",
+    "es": "encontrar la calle Herzl"
+  }
+}
