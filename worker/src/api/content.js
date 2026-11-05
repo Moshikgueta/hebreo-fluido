@@ -90,6 +90,8 @@ const MOLDE = JSON.stringify({
   rua: missoes.rua || [],
   /* Ler cardápios (05/11/2026), no mesmo arquivo. */
   cardapios: missoes.cardapios || [],
+  /* Um dia em Israel (05/11/2026), no mesmo arquivo. */
+  umDia: missoes.umDia || { placas: [] },
   textos: textos.textos,
   bonus: bonus.leituras,
   guiaNikud: bonus.guia ?? null

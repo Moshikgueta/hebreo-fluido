@@ -593,3 +593,36 @@ html[data-a11y-movimento='reduzido'] *::after {
 @keyframes hf-giz { to { stroke-dashoffset: 0; } }
 @keyframes hf-vapor { 0%, 100% { transform: translateY(0); opacity: .9; } 50% { transform: translateY(-4px); opacity: .45; } }
 @keyframes hf-tremor { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+/* ── Um dia em Israel (05/11/2026) ─────────────────────────────────────────
+   O mapa (app/um-dia-em-israel) e as placas desenhadas
+   (components/learn/PlacaDesenhada.tsx). As cores das placas imitam as de
+   Israel e são as mesmas nos dois temas: uma placa azul é azul de noite também.
+   O balanço e o pino que pula somem com "menos movimento" (regra geral acima). */
+.hf-rua { border-radius: 24px; overflow: hidden; background: linear-gradient(var(--il-ceu), var(--il-ceu-2)); padding: 18px clamp(12px, 3vw, 24px) 0; box-shadow: var(--sh-mock); }
+.hf-rua-calcada { height: 14px; margin: 18px calc(-1 * clamp(12px, 3vw, 24px)) 0; background: var(--il-predio-2); }
+.hf-poste { display: grid; justify-items: center; }
+.hf-poste::before { content: ""; width: 3px; height: 16px; background: #3B4A4C; border-radius: 2px; }
+.hf-placa-btn { display: grid; justify-items: center; gap: 6px; width: 100%; transform-origin: 50% -16px; }
+.hf-balanca .hf-placa-btn { animation: hf-balanca 1.4s cubic-bezier(.3, .8, .3, 1) both; }
+@keyframes hf-balanca { 0% { transform: rotate(-14deg) translateY(-14px); opacity: 0; } 40% { transform: rotate(7deg); opacity: 1; } 70% { transform: rotate(-3deg); } 100% { transform: none; } }
+.hf-placa { width: 100%; min-height: 84px; display: grid; place-items: center; gap: 4px; padding: 10px 8px; border-radius: 10px; border: 3px solid #fff; box-shadow: 0 0 0 2px rgba(0, 0, 0, .18), 0 6px 14px -6px rgba(0, 0, 0, .35); text-align: center; }
+.hf-placa-texto { font-family: var(--font-he); font-weight: 600; font-size: clamp(22px, 4.4vw, 27px); line-height: 1.15; direction: rtl; unicode-bidi: isolate; }
+.hf-placa-icone { width: 30px; height: 30px; }
+.hf-placa-icone path { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.hf-placa-azul { background: #1F5FA8; color: #fff; }
+.hf-placa-verde { background: #1F7A4D; color: #fff; }
+.hf-placa-branca { background: #fff; color: #1B211F; border-color: #1B211F; box-shadow: 0 6px 14px -6px rgba(0, 0, 0, .35); }
+.hf-placa-vermelha { background: #C9443A; color: #fff; border: 0; box-shadow: none; aspect-ratio: 1; min-height: 0; width: 84%;
+  clip-path: polygon(29% 0, 71% 0, 100% 29%, 100% 71%, 71% 100%, 29% 100%, 0 71%, 0 29%); }
+.hf-placa-loja { background: #0E3B43; color: #FBF9F5; border-color: #E7B65A; border-radius: 6px; }
+.hf-placa-neon { background: #1B211F; color: #8FD6C8; border-color: #3B4A4C; text-shadow: 0 0 6px rgba(143, 214, 200, .9); }
+.hf-placa-neon-r { background: #1B211F; color: #F2A08A; border-color: #3B4A4C; text-shadow: 0 0 6px rgba(242, 160, 138, .9); }
+.hf-placa-amarela { background: #E7B65A; color: #1B211F; border-color: #1B211F; }
+.hf-placa-certa .hf-placa { outline: 4px solid var(--teal); outline-offset: 3px; }
+.hf-placa-errada { animation: hf-sacode .4s !important; }
+.hf-placa-errada .hf-placa { filter: grayscale(.6) brightness(.8); }
+@keyframes hf-sacode { 20% { transform: rotate(-6deg); } 40% { transform: rotate(5deg); } 60% { transform: rotate(-3deg); } 80% { transform: rotate(2deg); } }
+.hf-dia-trilha { position: absolute; inset-inline-start: 27px; top: 8px; bottom: 8px; width: 4px; background: repeating-linear-gradient(var(--line) 0 10px, transparent 10px 18px); }
+.hf-dia-pino { animation: hf-pula 1.6s ease-in-out infinite; }
+@keyframes hf-pula { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }

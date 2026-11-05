@@ -47,8 +47,8 @@ const ALVO = LOCALE === 'pt' ? 'en' : LOCALE;
 export const ARQUIVOS = [
   'letters', 'modules', 'nikud', 'extras', 'real-world', 'sentences',
   'eras', 'culture', 'missoes', 'textos', 'bonus', 'biblia', 'imagens-vocabulario', 'fotos-missoes', 'hebraico-na-rua',
-  /* 05/11/2026: ler cardápios (lib/engine/cardapio.ts). */
-  'cardapios'
+  /* 05/11/2026: ler cardápios (lib/engine/cardapio.ts) e Um dia em Israel. */
+  'cardapios', 'um-dia-em-israel'
 ];
 
 /* Chaves de texto que não terminam em Pt. Toda chave terminada em Pt é texto

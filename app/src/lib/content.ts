@@ -67,6 +67,8 @@ export type ConteudoPago = {
   rua: import('./engine/rua').PlacaDaRua[];
   /** Ler cardápios (05/11/2026, lib/engine/cardapio.ts). Vêm no missoes.json. */
   cardapios: import('./engine/cardapio').Cardapio[];
+  /** Um dia em Israel (05/11/2026, lib/engine/um-dia.ts). Vem no missoes.json. */
+  umDia: import('./engine/um-dia').DadosDoDia;
   textos: import('./engine/textos').Texto[];
   bonus: LeituraBonus[];
   guiaNikud: GuiaNikud | null;
@@ -161,6 +163,7 @@ export const guiaNikud = (): GuiaNikud | null => {
  *  depósito, sem a chave, valem como nenhuma. */
 export const placasDaRua = (): ConteudoPago['rua'] => dados().rua ?? [];
 export const cardapiosDoCurso = (): ConteudoPago['cardapios'] => dados().cardapios ?? [];
+export const umDiaEmIsrael = (): ConteudoPago['umDia'] => dados().umDia ?? { placas: [] };
 
 /** A missão que fecha o módulo `n`, se houver. */
 export const missaoDoModulo = (n: number): ConteudoPago['missoes'][number] | undefined =>
@@ -345,6 +348,7 @@ async function buscarConteudo(): Promise<void> {
       missoes: bruto<{ missoes: ConteudoPago['missoes'] }>(missoesJson).missoes,
       rua: bruto<{ rua?: ConteudoPago['rua'] }>(missoesJson).rua ?? [],
       cardapios: bruto<{ cardapios?: ConteudoPago['cardapios'] }>(missoesJson).cardapios ?? [],
+      umDia: bruto<{ umDia?: ConteudoPago['umDia'] }>(missoesJson).umDia ?? { placas: [] },
       textos: bruto<{ textos: ConteudoPago['textos'] }>(textosJson).textos,
       bonus: bruto<{ leituras: LeituraBonus[] }>(bonusJson).leituras,
       guiaNikud: bruto<{ guia?: GuiaNikud }>(bonusJson).guia ?? null
