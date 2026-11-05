@@ -1,0 +1,113 @@
+{
+  "_nota": "O supermercado (05/11/2026): a parada das 15h de Um dia em Israel (lib/engine/supermercado.ts). Embalagens desenhadas, sem marcas reais. Sem chataf e com daguesh só em בּ/כּ/פּ. Só sai o que tem revisado: true.",
+  "produtos": [
+    {
+      "id": "leite",
+      "forma": "caixa_alta",
+      "cor": "#8FB3B0",
+      "he": "חָלָב",
+      "translit": "chaláv",
+      "pt": "leite",
+      "revisado": true
+    },
+    {
+      "id": "pao",
+      "forma": "saco",
+      "cor": "#F2C58F",
+      "he": "לֶחֶם",
+      "translit": "léchem",
+      "pt": "pão",
+      "revisado": true
+    },
+    {
+      "id": "queijo",
+      "forma": "bloco",
+      "cor": "#F7EFDF",
+      "he": "גְבִינָה",
+      "translit": "gviná",
+      "pt": "queijo",
+      "revisado": true
+    },
+    {
+      "id": "bamba",
+      "forma": "saco",
+      "cor": "#E7B65A",
+      "he": "בַּמְבָּה",
+      "translit": "bámba",
+      "pt": "bamba (salgadinho de amendoim)",
+      "revisado": true
+    },
+    {
+      "id": "homus",
+      "forma": "pote",
+      "cor": "#DCE8EE",
+      "he": "חוּמוּס",
+      "translit": "chúmus",
+      "pt": "homus",
+      "revisado": true
+    },
+    {
+      "id": "ovos",
+      "forma": "bandeja",
+      "cor": "#B7A27C",
+      "he": "בֵּיצִים",
+      "translit": "beitsím",
+      "pt": "ovos",
+      "revisado": true
+    },
+    {
+      "id": "cafe",
+      "forma": "vidro",
+      "cor": "#8C5426",
+      "he": "קָפֶה",
+      "translit": "kafé",
+      "pt": "café",
+      "revisado": true
+    },
+    {
+      "id": "chocolate",
+      "forma": "barra",
+      "cor": "#C9577E",
+      "he": "שׁוֹקוֹלָד",
+      "translit": "shokolád",
+      "pt": "chocolate",
+      "revisado": true
+    },
+    {
+      "id": "arroz",
+      "forma": "saco",
+      "cor": "#FBF4E4",
+      "he": "אוֹרֶז",
+      "translit": "órez",
+      "pt": "arroz",
+      "revisado": true
+    },
+    {
+      "id": "acucar",
+      "forma": "saco",
+      "cor": "#DCE8EE",
+      "he": "סוּכָּר",
+      "translit": "sukár",
+      "pt": "açúcar",
+      "revisado": true
+    },
+    {
+      "id": "sal",
+      "forma": "saleiro",
+      "cor": "#3F9A9C",
+      "he": "מֶלַח",
+      "translit": "mélach",
+      "pt": "sal",
+      "revisado": true
+    },
+    {
+      "id": "oleo",
+      "forma": "garrafa",
+      "cor": "#E3B83B",
+      "he": "שֶׁמֶן",
+      "translit": "shémen",
+      "pt": "óleo",
+      "revisado": true
+    }
+  ]
+}

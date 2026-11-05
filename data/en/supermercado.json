@@ -1,0 +1,50 @@
+{
+  "produtos/leite/pt": {
+    "pt": "leite",
+    "en": "milk"
+  },
+  "produtos/pao/pt": {
+    "pt": "pão",
+    "en": "bread"
+  },
+  "produtos/queijo/pt": {
+    "pt": "queijo",
+    "en": "cheese"
+  },
+  "produtos/bamba/pt": {
+    "pt": "bamba (salgadinho de amendoim)",
+    "en": "Bamba (peanut snack)"
+  },
+  "produtos/homus/pt": {
+    "pt": "homus",
+    "en": "hummus"
+  },
+  "produtos/ovos/pt": {
+    "pt": "ovos",
+    "en": "eggs"
+  },
+  "produtos/cafe/pt": {
+    "pt": "café",
+    "en": "coffee"
+  },
+  "produtos/chocolate/pt": {
+    "pt": "chocolate",
+    "en": "chocolate"
+  },
+  "produtos/arroz/pt": {
+    "pt": "arroz",
+    "en": "rice"
+  },
+  "produtos/acucar/pt": {
+    "pt": "açúcar",
+    "en": "sugar"
+  },
+  "produtos/sal/pt": {
+    "pt": "sal",
+    "en": "salt"
+  },
+  "produtos/oleo/pt": {
+    "pt": "óleo",
+    "en": "oil"
+  }
+}
