@@ -439,7 +439,7 @@ jobs:
         run: |
           set -o pipefail
           npm install --no-save --ignore-scripts "playwright@${PLAYWRIGHT_VERSION}" >/dev/null 2>&1
-          npx --yes "playwright@${PLAYWRIGHT_VERSION}" install --with-deps chromium >/dev/null 2>&1
+          bash ../scripts/instalar-chromium.sh "playwright@${PLAYWRIGHT_VERSION}"
           echo "## Tamanho do texto, contraste, espaçamento e o olho da senha" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           rc=0
@@ -464,7 +464,7 @@ jobs:
         run: |
           set -o pipefail
           npm install --no-save --ignore-scripts "playwright@${PLAYWRIGHT_VERSION}" >/dev/null 2>&1
-          npx --yes "playwright@${PLAYWRIGHT_VERSION}" install --with-deps chromium >/dev/null 2>&1
+          bash ../scripts/instalar-chromium.sh "playwright@${PLAYWRIGHT_VERSION}"
           echo "## Todo controle de toda página livre, em desktop e celular" >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           rc=0
@@ -561,7 +561,7 @@ jobs:
           export HF_BASE="$(grep -oP 'SITE_ORIGIN\s*=\s*"\K[^"]+' wrangler.toml)"
           echo "conferindo $HF_BASE"
           npm install --no-save --ignore-scripts "playwright@${PLAYWRIGHT_VERSION}" >/dev/null 2>&1
-          npx --yes "playwright@${PLAYWRIGHT_VERSION}" install --with-deps chromium >/dev/null 2>&1
+          bash scripts/instalar-chromium.sh "playwright@${PLAYWRIGHT_VERSION}"
           {
             echo "## A capa num navegador de verdade"
             echo '```'
