@@ -35,6 +35,7 @@ export function MapaDoDiaClient() {
     if (id === 'trem') return (umDiaEmIsrael().trem ?? []).length === 0 ? 'em-breve' : tremAberto(cidadesProntas) ? 'aberta' : 'letras';
     if (id === 'copo') return (umDiaEmIsrael().copos ?? []).length === 0 ? 'em-breve' : coposAbertos(nomesProntos) ? 'aberta' : 'letras';
     if (id === 'cartoes') return (umDiaEmIsrael().cartoes ?? []).length === 0 ? 'em-breve' : cartoesAbertos(cartoesProntos) ? 'aberta' : 'letras';
+    if (id === 'shuk') return (umDiaEmIsrael().shuk ?? []).length === 0 ? 'em-breve' : tem22 ? 'aberta' : 'vinte-e-duas';
     if (id === 'cafe') return cardapiosDoCurso().length === 0 ? 'em-breve' : tem22 ? 'aberta' : 'vinte-e-duas';
     return 'aberta';
   };

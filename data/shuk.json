@@ -1,0 +1,113 @@
+{
+  "_nota": "O shuk (05/11/2026): a parada das 12h de Um dia em Israel (lib/engine/shuk.ts). O preço é do quilo, em shekels, e é exemplo, não preço de um mercado real. Sem chataf e com daguesh só em בּ/כּ/פּ. Só sai o que tem revisado: true.",
+  "bancas": [
+    {
+      "id": "tomate",
+      "desenho": "tomate",
+      "he": "עַגְבָנִיוֹת",
+      "translit": "agvaniyót",
+      "pt": "tomates",
+      "preco": 6,
+      "revisado": true
+    },
+    {
+      "id": "pepino",
+      "desenho": "pepino",
+      "he": "מְלָפְפוֹנִים",
+      "translit": "melafefoním",
+      "pt": "pepinos",
+      "preco": 5,
+      "revisado": true
+    },
+    {
+      "id": "maca",
+      "desenho": "maca",
+      "he": "תַפּוּחִים",
+      "translit": "tapuchím",
+      "pt": "maçãs",
+      "preco": 9,
+      "revisado": true
+    },
+    {
+      "id": "banana",
+      "desenho": "banana",
+      "he": "בַּנָנוֹת",
+      "translit": "bananót",
+      "pt": "bananas",
+      "preco": 8,
+      "revisado": true
+    },
+    {
+      "id": "laranja",
+      "desenho": "laranja",
+      "he": "תַפּוּזִים",
+      "translit": "tapuzím",
+      "pt": "laranjas",
+      "preco": 4,
+      "revisado": true
+    },
+    {
+      "id": "melancia",
+      "desenho": "melancia",
+      "he": "אַבַטִיחַ",
+      "translit": "avatíach",
+      "pt": "melancia",
+      "preco": 3,
+      "revisado": true
+    },
+    {
+      "id": "uva",
+      "desenho": "uva",
+      "he": "עַנָבִים",
+      "translit": "anavím",
+      "pt": "uvas",
+      "preco": 14,
+      "revisado": true
+    },
+    {
+      "id": "limao",
+      "desenho": "limao",
+      "he": "לִימוֹנִים",
+      "translit": "limoním",
+      "pt": "limões",
+      "preco": 7,
+      "revisado": true
+    },
+    {
+      "id": "roma",
+      "desenho": "roma",
+      "he": "רִימוֹנִים",
+      "translit": "rimoním",
+      "pt": "romãs",
+      "preco": 12,
+      "revisado": true
+    },
+    {
+      "id": "tamara",
+      "desenho": "tamara",
+      "he": "תְמָרִים",
+      "translit": "tmarím",
+      "pt": "tâmaras",
+      "preco": 30,
+      "revisado": true
+    },
+    {
+      "id": "azeitona",
+      "desenho": "azeitona",
+      "he": "זֵיתִים",
+      "translit": "zeitím",
+      "pt": "azeitonas",
+      "preco": 25,
+      "revisado": true
+    },
+    {
+      "id": "batata",
+      "desenho": "batata",
+      "he": "תַפּוּחֵי אַדָמָה",
+      "translit": "tapuchéi adamá",
+      "pt": "batatas",
+      "preco": 5,
+      "revisado": true
+    }
+  ]
+}

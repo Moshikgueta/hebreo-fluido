@@ -30,6 +30,8 @@ export type DadosDoDia = {
   copos?: import('./copos').NomeNoCopo[];
   /** As cidades do painel do trem (lib/engine/trem.ts). Opcional, como os cartões. */
   trem?: import('./trem').CidadeDoTrem[];
+  /** As bancas do shuk (lib/engine/shuk.ts). Opcional, como os cartões. */
+  shuk?: import('./shuk').BancaDoShuk[];
 };
 
 /** As paradas, na ordem do dia. `rota` só nas que já existem. */
@@ -38,7 +40,7 @@ export const PARADAS = [
   { id: 'trem', hora: '9h', rota: '/um-dia-em-israel/trem' },
   { id: 'cafe', hora: '10h', rota: '/cardapios' },
   { id: 'copo', hora: '10h30', rota: '/um-dia-em-israel/copos' },
-  { id: 'shuk', hora: '12h', rota: null },
+  { id: 'shuk', hora: '12h', rota: '/um-dia-em-israel/shuk' },
   { id: 'super', hora: '15h', rota: null },
   { id: 'mensagens', hora: '18h', rota: null },
   { id: 'cartoes', hora: '20h', rota: '/um-dia-em-israel/cartoes' }

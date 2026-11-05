@@ -1,0 +1,50 @@
+{
+  "bancas/tomate/pt": {
+    "pt": "tomates",
+    "es": "tomates"
+  },
+  "bancas/pepino/pt": {
+    "pt": "pepinos",
+    "es": "pepinos"
+  },
+  "bancas/maca/pt": {
+    "pt": "maçãs",
+    "es": "manzanas"
+  },
+  "bancas/banana/pt": {
+    "pt": "bananas",
+    "es": "plátanos"
+  },
+  "bancas/laranja/pt": {
+    "pt": "laranjas",
+    "es": "naranjas"
+  },
+  "bancas/melancia/pt": {
+    "pt": "melancia",
+    "es": "sandía"
+  },
+  "bancas/uva/pt": {
+    "pt": "uvas",
+    "es": "uvas"
+  },
+  "bancas/limao/pt": {
+    "pt": "limões",
+    "es": "limones"
+  },
+  "bancas/roma/pt": {
+    "pt": "romãs",
+    "es": "granadas"
+  },
+  "bancas/tamara/pt": {
+    "pt": "tâmaras",
+    "es": "dátiles"
+  },
+  "bancas/azeitona/pt": {
+    "pt": "azeitonas",
+    "es": "aceitunas"
+  },
+  "bancas/batata/pt": {
+    "pt": "batatas",
+    "es": "papas"
+  }
+}
