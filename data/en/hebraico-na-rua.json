@@ -26,5 +26,13 @@
   "placas/rua-ani/mostraPt": {
     "pt": "Faixa de uma escola em Petah Tikva.",
     "en": "Banner of a school in Petah Tikva."
+  },
+  "placas/rua-yam/mostraPt": {
+    "pt": "Placas de estrada para o mar Morto e para Jerusalém, em hebraico, árabe e inglês.",
+    "en": "Road signs to the Dead Sea and to Jerusalem, in Hebrew, Arabic and English."
+  },
+  "placas/rua-gan/mostraPt": {
+    "pt": "Placa do antigo jardim de infância Gan Yafa, em Givatayim.",
+    "en": "Sign at the old Gan Yafa kindergarten, in Givatayim."
   }
 }

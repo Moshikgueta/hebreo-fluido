@@ -125,6 +125,51 @@
       "largura": 1200,
       "altura": 389,
       "aprovada": true
+    },
+    {
+      "id": "rua-yam",
+      "arquivo": "rua-yam.webp",
+      "palavra": "יָם",
+      "naPlaca": [
+        "יָם"
+      ],
+      "mostraPt": "Placas de estrada para o mar Morto e para Jerusalém, em hebraico, árabe e inglês.",
+      "autor": "Un E pour Encyclopédieur",
+      "licenca": "CC0",
+      "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "data": "2012",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Signalisation_routi%C3%A8re_en_Isra%C3%ABl_Jerusalem,_Dead_Sea.JPG",
+      "largura": 1200,
+      "altura": 900,
+      "aprovada": true
+    },
+    {
+      "id": "rua-gan",
+      "arquivo": "rua-gan.webp",
+      "palavra": "גַן",
+      "naPlaca": [
+        "גַן",
+        "יָפֶה",
+        "גַג",
+        "עֵץ",
+        "שֵׁם",
+        "עַל",
+        "זֶה",
+        "אֶחָד",
+        "שָׁנָה",
+        "יֶלֶד",
+        "גָדוֹל",
+        "קָטָן"
+      ],
+      "mostraPt": "Placa do antigo jardim de infância Gan Yafa, em Givatayim.",
+      "autor": "אורי מ.",
+      "licenca": "CC BY-SA 4.0",
+      "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+      "data": "2023-09-21",
+      "pagina": "https://commons.wikimedia.org/wiki/File:Gan_Yafa_Givatayim_White_Sign.jpg",
+      "largura": 901,
+      "altura": 1200,
+      "aprovada": true
     }
   ]
 }
