@@ -8,59 +8,17 @@
  * Academia. Aqui elas ficam juntas, módulo por módulo, com o que já foi feito.
  * Nada novo no estado: "feito" é o `firsts` que cada leitura já grava.
  *
- * A regra da ordem decide o que abre: um módulo que o aluno ainda não começou
- * mostra as leituras dele sem link (o texto usaria letras que ele não viu).
- * A Primeira Leitura abre com as letras do módulo concluídas, como no painel.
+ * Desde 05/11/2026 (decisão do dono), cada leitura abre aqui só depois de
+ * feita no lugar dela no curso: ver lib/leituras-do-curso.ts.
  */
 
 import Link from 'next/link';
 import { useProgress } from '@/lib/state/store';
-import { course, placasDaRua, revisaoDoModulo, segundoTextoDoModulo, textoDoModulo, type CourseModule } from '@/lib/content';
-import { isLessonComplete } from '@/lib/state/rules';
-import { primeiraLeituraId } from '@/lib/laboratorio';
-import { textoLidoId } from '@/lib/engine/textos';
+import { course, placasDaRua } from '@/lib/content';
+import { leiturasDoModulo } from '@/lib/leituras-do-curso';
 import { Cenario, type IdDoCenario } from '@/components/aventura/Cenarios';
 import { He } from '@/components/hebrew/He';
 import { tx } from '@/i18n/telas/academia-leituras-client';
-
-type Leitura = { id: string; titulo: string; desc: string; href: string; feita: boolean; aberta: boolean; porque?: string };
-
-function leiturasDoModulo(m: CourseModule, state: ReturnType<typeof useProgress>['state']): Leitura[] {
-  const out: Leitura[] = [];
-  const comecou = m.letterIds.length
-    ? m.letterIds.some(id => (state.lessons[id]?.stagesDone.length ?? 0) > 0)
-    : (state.lessons[m.id]?.stagesDone.length ?? 0) > 0;
-  const letrasFeitas = m.letterIds.length > 0 && m.letterIds.every(id => isLessonComplete(state, id));
-  const f = state.firsts ?? {};
-  if (m.letterIds.length) {
-    out.push({
-      id: `pl-${m.n}`, titulo: tx.primeira, desc: tx.primeiraDesc, href: `/leitura?primeira=${m.n}`,
-      feita: !!f[primeiraLeituraId(m.n)], aberta: letrasFeitas, porque: tx.primeiraDepois
-    });
-  }
-  const texto = textoDoModulo(m.n);
-  if (texto) {
-    out.push({
-      id: `tx-${m.n}`, titulo: texto.tituloPt, desc: tx.texto(texto.tipoPt), href: `/modulo/${m.n}/texto`,
-      feita: !!f[textoLidoId(m.n)], aberta: comecou, porque: tx.depoisDoModulo(m.n)
-    });
-  }
-  const segundo = segundoTextoDoModulo(m.n);
-  if (segundo) {
-    out.push({
-      id: `tx2-${m.n}`, titulo: segundo.tituloPt, desc: tx.texto(segundo.tipoPt), href: `/modulo/${m.n}/texto-2`,
-      feita: !!f[textoLidoId(m.n, false, 2)], aberta: comecou, porque: tx.depoisDoModulo(m.n)
-    });
-  }
-  const revisao = revisaoDoModulo(m.n);
-  if (revisao) {
-    out.push({
-      id: `rv-${m.n}`, titulo: tx.revisao, desc: tx.revisaoDesc, href: `/modulo/${m.n}/revisao`,
-      feita: !!f[textoLidoId(m.n, true)], aberta: comecou, porque: tx.depoisDoModulo(m.n)
-    });
-  }
-  return out;
-}
 
 export function LeiturasClient() {
   const p = useProgress();

@@ -47,7 +47,8 @@ import { palavrasDosTextosLidos } from '@/lib/leitura';
 import { audioAvailable, hasAudio } from '@/components/learn/AudioButton';
 import { ParaRevisar } from '@/components/game/Debt';
 import { useProgress } from '@/lib/state/store';
-import { allLetters, type Letter } from '@/lib/content';
+import { allLetters, course, type Letter } from '@/lib/content';
+import { leiturasDoModulo } from '@/lib/leituras-do-curso';
 import { onCarrier } from '@/lib/hebrew';
 import { availableModes, buildGym, confusionPair, type GymMode } from '@/lib/engine/gym';
 import { comOsSonsFeitos, idDoSom } from '@/lib/sons';
@@ -160,6 +161,10 @@ export const JOGOS: Record<Jogo, { titlePt: string; descPt: string; treinaPt: st
 
 export function AcademiaClient() {
   const p = useProgress();
+  /* Os textos do curso, módulo por módulo (05/11/2026): sem a Primeira
+     Leitura, que é de palavras soltas e mora na página Leituras. */
+  const textosDoCurso = course.modules.flatMap(m =>
+    leiturasDoModulo(m, p.state).filter(l => !l.id.startsWith('pl-')).map(l => ({ ...l, modulo: m.n })));
   const [screen, setScreen] = useState<Screen>({ kind: 'menu' });
 
   /* Only what has been unlocked. A letter whose lesson was started counts:
@@ -810,6 +815,40 @@ export function AcademiaClient() {
                     <span className="font-display text-[16.5px] font-semibold text-ink">{titulo}</span>
                     <span className={`font-ui text-[13px] leading-snug ${destaque ? 'text-[var(--gold-ink)] font-semibold' : 'text-ink-muted'}`}>{desc}</span>
                   </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Os textos do curso (05/11/2026, decisão do dono): todos aqui, cada
+              um aberto depois de lido no lugar dele no curso, para reler e
+              praticar de novo. Os trancados dizem em que módulo estão. */}
+          <section aria-labelledby="textos-do-curso" className="grid gap-3">
+            <div className="grid gap-1">
+              <h2 id="textos-do-curso" className="font-display text-[18px] font-semibold tracking-[-0.018em] text-ink">
+                {tx.textosDoCurso}
+              </h2>
+              <p className="font-ui text-[13.5px] leading-snug text-ink-muted m-0">
+                {tx.textosDesc(textosDoCurso.filter(t => t.aberta).length, textosDoCurso.length)}
+              </p>
+            </div>
+            <ul className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
+              {textosDoCurso.map(t => (
+                <li key={t.id} className="min-w-0">
+                  {t.aberta ? (
+                    <Link href={t.href}
+                          className="h-full grid content-start gap-1 rounded-[16px] border border-line bg-[var(--card)] p-4 min-h-[76px]
+                                     transition-[box-shadow,border-color] duration-200 hover:shadow-[var(--sh)] hover:border-[var(--teal)]">
+                      <span className="font-ui text-[12px] font-semibold uppercase tracking-[.06em] text-[var(--teal-ink)]">✓ {tx.moduloN(t.modulo)}</span>
+                      <span className="font-display text-[15.5px] font-semibold leading-snug text-ink">{t.titulo}</span>
+                    </Link>
+                  ) : (
+                    <div className="h-full grid content-start gap-1 rounded-[16px] border border-dashed border-line bg-[var(--paper)] p-4 min-h-[76px]">
+                      <span className="font-ui text-[12px] font-semibold uppercase tracking-[.06em] text-ink-muted">{tx.moduloN(t.modulo)}</span>
+                      <span className="font-display text-[15.5px] font-semibold leading-snug text-ink-muted">{t.titulo}</span>
+                      <span className="font-ui text-[12.5px] leading-snug text-ink-muted">{t.porque}</span>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
