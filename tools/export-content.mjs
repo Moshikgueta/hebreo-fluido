@@ -796,6 +796,37 @@ function main() {
     placasDaRua.push({ ...publica, palavra: NFC(f.palavra), naPlaca: f.naPlaca.map(NFC) });
   }
 
+  /* ── ler cardápios (05/11/2026) ──────────────────────────────────────
+     Cardápios como chegam em Israel, para ler sem nikud. Só sai o que o dono
+     revisou (`revisado: true`); daguesh só em בּ/כּ/פּ, como no curso todo
+     (o mesmo ponto no ו é o shuruk). Vão no missoes.json, conteúdo pago. */
+  const cardapios = [];
+  for (const c of readJson('data/cardapios.json').cardapios) {
+    if (c.revisado !== true) continue;
+    for (const campo of ['id', 'he', 'nomePt', 'tipoPt']) {
+      if (!c[campo]) throw new Error(`cardapios.json: o cardápio ${c.id ?? '?'} não tem ${campo}`);
+    }
+    if (!Array.isArray(c.itens) || c.itens.length < 4) throw new Error(`cardapios.json: ${c.id} precisa de pelo menos 4 itens`);
+    const precos = new Set();
+    for (const it of c.itens) {
+      if (!it.he || !it.translit || !it.pt || !it.desenho || !Number.isInteger(it.preco) || it.preco <= 0) {
+        throw new Error(`cardapios.json: item incompleto em ${c.id}: ${it.he ?? '?'}`);
+      }
+      const comPonto = [...NFC(it.he).matchAll(/([\u05D0-\u05EA])[\u05B0-\u05BB\u05C1\u05C2\u05C7]*\u05BC/gu)].map(m => m[1]);
+      if (comPonto.some(l => !'בכךפףו'.includes(l))) {
+        throw new Error(`cardapios.json: daguesh fora de בּ/כּ/פּ em ${c.id}: ${it.he}`);
+      }
+      /* Os chatafim (ֱ ֲ ֳ) não entram (05/11/2026, pedido do dono): o curso
+         ensina a vogal simples, e é ela que vai no lugar (עַ, não עֲ). */
+      if (/[\u05B1-\u05B3]/u.test(it.he)) throw new Error(`cardapios.json: chataf em ${c.id}: ${it.he} (use a vogal simples)`);
+      precos.add(it.preco);
+    }
+    if (precos.size < 3) throw new Error(`cardapios.json: ${c.id} precisa de pelo menos 3 preços diferentes`);
+    const { revisado, ...publico } = c;
+    void revisado;
+    cardapios.push({ ...publico, he: NFC(c.he), itens: c.itens.map(it => ({ ...it, he: NFC(it.he) })) });
+  }
+
   /* ── os mini-textos de leitura corrida ─────────────────────────────
      Um texto curto por módulo, do 3 ao 7. São as únicas frases do curso
      escritas para ele, e por isso cada um nasce com `revisado: false`: o
@@ -909,7 +940,8 @@ function main() {
         ...(p.erradas ? { erradas: p.erradas.map(NFC) } : {})
       }))
     })),
-    rua: placasDaRua
+    rua: placasDaRua,
+    cardapios
   }, null, 2) + '\n');
 
   /* ── o curso Hebraico A1 (06/10/2026) ────────────────────────────────

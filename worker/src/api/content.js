@@ -88,6 +88,8 @@ const MOLDE = JSON.stringify({
   missoes: missoes.missoes,
   /* O Hebraico na rua vem no mesmo arquivo das missões (28/10/2026). */
   rua: missoes.rua || [],
+  /* Ler cardápios (05/11/2026), no mesmo arquivo. */
+  cardapios: missoes.cardapios || [],
   textos: textos.textos,
   bonus: bonus.leituras,
   guiaNikud: bonus.guia ?? null

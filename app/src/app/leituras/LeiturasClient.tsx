@@ -14,7 +14,7 @@
 
 import Link from 'next/link';
 import { useProgress } from '@/lib/state/store';
-import { course, placasDaRua } from '@/lib/content';
+import { cardapiosDoCurso, course, placasDaRua } from '@/lib/content';
 import { leiturasDoModulo } from '@/lib/leituras-do-curso';
 import { Cenario, type IdDoCenario } from '@/components/aventura/Cenarios';
 import { He } from '@/components/hebrew/He';
@@ -60,6 +60,24 @@ export function LeiturasClient() {
           <span className="grid gap-0.5 min-w-0 flex-1">
             <span className="font-display text-[18px] font-semibold text-ink">{tx.rua}</span>
             <span className="font-ui text-[14px] text-ink-muted">{tx.ruaDesc}</span>
+          </span>
+          <span aria-hidden className="font-ui text-[20px] text-ink-muted">→</span>
+        </Link>
+      )}
+
+      {/* Ler cardápios (05/11/2026): só com algum cardápio revisado. */}
+      {cardapiosDoCurso().length > 0 && (
+        <Link href="/cardapios"
+              className="flex items-center gap-4 rounded-[18px] border border-line bg-[var(--card)] p-5 shadow-[var(--sh)]
+                         transition-transform duration-200 hover:-translate-y-[2px] active:scale-[.98]">
+          <span aria-hidden className="grid place-items-center w-12 h-12 rounded-full bg-[var(--teal-soft)] text-[var(--teal-ink)]">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="5" y="3" width="12" height="16" rx="2" /><path d="M8 7.5h6M8 11h6M8 14.5h4" />
+            </svg>
+          </span>
+          <span className="grid gap-0.5 min-w-0 flex-1">
+            <span className="font-display text-[18px] font-semibold text-ink">{tx.cardapios}</span>
+            <span className="font-ui text-[14px] text-ink-muted">{tx.cardapiosDesc}</span>
           </span>
           <span aria-hidden className="font-ui text-[20px] text-ink-muted">→</span>
         </Link>
