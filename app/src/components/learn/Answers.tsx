@@ -233,7 +233,8 @@ export function BuildWord({
         {built.length > 0 && !settled && (
           <Button variant="ghost" size="sm" onClick={() => setBuilt([])}>{tx.recomecar}</Button>
         )}
-        <span className="font-ui text-[13px] text-ink-muted ml-auto">{tx.soa(hintPt)}</span>
+        {/* Sem leitura para mostrar (a frase de um texto, 05/11/2026), sem rótulo vazio. */}
+        {hintPt && <span className="font-ui text-[13px] text-ink-muted ml-auto">{tx.soa(hintPt)}</span>}
       </div>
       {arraste.flutuante}
     </div>
