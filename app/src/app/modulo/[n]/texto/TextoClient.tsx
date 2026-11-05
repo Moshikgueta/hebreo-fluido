@@ -23,6 +23,10 @@ import { revisaoDoModulo, segundoTextoDoModulo, textoDoModulo, type CourseModule
 import { useProgress } from '@/lib/state/store';
 import { palavrasDoTexto, textoLidoId } from '@/lib/engine/textos';
 import { exerciciosDoTexto } from '@/lib/engine/exercicios-do-texto';
+import { praticaDoTexto } from '@/lib/engine/pratica-do-texto';
+import { ExercisePlayer } from '@/components/learn/ExercisePlayer';
+import { tx as txPratica } from '@/i18n/telas/texto-pratica';
+import { useState } from 'react';
 
 /* `revisao` (05/10/2026): a mesma página serve à leitura de revisão do
    módulo, que só usa palavras que o aluno já acumulou (/modulo/N/revisao). */
@@ -34,6 +38,8 @@ export function TextoClient({ module: mod, revisao = false, segundo = false }: {
   /* A lista de palavras novas pergunta `hasAudio`: sem assinar, ela não
      redesenha quando o registro das gravações chega. */
   useRegistroDeAudio();
+  /* A prática interativa (05/11/2026): `praticando` é o "Praticar de novo". */
+  const [praticando, setPraticando] = useState(false);
   if (!texto) {
     return (
       <div className="focus-col grid gap-5">
@@ -46,6 +52,14 @@ export function TextoClient({ module: mod, revisao = false, segundo = false }: {
       </div>
     );
   }
+
+  /* A letra em que um erro da prática entra na revisão: a primeira do módulo
+     (nos módulos 6 e 7, que não têm letra, o id do módulo, como os
+     exercícios deles). */
+  const letraDoModulo = mod.lessons.find(l => l.letters?.length)?.letters?.[0] ?? mod.id;
+  const pratica = praticaDoTexto(texto, lidoId, letraDoModulo, hasAudio);
+  const praticaId = `pratica-${lidoId}`;
+  const praticaFeita = pratica.length === 0 || !!p.state.firsts[lidoId] || !!p.state.firsts[praticaId];
 
   return (
     <div className="focus-col grid gap-6">
@@ -88,7 +102,39 @@ export function TextoClient({ module: mod, revisao = false, segundo = false }: {
         </Card>
       )}
 
-      <Compreensao
+      {/* A prática interativa (05/11/2026): montar frases, ligar palavras e,
+          com gravação, ouvir. Vem antes das perguntas; quem já leu o texto
+          antes dela não precisa refazer. */}
+      {pratica.length > 0 && (
+        <section className="grid gap-3" aria-labelledby="pratica-do-texto">
+          <div className="grid gap-1">
+            <h2 id="pratica-do-texto" className="text-[21px] font-bold">{txPratica.titulo}</h2>
+            <p className="font-ui text-[14px] leading-relaxed text-ink-muted max-w-[54ch]">{txPratica.intro}</p>
+          </div>
+          {praticaFeita && !praticando ? (
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="font-ui text-[14px] text-[var(--teal-ink)] m-0">✓ {txPratica.feita}</p>
+              <button type="button" onClick={() => setPraticando(true)}
+                      className="min-h-[44px] px-2 font-ui text-[14px] text-[var(--accent)] underline">
+                {txPratica.deNovo}
+              </button>
+            </div>
+          ) : (
+            <ExercisePlayer
+              exercises={pratica}
+              title={txPratica.titulo}
+              compact
+              onDone={() => { p.markFirst(praticaId); setPraticando(false); }}
+            />
+          )}
+        </section>
+      )}
+
+      {!praticaFeita && (
+        <p className="font-ui text-[14px] text-ink-muted m-0">{txPratica.perguntasDepois}</p>
+      )}
+
+      {praticaFeita && <Compreensao
         id={revisao ? `revisao-texto-${mod.n}` : segundo ? `texto-${mod.n}-2` : `texto-${mod.n}`}
         titulo={tx.entendeu}
         intro={tx.responda}
@@ -102,7 +148,7 @@ export function TextoClient({ module: mod, revisao = false, segundo = false }: {
         /* Respondidas as perguntas, o texto conta como lido, e as palavras
            novas dele passam a fazer parte do vocabulário do aluno. */
         aoCompletar={() => p.markFirst(lidoId)}
-      />
+      />}
       {p.state.firsts[lidoId] && palavrasDoTexto(texto).length > 0 && (
         <p className="font-ui text-[14px] text-[var(--teal-ink)] m-0">
           {tx.entraram}
