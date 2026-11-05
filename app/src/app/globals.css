@@ -712,6 +712,33 @@ html[data-a11y-movimento='reduzido'] .hf-trem { display: none; }
   border-radius: 14px; min-height: 54px; min-width: 92px; padding: 6px 16px; font-variant-numeric: tabular-nums; }
 .hf-estacao-op-errada { border-color: #F2A08A; color: #F2A08A; animation: hf-sacode .4s; opacity: .7; }
 
+/* ── O shuk (05/11/2026) ───────────────────────────────────────────────────
+   A parada das 12h (app/um-dia-em-israel/shuk): bancas com toldo listrado, a
+   fruta num caixote e o cartão de preço escrito à mão, torto. O cartão é
+   papel nos dois temas. As bancas chegam, as frutas balançam; com "menos
+   movimento", tudo fica parado. */
+.hf-shuk { border-radius: 24px; background: var(--sand); padding: 16px clamp(10px, 3vw, 22px) 18px; box-shadow: var(--sh-mock); }
+.hf-banca { display: grid; width: 100%; border-radius: 12px; overflow: hidden; background: var(--card); text-align: center;
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .35); --toldo: #1F8A7D; --toldo-2: #FBF4E4; }
+.hf-banca-t2 { --toldo: #C9773F; }
+.hf-shuk-chega .hf-banca { animation: hf-banca-chega .6s cubic-bezier(.3, .8, .3, 1) both; }
+@keyframes hf-banca-chega { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
+.hf-banca-toldo { position: relative; height: 20px; background: repeating-linear-gradient(90deg, var(--toldo) 0 18px, var(--toldo-2) 18px 36px); }
+.hf-banca-toldo::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 8px;
+  background: radial-gradient(circle at 9px 0, var(--toldo) 8px, transparent 9px) 0 0 / 36px 8px repeat-x, radial-gradient(circle at 27px 0, var(--toldo-2) 8px, transparent 9px) 0 0 / 36px 8px repeat-x; }
+.hf-banca-caixa { display: grid; justify-items: center; padding: 14px 6px 0; }
+.hf-banca-caixa svg { width: 100%; max-width: 120px; aspect-ratio: 2 / 1; overflow: visible; }
+.hf-banca-bob { animation: hf-banca-bob 3s ease-in-out infinite; }
+@keyframes hf-banca-bob { 50% { transform: translateY(-3px); } }
+.hf-banca-preco { display: grid; margin: 12px 10px 10px; padding: 6px 6px 4px; background: #FFFDF5; color: #1B211F; border: 2px solid #1B211F; border-radius: 6px; transform: rotate(-2deg); }
+.hf-banca-nome { font-family: var(--font-he); font-weight: 700; font-size: clamp(21px, 4.2vw, 25px); line-height: 1.15; direction: rtl; unicode-bidi: isolate; }
+.hf-banca-valor { font-family: var(--font-he); font-weight: 700; font-size: 16px; line-height: 1.25; color: #B5502F; unicode-bidi: isolate; }
+.hf-banca-certa { outline: 4px solid var(--teal); outline-offset: 2px; }
+.hf-banca-errada { animation: hf-sacode .4s !important; opacity: .55; }
+.hf-shuk-op { min-height: 52px; padding: 6px 16px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--ink);
+  font-family: var(--font-he); font-weight: 700; font-size: 19px; }
+.hf-shuk-op-errada { border-color: var(--amber); color: var(--amber); animation: hf-sacode .4s; opacity: .7; }
+
 /* ── os cartões ilustrados (05/11/2026, aprovados pelo dono) ─────────────
    Uma cena desenhada em cima (components/ilustra/), o texto embaixo, sombra
    macia e o cartão que sobe um pouco no toque. A cena é um SVG em "meet",

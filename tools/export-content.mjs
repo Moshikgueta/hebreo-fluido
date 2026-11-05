@@ -917,6 +917,30 @@ function main() {
     cidadesDoTrem.push({ ...publico, he: NFC(c.he) });
   }
 
+  /* ── Um dia em Israel: o shuk (05/11/2026) ───────────────────────────
+     A parada das 12h (lib/engine/shuk.ts): as bancas, com o preço do quilo.
+     O preço vai por extenso na tela (1 a 99, e o total de até 3 quilos
+     também); as mesmas regras de nikud. */
+  const DESENHOS_DE_BANCA = ['tomate', 'pepino', 'maca', 'banana', 'laranja', 'melancia', 'uva', 'limao', 'roma', 'tamara', 'azeitona', 'batata'];
+  const bancasDoShuk = [];
+  const idsDasBancas = new Set();
+  for (const b of readJson('data/shuk.json').bancas) {
+    if (b.revisado !== true) continue;
+    for (const campo of ['id', 'desenho', 'he', 'translit', 'pt', 'preco']) {
+      if (!b[campo]) throw new Error(`shuk.json: a banca ${b.id ?? '?'} não tem ${campo}`);
+    }
+    if (idsDasBancas.has(b.id)) throw new Error(`shuk.json: id repetido ${b.id}`);
+    idsDasBancas.add(b.id);
+    if (!DESENHOS_DE_BANCA.includes(b.desenho)) throw new Error(`shuk.json: desenho desconhecido em ${b.id}: ${b.desenho}`);
+    if (!Number.isInteger(b.preco) || b.preco < 1 || b.preco * 3 > 99) throw new Error(`shuk.json: preço fora de 1 a 33 em ${b.id}: ${b.preco}`);
+    const comPonto = [...NFC(b.he).matchAll(/([\u05D0-\u05EA])[\u05B0-\u05BB\u05C1\u05C2\u05C7]*\u05BC/gu)].map(m => m[1]);
+    if (comPonto.some(l => !'בכךפףו'.includes(l))) throw new Error(`shuk.json: daguesh fora de בּ/כּ/פּ em ${b.id}: ${b.he}`);
+    if (/[\u05B1-\u05B3]/u.test(b.he)) throw new Error(`shuk.json: chataf em ${b.id}: ${b.he} (use a vogal simples)`);
+    const { revisado, ...publico } = b;
+    void revisado;
+    bancasDoShuk.push({ ...publico, he: NFC(b.he) });
+  }
+
   /* ── os mini-textos de leitura corrida ─────────────────────────────
      Um texto curto por módulo, do 3 ao 7. São as únicas frases do curso
      escritas para ele, e por isso cada um nasce com `revisado: false`: o
@@ -1032,7 +1056,7 @@ function main() {
     })),
     rua: placasDaRua,
     cardapios,
-    umDia: { placas: placasDoDia, cartoes: cartoesDoDia, copos: nomesNoCopo, trem: cidadesDoTrem }
+    umDia: { placas: placasDoDia, cartoes: cartoesDoDia, copos: nomesNoCopo, trem: cidadesDoTrem, shuk: bancasDoShuk }
   }, null, 2) + '\n');
 
   /* ── o curso Hebraico A1 (06/10/2026) ────────────────────────────────
