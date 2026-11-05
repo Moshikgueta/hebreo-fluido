@@ -26,10 +26,17 @@ export const DIAS_ARREPENDIMENTO = 7;
    etapa 6). Lido do pedido, e não do Worker, para que um pedido nunca mude
    de prazo depois de pago. */
 export const DIAS_PADDLE = 14;
-/* O Stripe dos sites de fora (05/11/2026) segue os mesmos 14 dias: é o
-   prazo que os Termos em inglês e espanhol prometem. */
-export const diasDoPedido = row => (row && (row.provider === 'paddle' || row.provider === 'stripe')
-  ? DIAS_PADDLE : DIAS_ARREPENDIMENTO);
+/* O Stripe dos sites de fora: 7 dias (decisão do dono, 05/11/2026), o mesmo
+   prazo do site brasileiro. Os Termos e a Política de Reembolso em inglês e
+   espanhol leem o número de `politicas.arrependimentoDias`, que o exportador
+   escreve com este mesmo valor (tools/export-content.mjs). */
+export const DIAS_STRIPE = 7;
+export const diasDoPedido = row => (row && row.provider === 'stripe' ? DIAS_STRIPE
+  : row && row.provider === 'paddle' ? DIAS_PADDLE : DIAS_ARREPENDIMENTO);
+/** O prazo que um pedido NOVO dos sites de fora terá, pelo provedor escolhido
+ *  em data/empresa.json (`pagamento.exterior`). */
+export const diasDeFora = empresa =>
+  (empresa && empresa.pagamento && empresa.pagamento.exterior) === 'stripe' ? DIAS_STRIPE : DIAS_PADDLE;
 
 export function prazoDeDesistencia(paidAt, dias = DIAS_ARREPENDIMENTO) {
   if (!paidAt || !dias) return null;

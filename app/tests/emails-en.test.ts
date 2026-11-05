@@ -128,7 +128,8 @@ describe('o Worker em inglês manda em inglês', () => {
     const usd = (catalogo.courses as { slug: string; price: { usd: number } }[]).find(x => x.slug === 'alfabetizacao')!.price.usd;
     const ultimo = recebidos[4]!.text;
     expect(ultimo).toContain(`$${usd}`);
-    expect(ultimo).toContain('14 days');
+    /* 7 dias com o Stripe (decisão do dono, 05/11/2026). */
+    expect(ultimo).toContain('7 days');
     for (const m of [mem, ...recebidos]) {
       expect(m.text, m.subject).not.toMatch(/R\$|\bPIX\b|Mercado Pago|brasileir|Brazilian/i);
       expect(semNomes(m.text), m.subject).not.toMatch(ACENTO);

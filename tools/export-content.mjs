@@ -380,7 +380,9 @@ function main() {
       /* E as políticas em inglês (e em espanhol) têm data própria (etapa 6). */
       const { atualizadoEmEn, atualizadoEmEs, ...politicas } = empresa.politicas;
       const data = LOCALE === 'es' ? atualizadoEmEs : atualizadoEmEn;
-      empresa.politicas = { ...politicas, arrependimentoDias: 14, atualizadoEm: data || politicas.atualizadoEm };
+      /* 7 dias com o Stripe (decisão do dono, 05/11/2026), 14 com o Paddle: o
+         mesmo número de worker/src/lib/desistencia.js (DIAS_STRIPE, DIAS_PADDLE). */
+      empresa.politicas = { ...politicas, arrependimentoDias: deFora === 'stripe' ? 7 : 14, atualizadoEm: data || politicas.atualizadoEm };
       const { horarioEn, horarioEs, ...atendimento } = empresa.atendimento || {};
       const horario = LOCALE === 'es' ? horarioEs : horarioEn;
       if (horario) empresa.atendimento = { ...atendimento, horarioPt: horario };

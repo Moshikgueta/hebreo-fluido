@@ -30,7 +30,7 @@ const en: Traducao<typeof pt> = {
   ultimaAtualizacao: (data: string) => `Last updated: ${data}`,
   ctaTitulo: 'All of that answered? Then get started.',
   ctaLinha:
-    'The first letter takes ten minutes, and you have 14 days to cancel without having to explain why.',
+    'The first letter takes ten minutes, and you have 7 days to cancel without having to explain why.',
   termosDeUso: 'Terms of Use',
   politicaDePrivacidade: 'Privacy Policy',
   reembolso: 'Refunds and Cancellation',
@@ -55,7 +55,7 @@ const es: Traducao<typeof pt> = {
   ultimaAtualizacao: (data: string) => `Última actualización: ${data}`,
   ctaTitulo: '¿Todo eso respondido? Entonces empieza.',
   ctaLinha:
-    'La primera letra lleva diez minutos, y tienes 14 días para cancelar sin tener que explicar por qué.',
+    'La primera letra lleva diez minutos, y tienes 7 días para cancelar sin tener que explicar por qué.',
   termosDeUso: 'Términos de Uso',
   politicaDePrivacidade: 'Política de Privacidad',
   reembolso: 'Reembolso y Cancelación',

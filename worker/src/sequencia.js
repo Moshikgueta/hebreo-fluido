@@ -21,7 +21,7 @@ import { mailReady, sendMail } from './lib/mail.js';
 import { mensagens } from './lib/mensagens.js';
 import { idiomaDoWorker } from './lib/idioma.js';
 import { DIAS_DA_SEQUENCIA, SEQUENCIA_FEITA, linkDeSaida } from './api/interessados.js';
-import { DIAS_PADDLE } from './api/pay.js';
+import { diasDeFora } from './lib/desistencia.js';
 import empresa from '../../data/empresa.json';
 
 const DIA = 86_400_000;
@@ -65,7 +65,7 @@ export async function runSequencia(env, at = Date.now()) {
     usd: idioma !== 'pt' ? (c.price.usd || null) : null,
     brl: c.price.brl, listBrl: c.price.listBrl || null, pixPct: c.price.pixDiscountPct || 0,
     parcelas: c.price.installments || 12, meses: c.accessMonths || 12,
-    desistir: idioma !== 'pt' ? DIAS_PADDLE : (Number(empresa.politicas && empresa.politicas.arrependimentoDias) || 7)
+    desistir: idioma !== 'pt' ? diasDeFora(empresa) : (Number(empresa.politicas && empresa.politicas.arrependimentoDias) || 7)
   } : null;
 
   let enviados = 0;
