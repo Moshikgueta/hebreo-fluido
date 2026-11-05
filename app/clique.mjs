@@ -35,7 +35,7 @@
 import { createServer } from 'node:http';
 import { readFileSync, existsSync, writeSync } from 'node:fs';
 import { chromium } from 'playwright';
-import { EM_INGLES, OUT } from './saida.mjs';
+import { EM_ESPANHOL, EM_INGLES, OUT } from './saida.mjs';
 /* Os textos que esta conferência procura, nos dois idiomas da build: o
    inglês sai dos dicionários de app/src/i18n/telas (venda-demo-alef.tsx e
    licao-trace-board.ts). Mudou um texto lá, muda aqui. */
@@ -48,6 +48,16 @@ const R = EM_INGLES ? {
   direita: /starts on the right/, leia: /Now read a word/, aquiDentro: /find Alef in here/, terminei: /I finished the first letter/,
   umDe22: /1 of 22 letters/i, primeiraLetra: /just learned your first letter/i, oQueFez: /What you just did/i,
   escreveu: /Wrote Alef with your finger/, seuEmail: 'Your email', asOutras: /I want to learn the other/
+} : EM_ESPANHOL ? {
+  /* O espanhol (04/11/2026): os mesmos passos, com o texto do dicionário (venda-demo-alef.tsx). */
+  testar: /probar ahora/i, qualAlef: 'text=/Cuál de estas es el Álef/', quase: /Casi/, toqueDeNovo: /Toca de nuevo/,
+  forma: /El Álef tiene esta forma/, isso: /¡Eso!/, continuar: /^Continuar/, qualDasDuas: /cuál de las dos es el Álef/,
+  ayin: /Áyin/, vogais: /Ahora las vocales/, ouvirAria: 'button[aria-label^="Escuchar “"]', proxima: /Siguiente/,
+  ouvirBotao: /^🔊Escuchar$/, ouvirDeNovo: /Escucha de nuevo/, comparar: /Ahora compáralo con otra letra/, jogo: /Ahora un juego de la Academia/, jogoErro: /Esta no es el Álef/, conferir: /^Verificar$/,
+  conferirDisse: /(Compara con el modelo|trazo|forma|línea|Casi|Bien|Eso)/i, acheAlef: /Ahora encuentra el Álef/,
+  direita: /empieza a la derecha/, leia: /Ahora lee una palabra/, aquiDentro: /encontrar el Álef aquí dentro/, terminei: /Terminé la primera letra/,
+  umDe22: /1 de 22 letras/i, primeiraLetra: /acabas de aprender tu primera letra/i, oQueFez: /Lo que acabas de hacer/i,
+  escreveu: /Escribiste el Álef con el dedo/, seuEmail: 'Tu correo', asOutras: /Quiero aprender las otras/
 } : {
   testar: /testar agora/i, qualAlef: 'text=/Qual destas é o Álef/', quase: /Quase/, toqueDeNovo: /Toque de novo/,
   forma: /O Álef tem esta forma/, isso: /Isso!/, continuar: /^Continuar/, qualDasDuas: /qual das duas é o Álef/,

@@ -38,8 +38,11 @@ G() { curl -s --noproxy '*' "$@"; }
 # conferências que dependem disso escolhem pelo mesmo arquivo que a
 # publicação usou.
 RAIZ="$(cd "$(dirname "$0")/.." && pwd)"
+# O site em espanhol (LOCALE = "es", Moshikgueta/hebreo-fluido) é de fora do
+# mesmo jeito: Paddle, dólar, sem prévia nem A1. EM_INGLES quer dizer "site de
+# fora"; o nome ficou do tempo em que o inglês era o único.
 EM_INGLES=0
-grep -qE '^LOCALE *= *"en"' "$RAIZ/wrangler.toml" 2>/dev/null && EM_INGLES=1
+grep -qE '^LOCALE *= *"(en|es)"' "$RAIZ/wrangler.toml" 2>/dev/null && EM_INGLES=1
 
 # espera <descrição> <esperado> <obtido>
 espera() {

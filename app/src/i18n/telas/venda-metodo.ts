@@ -81,8 +81,8 @@ const en: Traducao<typeof pt> = {
 const es: Traducao<typeof pt> = {
   metaTitulo: 'El método - Hebraico Fluente',
   metaDescricao:
-    'Una letra a la vez, en el orden que más rinde; ninguna palabra con una letra que ' +
-    'todavía no viste; repaso en el día justo; y la transliteración se va a propósito.',
+    'Una letra a la vez, en el orden que más rinde; ninguna palabra con letras aún ' +
+    'no vistas; repaso en el día justo; y la transliteración se va a propósito.',
   trilha: 'El método',
   eyebrow: 'El método',
   titulo: (quantas: string) => `${quantas} etapas en cada lección, y una regla que las sostiene a todas.`,
