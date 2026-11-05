@@ -1,0 +1,90 @@
+{
+  "cartoes/shana/pt": {
+    "pt": "Feliz Ano Novo (Rosh Hashaná)",
+    "en": "Happy New Year (Rosh Hashanah)"
+  },
+  "cartoes/shana/situacaoPt": {
+    "pt": "É Rosh Hashaná, o Ano Novo judaico. Que cartão você manda para a família?",
+    "en": "It is Rosh Hashanah, the Jewish New Year. Which card do you send to the family?"
+  },
+  "cartoes/chag/pt": {
+    "pt": "Boas festas",
+    "en": "Happy holiday"
+  },
+  "cartoes/chag/situacaoPt": {
+    "pt": "Chegou uma festa judaica e você quer desejar uma boa festa a todos. Que cartão você manda?",
+    "en": "A Jewish holiday has arrived and you want to wish everyone a good holiday. Which card do you send?"
+  },
+  "cartoes/mazal/pt": {
+    "pt": "Parabéns",
+    "en": "Congratulations"
+  },
+  "cartoes/mazal/situacaoPt": {
+    "pt": "Seu amigo se casou ontem. Que cartão você manda?",
+    "en": "Your friend got married yesterday. Which card do you send?"
+  },
+  "cartoes/yomhuledet/pt": {
+    "pt": "Feliz aniversário",
+    "en": "Happy birthday"
+  },
+  "cartoes/yomhuledet/situacaoPt": {
+    "pt": "Sua amiga faz aniversário hoje. Que cartão você manda?",
+    "en": "Your friend has a birthday today. Which card do you send?"
+  },
+  "cartoes/shabat/pt": {
+    "pt": "Shabat shalom",
+    "en": "Shabbat shalom"
+  },
+  "cartoes/shabat/situacaoPt": {
+    "pt": "É sexta à tarde e as velas vão ser acesas. Que cartão você manda?",
+    "en": "It is Friday afternoon and the candles are about to be lit. Which card do you send?"
+  },
+  "cartoes/pessach/pt": {
+    "pt": "Feliz Pessach",
+    "en": "Happy Passover"
+  },
+  "cartoes/pessach/situacaoPt": {
+    "pt": "Vai começar o Pessach, a festa da matsá. Que cartão você manda?",
+    "en": "Passover, the holiday of matzah, is about to begin. Which card do you send?"
+  },
+  "cartoes/chanuca/pt": {
+    "pt": "Feliz Chanucá",
+    "en": "Happy Hanukkah"
+  },
+  "cartoes/chanuca/situacaoPt": {
+    "pt": "É a festa das luzes, com oito velas. Que cartão você manda?",
+    "en": "It is the festival of lights, with eight candles. Which card do you send?"
+  },
+  "cartoes/purim/pt": {
+    "pt": "Feliz Purim",
+    "en": "Happy Purim"
+  },
+  "cartoes/purim/situacaoPt": {
+    "pt": "Todo mundo está fantasiado e de máscara. Que cartão você manda?",
+    "en": "Everyone is in costume and wearing a mask. Which card do you send?"
+  },
+  "cartoes/refua/pt": {
+    "pt": "Melhoras",
+    "en": "Get well soon"
+  },
+  "cartoes/refua/situacaoPt": {
+    "pt": "Um colega está doente em casa. Que cartão você manda?",
+    "en": "A coworker is sick at home. Which card do you send?"
+  },
+  "cartoes/hatslacha/pt": {
+    "pt": "Boa sorte",
+    "en": "Good luck"
+  },
+  "cartoes/hatslacha/situacaoPt": {
+    "pt": "Sua prima tem uma prova importante amanhã. Que cartão você manda?",
+    "en": "Your cousin has an important exam tomorrow. Which card do you send?"
+  },
+  "cartoes/baruch/pt": {
+    "pt": "Bem-vindo",
+    "en": "Welcome"
+  },
+  "cartoes/baruch/situacaoPt": {
+    "pt": "Um amigo acabou de chegar para morar no seu prédio. Que cartão você manda?",
+    "en": "A friend just moved into your building. Which card do you send?"
+  }
+}

@@ -22,7 +22,8 @@ export type PlacaDesenhada = {
   /** O que a pessoa precisa fazer: "Você precisa <missaoPt>". */
   missaoPt: string;
 };
-export type DadosDoDia = { placas: PlacaDesenhada[] };
+/** Os cartões de festa (lib/engine/cartoes.ts). Opcional: um pacote antigo não os tem. */
+export type DadosDoDia = { placas: PlacaDesenhada[]; cartoes?: import('./cartoes').CartaoDeFesta[] };
 
 /** As paradas, na ordem do dia. `rota` só nas que já existem. */
 export const PARADAS = [
@@ -33,7 +34,7 @@ export const PARADAS = [
   { id: 'shuk', hora: '12h', rota: null },
   { id: 'super', hora: '15h', rota: null },
   { id: 'mensagens', hora: '18h', rota: null },
-  { id: 'cartoes', hora: '20h', rota: null }
+  { id: 'cartoes', hora: '20h', rota: '/um-dia-em-israel/cartoes' }
 ] as const;
 export type IdDaParada = (typeof PARADAS)[number]['id'];
 
