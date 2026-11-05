@@ -30,7 +30,7 @@ import { apiMode } from '@/lib/account/api';
 import { SESSAO_MUDOU } from '@/lib/account/store';
 import {
   ANSWER_UNITS, applyPractice, awardXp, clearConfusion, completeStage, courseProgress,
-  concluirRevisao, displayStreak, pagarAcerto, dueItems, goalTarget, lettersMastered, markFirst, recordAnswer, registrarLeitura,
+  abrirJarro as abrirJarroNoEstado, idDoJarro, concluirRevisao, displayStreak, pagarAcerto, dueItems, goalTarget, lettersMastered, markFirst, recordAnswer, registrarLeitura,
   recordCheckpoint, recordConfusion, recordExam, recordGym, recordQuiz, recordSkill,
   syncAchievements, today,
   topConfusions, weakLetters, XP
@@ -125,6 +125,8 @@ type Ctx = {
   setNomeHebraico: (texto: string | null) => void;
   /** Record a moment that can only happen once, and say so. */
   markFirst: (id: string) => void;
+  /** Abre o jarro do módulo no mapa: paga XP.jarro uma vez. Devolve se pagou. */
+  abrirJarro: (moduloId: string) => boolean;
   /** Autoavaliação de leitura: não mede domínio (rules.ts, `registrarLeitura`). */
   registrarLeitura: (atividade: string, consegui: boolean) => void;
   /**
@@ -447,6 +449,13 @@ export function ProgressProvider({
     track('first_reached', { id });
   }, [commit, agora]);
 
+  const abrirJarro = useCallback((moduloId: string) => {
+    if (agora().firsts[idDoJarro(moduloId)]) return false;
+    commit(abrirJarroNoEstado(agora(), moduloId, day));
+    track('first_reached', { id: idDoJarro(moduloId) });
+    return true;
+  }, [commit, agora, day]);
+
   const finishQuiz = useCallback((letterId: string, score: number) => {
     commit(recordQuiz(agora(), letterId, score, today()));
     track('quiz_completed', { letterId, score });
@@ -652,7 +661,7 @@ export function ProgressProvider({
       confusions: topConfusions(state),
       pending,
       clearPending: () => setPending([]),
-      setOnboarding, finishStage, answer, markFirst: doMarkFirst, registrarLeitura: doRegistrarLeitura, recordWriting, finishGym,
+      setOnboarding, finishStage, answer, markFirst: doMarkFirst, abrirJarro, registrarLeitura: doRegistrarLeitura, recordWriting, finishGym,
       finishQuiz, finishCheckpoint, finishReview, finishFinalChallenge, finishExam,
       remember, reset, setNomeHebraico, comprar, setGeneroA1, finishUnidadeA1, finishExameA1,
       responderItemA1, finishCheckpointA1, revisaoA1Feita, marcarFavoritoA1, alternarCaderno, setAutoA1, setTranslitA1,
@@ -660,7 +669,7 @@ export function ProgressProvider({
     };
   }, [
     state, ready, persistent, sincronizado, day, totalLetters, extraKey, somKey, pending,
-    setOnboarding, finishStage, answer, doMarkFirst, doRegistrarLeitura, recordWriting, finishGym, finishQuiz,
+    setOnboarding, finishStage, answer, doMarkFirst, abrirJarro, doRegistrarLeitura, recordWriting, finishGym, finishQuiz,
     finishCheckpoint, finishReview, finishFinalChallenge, finishExam, remember, reset,
     setNomeHebraico, comprar, setGeneroA1, finishUnidadeA1, finishExameA1,
     responderItemA1, finishCheckpointA1, revisaoA1Feita, marcarFavoritoA1, alternarCaderno, setAutoA1, setTranslitA1,
