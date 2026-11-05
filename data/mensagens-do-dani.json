@@ -1,0 +1,86 @@
+{
+  "_nota": "Mensagens do Dani (05/11/2026): a parada das 18h de Um dia em Israel (lib/engine/mensagens.ts). Uma conversa inventada, com um amigo inventado, escrita como no celular. A pontuação vai dentro do hebraico. Sem chataf e com daguesh só em בּ/כּ/פּ. Só sai o que tem revisado: true.",
+  "mensagens": [
+    {
+      "id": "nishma",
+      "he": "שָׁלוֹם! מָה נִשְׁמָע?",
+      "translit": "shalóm! ma nishmá?",
+      "pt": "Olá! Como vai?",
+      "hora": "09:02",
+      "revisado": true
+    },
+    {
+      "id": "boker",
+      "he": "בּוֹקֶר טוֹב",
+      "translit": "bóker tov",
+      "pt": "Bom dia",
+      "hora": "09:03",
+      "revisado": true
+    },
+    {
+      "id": "nifgash",
+      "he": "נִפְגָשׁ בְּקָפֶה?",
+      "translit": "nifgásh bekafé?",
+      "pt": "Vamos nos encontrar no café?",
+      "hora": "09:05",
+      "revisado": true
+    },
+    {
+      "id": "beseder",
+      "he": "כֵּן, בְּסֵדֶר",
+      "translit": "ken, beséder",
+      "pt": "Sim, tudo bem",
+      "hora": "09:06",
+      "minha": true,
+      "revisado": true
+    },
+    {
+      "id": "eifo",
+      "he": "אֵיפֹה אַתָה?",
+      "translit": "éifo atá?",
+      "pt": "Onde você está?",
+      "hora": "10:14",
+      "revisado": true
+    },
+    {
+      "id": "baderech",
+      "he": "אַנִי בַּדֶרֶךְ",
+      "translit": "aní badérech",
+      "pt": "Estou a caminho",
+      "hora": "10:15",
+      "revisado": true
+    },
+    {
+      "id": "toda",
+      "he": "תוֹדָה רַבָּה!",
+      "translit": "todá rabá!",
+      "pt": "Muito obrigado!",
+      "hora": "12:40",
+      "revisado": true
+    },
+    {
+      "id": "shabat",
+      "he": "שַׁבָּת שָׁלוֹם",
+      "translit": "shabát shalóm",
+      "pt": "Shabat shalom",
+      "hora": "17:30",
+      "revisado": true
+    },
+    {
+      "id": "mazal",
+      "he": "מַזָל טוֹב!",
+      "translit": "mazál tov!",
+      "pt": "Parabéns!",
+      "hora": "18:21",
+      "revisado": true
+    },
+    {
+      "id": "laila",
+      "he": "לַיְלָה טוֹב",
+      "translit": "láila tov",
+      "pt": "Boa noite",
+      "hora": "23:05",
+      "revisado": true
+    }
+  ]
+}

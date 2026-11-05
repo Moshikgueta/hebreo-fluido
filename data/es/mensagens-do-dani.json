@@ -1,0 +1,42 @@
+{
+  "mensagens/nishma/pt": {
+    "pt": "Olá! Como vai?",
+    "es": "¡Hola! ¿Qué tal?"
+  },
+  "mensagens/boker/pt": {
+    "pt": "Bom dia",
+    "es": "Buenos días"
+  },
+  "mensagens/nifgash/pt": {
+    "pt": "Vamos nos encontrar no café?",
+    "es": "¿Nos vemos en el café?"
+  },
+  "mensagens/beseder/pt": {
+    "pt": "Sim, tudo bem",
+    "es": "Sí, está bien"
+  },
+  "mensagens/eifo/pt": {
+    "pt": "Onde você está?",
+    "es": "¿Dónde estás?"
+  },
+  "mensagens/baderech/pt": {
+    "pt": "Estou a caminho",
+    "es": "Estoy en camino"
+  },
+  "mensagens/toda/pt": {
+    "pt": "Muito obrigado!",
+    "es": "¡Muchas gracias!"
+  },
+  "mensagens/shabat/pt": {
+    "pt": "Shabat shalom",
+    "es": "Shabat shalom"
+  },
+  "mensagens/mazal/pt": {
+    "pt": "Parabéns!",
+    "es": "¡Felicidades!"
+  },
+  "mensagens/laila/pt": {
+    "pt": "Boa noite",
+    "es": "Buenas noches"
+  }
+}

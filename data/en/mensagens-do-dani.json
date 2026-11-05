@@ -1,0 +1,42 @@
+{
+  "mensagens/nishma/pt": {
+    "pt": "Olá! Como vai?",
+    "en": "Hi! How are you?"
+  },
+  "mensagens/boker/pt": {
+    "pt": "Bom dia",
+    "en": "Good morning"
+  },
+  "mensagens/nifgash/pt": {
+    "pt": "Vamos nos encontrar no café?",
+    "en": "Shall we meet at the coffee shop?"
+  },
+  "mensagens/beseder/pt": {
+    "pt": "Sim, tudo bem",
+    "en": "Yes, all good"
+  },
+  "mensagens/eifo/pt": {
+    "pt": "Onde você está?",
+    "en": "Where are you?"
+  },
+  "mensagens/baderech/pt": {
+    "pt": "Estou a caminho",
+    "en": "I am on my way"
+  },
+  "mensagens/toda/pt": {
+    "pt": "Muito obrigado!",
+    "en": "Thank you very much!"
+  },
+  "mensagens/shabat/pt": {
+    "pt": "Shabat shalom",
+    "en": "Shabbat shalom"
+  },
+  "mensagens/mazal/pt": {
+    "pt": "Parabéns!",
+    "en": "Congratulations!"
+  },
+  "mensagens/laila/pt": {
+    "pt": "Boa noite",
+    "en": "Good night"
+  }
+}

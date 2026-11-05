@@ -965,6 +965,27 @@ function main() {
     produtosDoSuper.push({ ...publico, he: NFC(p.he) });
   }
 
+  /* ── Um dia em Israel: as mensagens do Dani (05/11/2026) ─────────────
+     A parada das 18h (lib/engine/mensagens.ts): uma conversa de celular. A
+     pontuação vai dentro do hebraico; as mesmas regras de nikud. */
+  const mensagensDoDani = [];
+  const idsDasMensagens = new Set();
+  for (const m of readJson('data/mensagens-do-dani.json').mensagens) {
+    if (m.revisado !== true) continue;
+    for (const campo of ['id', 'he', 'translit', 'pt', 'hora']) {
+      if (!m[campo]) throw new Error(`mensagens-do-dani.json: a mensagem ${m.id ?? '?'} não tem ${campo}`);
+    }
+    if (idsDasMensagens.has(m.id)) throw new Error(`mensagens-do-dani.json: id repetido ${m.id}`);
+    idsDasMensagens.add(m.id);
+    if (!/^\d\d:\d\d$/.test(m.hora)) throw new Error(`mensagens-do-dani.json: hora inválida em ${m.id}: ${m.hora}`);
+    const comPonto = [...NFC(m.he).matchAll(/([\u05D0-\u05EA])[\u05B0-\u05BB\u05C1\u05C2\u05C7]*\u05BC/gu)].map(x => x[1]);
+    if (comPonto.some(l => !'בכךפףו'.includes(l))) throw new Error(`mensagens-do-dani.json: daguesh fora de בּ/כּ/פּ em ${m.id}: ${m.he}`);
+    if (/[\u05B1-\u05B3]/u.test(m.he)) throw new Error(`mensagens-do-dani.json: chataf em ${m.id}: ${m.he} (use a vogal simples)`);
+    const { revisado, ...publico } = m;
+    void revisado;
+    mensagensDoDani.push({ ...publico, he: NFC(m.he) });
+  }
+
   /* ── os mini-textos de leitura corrida ─────────────────────────────
      Um texto curto por módulo, do 3 ao 7. São as únicas frases do curso
      escritas para ele, e por isso cada um nasce com `revisado: false`: o
@@ -1080,7 +1101,7 @@ function main() {
     })),
     rua: placasDaRua,
     cardapios,
-    umDia: { placas: placasDoDia, cartoes: cartoesDoDia, copos: nomesNoCopo, trem: cidadesDoTrem, shuk: bancasDoShuk, super: produtosDoSuper }
+    umDia: { placas: placasDoDia, cartoes: cartoesDoDia, copos: nomesNoCopo, trem: cidadesDoTrem, shuk: bancasDoShuk, super: produtosDoSuper, mensagens: mensagensDoDani }
   }, null, 2) + '\n');
 
   /* ── o curso Hebraico A1 (06/10/2026) ────────────────────────────────

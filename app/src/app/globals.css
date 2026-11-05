@@ -762,6 +762,62 @@ html[data-a11y-movimento='reduzido'] .hf-trem { display: none; }
 .hf-lista-compras { max-width: 340px; padding: 12px 16px 10px; border-radius: 6px; background: #FFFDF5; color: #1B211F; font-family: var(--font-ui);
   background-image: repeating-linear-gradient(transparent 0 27px, #D9E6F2 27px 28px); box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .35); transform: rotate(-1.5deg); }
 
+/* ── Mensagens do Dani (05/11/2026) ────────────────────────────────────────
+   A parada das 18h (app/um-dia-em-israel/mensagens): uma conversa de celular.
+   As mensagens do Dani ficam à direita (a língua é RTL), as do aluno à
+   esquerda. As bolhas chegam e os três pontos do "digitando" pulam; com
+   "menos movimento", tudo fica parado. */
+.hf-celular { display: grid; grid-template-rows: auto 1fr auto; min-height: 520px; max-width: 520px; border-radius: 26px; overflow: hidden;
+  background: var(--sand); box-shadow: var(--sh-mock); }
+.hf-celular-topo { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: var(--navy); color: #FBF9F5; }
+.hf-celular-avatar { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 50%; background: #E7B65A; color: #0E3B43;
+  font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+.hf-celular-conversa { display: grid; align-content: start; gap: 8px; padding: 14px 12px;
+  background-image: radial-gradient(rgba(14, 59, 67, .06) 1px, transparent 1.5px); background-size: 16px 16px; }
+.hf-celular-conversa ul > li { animation: hf-bolha-chega .45s cubic-bezier(.3, .8, .3, 1) both; }
+.hf-bolha { justify-self: end; display: grid; gap: 2px; max-width: 82%; padding: 8px 12px 6px; border-radius: 16px 4px 16px 16px;
+  background: var(--card); color: var(--ink); box-shadow: 0 1px 1px rgba(0, 0, 0, .12); text-align: start; }
+.hf-bolha-minha { justify-self: start; background: var(--teal-soft); border-radius: 4px 16px 16px 16px; }
+.hf-bolha-nova { animation: hf-bolha-chega .45s cubic-bezier(.3, .8, .3, 1) both; }
+@keyframes hf-bolha-chega { from { opacity: 0; transform: translateY(10px) scale(.94); } to { opacity: 1; transform: none; } }
+.hf-bolha-he { font-family: var(--font-he); font-weight: 600; font-size: clamp(21px, 4.6vw, 24px); line-height: 1.3; direction: rtl; text-align: right; unicode-bidi: isolate; }
+.hf-bolha-hora { font-family: var(--font-ui); font-size: 11px; color: var(--ink-muted, #5F6A66); direction: ltr; text-align: left; }
+.hf-digitando { justify-self: end; display: flex; gap: 5px; padding: 12px 16px; border-radius: 16px 4px 16px 16px; background: var(--card); }
+.hf-digitando i { width: 8px; height: 8px; border-radius: 50%; background: #8A9693; animation: hf-digitando 1s infinite; }
+.hf-digitando i:nth-child(2) { animation-delay: .15s; }
+.hf-digitando i:nth-child(3) { animation-delay: .3s; }
+@keyframes hf-digitando { 0%, 60%, 100% { transform: none; opacity: .4; } 30% { transform: translateY(-5px); opacity: 1; } }
+.hf-celular-rodape { display: grid; gap: 10px; padding: 12px 14px 14px; border-top: 1px solid var(--line); background: var(--surface, var(--card)); }
+.hf-resposta { min-height: 48px; padding: 8px 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--ink);
+  font-family: var(--font-ui); font-weight: 600; font-size: 16px; text-align: start; }
+.hf-resposta:hover:not(:disabled) { border-color: var(--teal); }
+.hf-resposta:disabled { opacity: .6; }
+.hf-resposta-errada { border-color: var(--amber); background: var(--amber-wash); animation: hf-sacode .4s; opacity: .75; }
+
+/* ── A corrida das palavras (05/11/2026) ───────────────────────────────────
+   A revisão rápida de Um dia em Israel (app/um-dia-em-israel/corrida): uma
+   pista escura, a palavra no centro de um anel que se esvazia em seis
+   segundos. Com "menos movimento" o anel some e fica só a contagem em
+   segundos, que é a mesma informação. */
+.hf-pista { border-radius: 24px; background: linear-gradient(#155059, #0E3B43); color: #FBF9F5; padding: 18px clamp(12px, 3vw, 24px); box-shadow: var(--sh-mock); }
+.hf-pista-go { min-height: 52px; padding: 0 28px; border-radius: 14px; background: #E7B65A; color: #0E3B43; font-family: var(--font-ui); font-weight: 700; font-size: 17px; }
+.hf-pista-palco { position: relative; display: grid; place-items: center; width: min(240px, 70vw); aspect-ratio: 1; margin-inline: auto; }
+.hf-pista-anel { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.hf-pista-anel-fundo { fill: none; stroke: rgba(251, 249, 245, .15); stroke-width: 6; }
+.hf-pista-anel-tempo { fill: none; stroke: #E7B65A; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.hf-pista-corre { animation: hf-pista-tempo var(--dur, 6s) linear forwards; }
+.hf-pista-parado { stroke-dashoffset: 1; }
+@keyframes hf-pista-tempo { to { stroke-dashoffset: 1; } }
+@media (prefers-reduced-motion: reduce) { .hf-pista-anel { display: none; } }
+html[data-a11y-movimento='reduzido'] .hf-pista-anel { display: none; }
+.hf-pista-palavra { font-family: var(--font-he); font-weight: 700; font-size: clamp(34px, 9vw, 46px); line-height: 1.1; direction: rtl; unicode-bidi: isolate; text-align: center; padding: 0 18px; }
+.hf-pista-segundos { position: absolute; bottom: 18%; font-family: var(--font-display); font-weight: 700; font-size: 15px; color: #BFD3CF; font-variant-numeric: tabular-nums; }
+.hf-pista-op { min-height: 52px; padding: 8px 14px; border-radius: 14px; border: 2px solid rgba(251, 249, 245, .35); background: transparent; color: #FBF9F5;
+  font-family: var(--font-ui); font-weight: 600; font-size: 16.5px; }
+.hf-pista-op:hover:not(:disabled) { border-color: #8FD6C8; }
+.hf-pista-op-certa { border-color: #8FD6C8; background: rgba(143, 214, 200, .18); }
+.hf-pista-op-errada { border-color: #F2A08A; color: #F2A08A; animation: hf-sacode .4s; }
+
 /* ── os cartões ilustrados (05/11/2026, aprovados pelo dono) ─────────────
    Uma cena desenhada em cima (components/ilustra/), o texto embaixo, sombra
    macia e o cartão que sobe um pouco no toque. A cena é um SVG em "meet",

@@ -12,6 +12,7 @@ import { CenaDoJogo } from '@/components/ilustra/CenaDoJogo';
 import { CenaDaVidaReal, type CenaReal } from '@/components/ilustra/CenaDaVidaReal';
 import { IconeCadeado } from '@/components/shell/NavIcons';
 import { allLetters, cardapiosDoCurso, placasDaRua, umDiaEmIsrael, type Letter } from '@/lib/content';
+import { corridaAberta, palavrasDaCorrida, palavrasDasParadas } from '@/lib/engine/corrida';
 import { alfabetoDe, palavrasLegiveis, vocabularioDoCurso } from '@/lib/engine/palavras';
 import { placasParaLer } from '@/lib/engine/rua';
 import { placasLegiveis } from '@/lib/engine/um-dia';
@@ -41,6 +42,9 @@ export function HebraicoNaVidaReal({ state, unlocked, letrasDaCena, pomarFechado
     if (dia.length) out.push({ id: 'dia', titulo: tx.vrDiaTitulo, desc: tx.vrDiaDesc, conta: tx.vrPlacas(diaLe, dia.length), aberto: true, cena: 'dia', href: '/um-dia-em-israel' });
     if (rua.length) out.push({ id: 'rua', titulo: tx.vrRuaTitulo, desc: tx.vrRuaDesc, conta: tx.vrFotos(ruaLe, rua.length), aberto: true, cena: 'rua', href: '/hebraico-na-rua' });
     if (cardapiosDoCurso().length) out.push({ id: 'cardapio', titulo: tx.vrCardapioTitulo, desc: tx.vrCardapioDesc, conta: tem22 ? tx.vrCardapioAberto : tx.vrCom22, aberto: tem22, cena: 'cardapio', href: '/cardapios' });
+    /* A corrida das palavras (05/11/2026): as palavras das paradas que o aluno já lê. */
+    const corrida = palavrasDaCorrida(palavrasDasParadas(umDiaEmIsrael(), cardapiosDoCurso(), tem22), concluidas);
+    out.push({ id: 'corrida', titulo: tx.vrCorridaTitulo, desc: tx.vrCorridaDesc, conta: corridaAberta(corrida) ? tx.vrCorridaConta(corrida.length) : tx.abreMais, aberto: corridaAberta(corrida), cena: 'corrida', href: '/um-dia-em-israel/corrida' });
     return out;
   }, [state, unlocked, pomarFechado]);
 
