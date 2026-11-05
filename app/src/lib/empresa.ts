@@ -83,8 +83,17 @@ export type Empresa = {
      * `paddle`      o site em inglês: cartão, PayPal, Apple Pay e Google Pay
      *               no checkout do Paddle, em dólar, com confirmação
      *               automática. Escrito pelo exportador na build em inglês.
+     * `stripe`      os sites de fora desde 05/11/2026: o Checkout hospedado
+     *               do Stripe, em dólar, com confirmação automática. Escrito
+     *               pelo exportador quando `exterior` é "stripe".
      */
-    modo: 'pix-direto' | 'mercadopago' | 'paddle';
+    modo: 'pix-direto' | 'mercadopago' | 'paddle' | 'stripe';
+    /**
+     * Quem cobra nos sites de fora (inglês e espanhol): "stripe" ou "paddle".
+     * O Worker lê o mesmo campo (api/pay.js), e o exportador o transforma no
+     * `modo` da build de fora. Sem ele, Paddle.
+     */
+    exterior?: 'stripe' | 'paddle';
     /**
      * O que DÁ para oferecer nesta build.
      *
@@ -215,6 +224,12 @@ export const confirmaSozinho = (): boolean => empresa.pagamento.modo !== 'pix-di
 
 /** O site em inglês: o pagamento é o checkout do Paddle (lib/paddle-checkout.ts). */
 export const pagaPeloPaddle = (): boolean => empresa.pagamento.modo === 'paddle';
+
+/** Os sites de fora desde 05/11/2026: o Checkout hospedado do Stripe. */
+export const pagaPeloStripe = (): boolean => empresa.pagamento.modo === 'stripe';
+
+/** Um botão só, de um provedor de fora (Paddle ou Stripe): sem PIX nem parcelas. */
+export const pagaDeFora = (): boolean => pagaPeloPaddle() || pagaPeloStripe();
 
 /* ── as frases que se repetem, num lugar só (auditoria de 01/10/2026) ──────
  * Cada uma destas aparecia escrita à mão em três a nove páginas, e cada

@@ -57,8 +57,8 @@
     "garantiaDias": 7,
     "prazoReembolsoUteis": 10,
     "atualizadoEm": "2026-11-04",
-    "atualizadoEmEn": "2026-10-29",
-    "atualizadoEmEs": "2026-11-04"
+    "atualizadoEmEn": "2026-11-05",
+    "atualizadoEmEs": "2026-11-05"
   },
 
   "_notaFormas": [
@@ -107,6 +107,7 @@
 
   "pagamento": {
     "modo": "mercadopago",
+    "exterior": "stripe",
     "formas": {
       "pix": true,
       "cartao": true

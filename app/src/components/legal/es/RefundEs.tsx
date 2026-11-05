@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { Artigo, LegalPage, Lista } from '@/components/legal/Legal';
 import { Card } from '@/components/ui/Card';
 import { flagship } from '@/lib/catalog';
-import { confirmacaoDaDesistencia, empresa, INICIO_DO_ACESSO } from '@/lib/empresa';
+import { confirmacaoDaDesistencia, empresa, INICIO_DO_ACESSO, pagaPeloStripe } from '@/lib/empresa';
 
 const link = 'text-[var(--accent)] hover:underline';
 
@@ -76,9 +76,14 @@ export function RefundEs() {
 
       <Artigo n={3} titulo="Cuándo vuelve el dinero">
         <p>
-          El reembolso se le pide de inmediato a <strong>Paddle</strong>, nuestro revendedor y el comerciante
-          registrado (Merchant of Record) de la compra. Vuelve al medio de pago que usaste (tarjeta, PayPal,
-          Apple Pay o Google Pay), por el monto total. Cuándo aparece en tu estado de cuenta depende de tu banco
+          {pagaPeloStripe() ? (
+            <>Le pedimos el reembolso de inmediato a <strong>Stripe</strong>, nuestro procesador de pagos.
+            Vuelve al medio de pago que usaste (tarjeta, Apple Pay o Google Pay), por el monto total.</>
+          ) : (
+            <>El reembolso se le pide de inmediato a <strong>Paddle</strong>, nuestro revendedor y el comerciante
+            registrado (Merchant of Record) de la compra. Vuelve al medio de pago que usaste (tarjeta, PayPal,
+            Apple Pay o Google Pay), por el monto total.</>
+          )} Cuándo aparece en tu estado de cuenta depende de tu banco
           o del emisor de tu tarjeta, no de nosotros.
         </p>
       </Artigo>

@@ -26,7 +26,10 @@ export const DIAS_ARREPENDIMENTO = 7;
    etapa 6). Lido do pedido, e não do Worker, para que um pedido nunca mude
    de prazo depois de pago. */
 export const DIAS_PADDLE = 14;
-export const diasDoPedido = row => (row && row.provider === 'paddle' ? DIAS_PADDLE : DIAS_ARREPENDIMENTO);
+/* O Stripe dos sites de fora (05/11/2026) segue os mesmos 14 dias: é o
+   prazo que os Termos em inglês e espanhol prometem. */
+export const diasDoPedido = row => (row && (row.provider === 'paddle' || row.provider === 'stripe')
+  ? DIAS_PADDLE : DIAS_ARREPENDIMENTO);
 
 export function prazoDeDesistencia(paidAt, dias = DIAS_ARREPENDIMENTO) {
   if (!paidAt || !dias) return null;

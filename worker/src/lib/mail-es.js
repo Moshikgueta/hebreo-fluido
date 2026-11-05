@@ -15,6 +15,10 @@
 
 import { nomeSeguro } from './nome.js';
 import { escapar } from './mail.js';
+import empresa from '../../../data/empresa.json';
+
+/* Stripe o Paddle en los sitios de fuera (`pagamento.exterior`, 05/11/2026). */
+const PELO_STRIPE = (empresa.pagamento && empresa.pagamento.exterior) === 'stripe';
 import { translitEs } from '../../../tools/translit-es.mjs';
 
 function saudacao(nome) {
@@ -298,8 +302,10 @@ export function mensagemDeCompra({
   const comoDesistir = arrependimentoDias && desistir
     ? `Para cancelar, abre ${desistir} y usa "Cancelar la compra", o responde a este correo.`
     : null;
-  const vendedor = 'El pago lo procesó Paddle, nuestro revendedor autorizado, por eso el cargo en ' +
-    'tu estado de cuenta aparece como Paddle. Paddle también te envía la factura por correo.';
+  const vendedor = PELO_STRIPE
+    ? 'El pago lo procesó Stripe, nuestro procesador de pagos.'
+    : 'El pago lo procesó Paddle, nuestro revendedor autorizado, por eso el cargo en ' +
+      'tu estado de cuenta aparece como Paddle. Paddle también te envía la factura por correo.';
 
   const text = [
     ola,
@@ -381,7 +387,7 @@ export function mensagemDeArrependimento({
 }) {
   const ola = saudacao(nome);
   const assinatura = marca || 'Hebraico Fluente';
-  const devolucao = (estornoPedido ? 'El reembolso ya se le pidió a Paddle. ' : '') +
+  const devolucao = (estornoPedido ? `El reembolso ya se le pidió a ${PELO_STRIPE ? 'Stripe' : 'Paddle'}. ` : '') +
     'Vuelve por el medio de pago que usaste, según los plazos de tu banco o del emisor de tu tarjeta.';
   const fim = 'Tu acceso al curso termina cuando se procesa el reembolso; tu progreso de estudio ' +
     'queda guardado, por si algún día vuelves.';

@@ -85,7 +85,7 @@ const en: Traducao<typeof pt> = {
   pagamentoPixECartao: (parcelas: string) =>
     `Payment by PIX or card, ${parcelas}. Access unlocked instantly.`,
   pagamentoCartao: () =>
-    'Payment by card, PayPal, Apple Pay or Google Pay through Paddle, our authorized reseller. Access unlocked instantly.',
+    'Payment by card, Apple Pay or Google Pay through Stripe. Access unlocked instantly.',
   pagamentoPixNaHora: 'Payment by PIX. Access unlocked instantly.',
 
   aprender: 'Learn',
@@ -139,7 +139,7 @@ const es: Traducao<typeof pt> = {
   pagamentoPixECartao: (parcelas: string) =>
     `Pago por PIX o tarjeta, ${parcelas}. Acceso liberado al instante.`,
   pagamentoCartao: () =>
-    'Pago con tarjeta, PayPal, Apple Pay o Google Pay a través de Paddle, nuestro revendedor autorizado. Acceso liberado al instante.',
+    'Pago con tarjeta, Apple Pay o Google Pay a través de Stripe. Acceso liberado al instante.',
   pagamentoPixNaHora: 'Pago por PIX. Acceso liberado al instante.',
 
   aprender: 'Aprender',

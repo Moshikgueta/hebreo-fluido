@@ -106,7 +106,48 @@ const ehSiteEmIngles = /^\s*LOCALE\s*=\s*"(en|es)"/m.test(TOML);
    mesma regra volta a parar a publicação com chave de sandbox. */
 const semDominio = /^\s*SITE_ORIGIN\s*=\s*"https:\/\/[^"]+\.workers\.dev\/?"/m.test(TOML);
 
-if (ehSiteEmIngles) {
+/* Desde 05/11/2026 o site de fora pode cobrar pelo Stripe
+   (`pagamento.exterior` em data/empresa.json, worker/src/lib/stripe.js). A
+   mesma regra do Paddle: chave de teste só num site ainda sem domínio. */
+const peloStripe = (empresa.pagamento && empresa.pagamento.exterior) === 'stripe';
+
+if (ehSiteEmIngles && peloStripe) {
+  const chave = String(process.env.STRIPE_SECRET_KEY || '').trim();
+  if (!chave) {
+    diga('⚠ Site de fora sem STRIPE_SECRET_KEY: o checkout vai dizer que o pagamento não está ligado.');
+  } else {
+    const teste = /^(sk|rk)_test_/.test(chave);
+    if (!/^(sk|rk)_(live|test)_/.test(chave)) {
+      diga('⚠ O segredo STRIPE_SECRET_KEY não tem o formato de uma chave secreta do Stripe');
+      diga('  (sk_live_... ou rk_live_...). A chave publicável (pk_...) não serve aqui.');
+    } else if (teste && semDominio) {
+      diga('⚠ Chave de TESTE do Stripe num site ainda sem domínio (workers.dev):');
+      diga('  o checkout é o de teste e não cobra nada. Com o domínio, troque pela');
+      diga('  chave de produção (sk_live_...).');
+    } else if (teste) {
+      diga('✗ O segredo STRIPE_SECRET_KEY é uma chave de TESTE (sk_test_ ou rk_test_).');
+      diga('  Com ela o comprador iria para um checkout que não cobra nada.');
+      diga('  Publicação PARADA; o site continua com a versão anterior.');
+      diga('  Cole a chave de PRODUÇÃO (sk_live_...) em Settings → Secrets and');
+      diga('  variables → Actions → STRIPE_SECRET_KEY e publique de novo.');
+      process.exit(1);
+    }
+    try {
+      const r = await fetch('https://api.stripe.com/v1/balance', {
+        headers: { Authorization: `Bearer ${chave}` }
+      });
+      diga(r.ok
+        ? `Stripe autentica (${teste ? 'TESTE: não cobra de verdade' : 'produção'}).`
+        : `⚠ O Stripe recusou a chave (HTTP ${r.status}). Confira o segredo STRIPE_SECRET_KEY.`);
+    } catch (e) {
+      diga(`⚠ Não consegui falar com o Stripe: ${e && e.message || e}.`);
+    }
+    if (!String(process.env.STRIPE_WEBHOOK_SECRET || '').trim().startsWith('whsec_')) {
+      diga('⚠ Sem STRIPE_WEBHOOK_SECRET (whsec_...): o aviso do Stripe é recusado e o');
+      diga('  acesso só é liberado na volta do comprador e na varredura de 5 em 5 min.');
+    }
+  }
+} else if (ehSiteEmIngles) {
   const chave = String(process.env.PADDLE_API_KEY || '').trim();
   if (!chave) {
     diga('⚠ Site em inglês sem PADDLE_API_KEY: o checkout vai dizer que o pagamento não está ligado.');

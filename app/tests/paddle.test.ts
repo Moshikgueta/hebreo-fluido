@@ -13,6 +13,14 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
+/* Desde 05/11/2026 os sites de fora cobram pelo Stripe (`pagamento.exterior`
+   em data/empresa.json). O Paddle continua no código, escolhido pelo mesmo
+   campo: estes testes o forçam em "paddle". */
+vi.mock('../../data/empresa.json', () => {
+  const real = JSON.parse(readFileSync(new URL('../../data/empresa.json', import.meta.url), 'utf8'));
+  return { default: { ...real, pagamento: { ...real.pagamento, exterior: 'paddle' } } };
+});
 import { cookieDe, envDeTeste, pedido, saudeDetalhada } from './ajuda/d1';
 // @ts-expect-error - módulo JS do Worker, sem tipos
 import * as auth from '../../worker/src/api/auth.js';

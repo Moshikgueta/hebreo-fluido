@@ -149,8 +149,8 @@ espera "tabela de confirmação de e-mail criada" true "$(campo verificacao)"
 espera "SESSION_SECRET definido"       true "$(campo session)"
 if [ "$(campo payments)" != "true" ]; then
   if [ "$EM_INGLES" = 1 ]; then
-    echo "  · pagamento desligado (PADDLE_API_KEY ou PADDLE_CLIENT_TOKEN ausente ou de"
-    echo "    outro ambiente) - o site funciona assim"
+    echo "  · pagamento desligado (sem a chave do Stripe, ou do Paddle e o token do"
+    echo "    Paddle.js, ou de outro ambiente) - o site funciona assim"
   else
     echo "  · pagamento desligado (MP_ACCESS_TOKEN ausente) - o site funciona assim"
   fi
@@ -396,9 +396,9 @@ case "$B" in
   http://127.0.0.1*|http://localhost*) ;;
   *)
     if [ "$EM_INGLES" = 1 ] && [ "$MODO" = teste ] && [[ "$B" == *.workers.dev* ]]; then
-      # Site em inglês sem domínio: o sandbox do Paddle é permitido
-      # (scripts/pagamento-ativo.mjs, semDominio; TESTE-PADDLE.md).
-      echo "  · Paddle no SANDBOX, num site ainda sem domínio: não cobra nada"
+      # Site de fora sem domínio: o sandbox do Paddle e a chave de teste do
+      # Stripe são permitidos (scripts/pagamento-ativo.mjs, semDominio).
+      echo "  · cobrança de TESTE, num site ainda sem domínio: não cobra nada"
     elif grep -q '"payments":true' <<<"$HEALTH"; then
       espera "a cobrança no ar é de produção (não de teste)" producao "$MODO"
       espera "a conta da Mercado Pago não é um usuário de teste" nao \
@@ -408,8 +408,12 @@ case "$B" in
 esac
 # No site em inglês o meio é um só (o checkout do Paddle), e o preço é o
 # price.usd do catálogo, sem desconto de PIX.
+# Desde 05/11/2026 o site de fora pode cobrar pelo Stripe (o campo
+# `cobranca` da saúde diz qual): o meio é `stripe`, e o aviso é outro.
+COBRANCA="$(grep -o '"cobranca":"[a-z-]*"' <<<"$HEALTH" | cut -d'"' -f4)"
 MEIO=pix
 [ "$EM_INGLES" = 1 ] && MEIO=paddle
+[ "$EM_INGLES" = 1 ] && [ "$COBRANCA" = stripe ] && MEIO=stripe
 if [ "$MODO" = "producao" ]; then
   echo "  · token de PRODUÇÃO: pulando a criação de pedido para não deixar"
   echo "    uma cobrança pendente no painel a cada publicação."
@@ -452,7 +456,10 @@ espera "pedido de outra pessoa não é lido" 404 "$(code -b "$JAR" "$B/api/pay/v
 
 echo "Webhook"
 espera "sem assinatura, recusa" 401 "$(code -X POST "$B/api/pay/webhook?type=payment&data.id=1")"
-if [ "$EM_INGLES" = 1 ]; then
+if [ "$MEIO" = stripe ]; then
+  espera "aviso do Stripe sem assinatura, recusa" 401 \
+    "$(code -X POST "$B/api/pay/stripe" -H 'content-type: application/json' -d '{"type":"checkout.session.completed","data":{"object":{}}}')"
+elif [ "$EM_INGLES" = 1 ]; then
   espera "aviso do Paddle sem assinatura, recusa" 401 \
     "$(code -X POST "$B/api/pay/paddle" -H 'content-type: application/json' -d '{"event_type":"transaction.completed","data":{}}')"
 fi

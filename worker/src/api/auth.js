@@ -29,6 +29,7 @@ import {
 } from '../lib/session.js';
 import { isSandbox, tokenFormato, vendedorFormato } from '../lib/mercadopago.js';
 import { ehSandbox, paddlePronto, tokenDoCliente } from '../lib/paddle.js';
+import { ehTeste as stripeDeTeste, stripePronto } from '../lib/stripe.js';
 import { nomeSeguro } from '../lib/nome.js';
 import { exigirAdmin, isAdmin } from '../lib/admin.js';
 import { avisarRetirada } from './depoimentos.js';
@@ -897,7 +898,9 @@ export async function health({ request, env }) {
      credencial foi colada, de quem é a conta) ficam `null`. */
   /* E o em espanhol, igual (04/11/2026). */
   const emIngles = env.LOCALE === 'en' || env.LOCALE === 'es';
-  const paddleLigado = emIngles && paddlePronto(env) && !!tokenDoCliente(env);
+  /* Ou pelo Stripe, desde 05/11/2026: `pagamento.exterior` em data/empresa.json. */
+  const peloStripe = emIngles && (empresa.pagamento && empresa.pagamento.exterior) === 'stripe';
+  const paddleLigado = emIngles && (peloStripe ? stripePronto(env) : paddlePronto(env) && !!tokenDoCliente(env));
 
   const out = {
     /* A ligação com o D1 existe no Worker? `false` = binding ausente ou
@@ -937,19 +940,19 @@ export async function health({ request, env }) {
     /* Cobrança ligada? `false` é um estado legítimo - ver o checkout. */
     payments: emIngles ? paddleLigado : !!env.MP_ACCESS_TOKEN,
     /* Webhook verificável? `false` faz /api/pay/webhook recusar tudo. */
-    webhook: emIngles ? !!env.PADDLE_WEBHOOK_SECRET : !!env.MP_WEBHOOK_SECRET,
+    webhook: emIngles ? !!(peloStripe ? env.STRIPE_WEBHOOK_SECRET : env.PADDLE_WEBHOOK_SECRET) : !!env.MP_WEBHOOK_SECRET,
     /* "teste" cobra nada; "producao" cobra de verdade. Deriva do prefixo do
        token, então esta linha é a confirmação de qual credencial está no ar -
        a pergunta que, errada, custa semanas de venda em silêncio. */
     modo: emIngles
-      ? (paddleLigado ? (ehSandbox(env) ? 'teste' : 'producao') : 'desligado')
+      ? (paddleLigado ? ((peloStripe ? stripeDeTeste(env) : ehSandbox(env)) ? 'teste' : 'producao') : 'desligado')
       : (env.MP_ACCESS_TOKEN ? (isSandbox(env) ? 'teste' : 'producao') : 'desligado'),
     /* Como ESTA publicação cobra: `mercadopago` ou `pix-direto`. É o valor
        que o deploy escreveu em data/empresa.json depois de testar o token -
        `pix-direto` aqui, com o arquivo do repositório dizendo mercadopago,
        quer dizer que a Mercado Pago recusou a credencial e o cartão está
        desligado (auditoria de 28/09, PAY-009). */
-    cobranca: emIngles ? 'paddle' : ((empresa.pagamento && empresa.pagamento.modo) || 'mercadopago'),
+    cobranca: emIngles ? (peloStripe ? 'stripe' : 'paddle') : ((empresa.pagamento && empresa.pagamento.modo) || 'mercadopago'),
     /* QUE credencial foi colada - `access-token`, `chave-publica`,
        `formato-desconhecido` ou `ausente`. Nunca um pedaço do valor.
 
