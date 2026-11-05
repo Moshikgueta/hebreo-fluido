@@ -1,0 +1,89 @@
+{
+  "_nota": "Nome no copo (05/11/2026): a parada das 10h30 de Um dia em Israel (lib/engine/copos.ts). Nomes israelenses comuns, escritos no copo como o barista escreve. Sem chataf e com daguesh só em בּ/כּ/פּ. Só sai o que tem revisado: true.",
+  "nomes": [
+    {
+      "id": "dani",
+      "he": "דָנִי",
+      "translit": "Dani",
+      "revisado": true
+    },
+    {
+      "id": "noa",
+      "he": "נוֹעָה",
+      "translit": "Noa",
+      "revisado": true
+    },
+    {
+      "id": "yossi",
+      "he": "יוֹסִי",
+      "translit": "Yossi",
+      "revisado": true
+    },
+    {
+      "id": "michal",
+      "he": "מִיכַל",
+      "translit": "Michal",
+      "revisado": true
+    },
+    {
+      "id": "avi",
+      "he": "אָבִי",
+      "translit": "Avi",
+      "revisado": true
+    },
+    {
+      "id": "tamar",
+      "he": "תָמָר",
+      "translit": "Tamar",
+      "revisado": true
+    },
+    {
+      "id": "ronit",
+      "he": "רוֹנִית",
+      "translit": "Ronit",
+      "revisado": true
+    },
+    {
+      "id": "itai",
+      "he": "אִיתַי",
+      "translit": "Itai",
+      "revisado": true
+    },
+    {
+      "id": "shira",
+      "he": "שִׁירָה",
+      "translit": "Shira",
+      "revisado": true
+    },
+    {
+      "id": "omer",
+      "he": "עוֹמֶר",
+      "translit": "Omer",
+      "revisado": true
+    },
+    {
+      "id": "david",
+      "he": "דָוִד",
+      "translit": "David",
+      "revisado": true
+    },
+    {
+      "id": "sara",
+      "he": "שָׂרָה",
+      "translit": "Sara",
+      "revisado": true
+    },
+    {
+      "id": "moshe",
+      "he": "מֹשֶׁה",
+      "translit": "Moshe",
+      "revisado": true
+    },
+    {
+      "id": "yael",
+      "he": "יָעֵל",
+      "translit": "Yael",
+      "revisado": true
+    }
+  ]
+}

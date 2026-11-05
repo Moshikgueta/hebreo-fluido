@@ -662,6 +662,27 @@ button.hf-festa-cartao:hover { transform: translateY(-2px); }
 .hf-festa-sobe { animation: hf-festa-sobe .7s cubic-bezier(.3, .8, .3, 1) both; }
 @keyframes hf-festa-sobe { 0% { opacity: 0; transform: translateY(40px) scale(.92); } 100% { opacity: 1; transform: none; } }
 
+/* ── Nome no copo (05/11/2026) ─────────────────────────────────────────────
+   A parada das 10h30 (app/um-dia-em-israel/copos): copos de papel num balcão
+   de madeira, com o nome escrito à mão, torto. O balcão e os copos são os
+   mesmos nos dois temas. Os copos deslizam até o balcão, o vapor sobe e o
+   copo certo levanta; com "menos movimento", tudo fica parado. */
+.hf-balcao { border-radius: 24px; background: linear-gradient(#8C5426, #6E4527); border-top: 6px solid #B78A5A; padding: 18px clamp(10px, 3vw, 22px); box-shadow: var(--sh-mock); }
+.hf-copo-btn { display: grid; justify-items: center; gap: 6px; width: 100%; }
+.hf-copo-desliza .hf-copo-btn { animation: hf-copo-desliza .55s cubic-bezier(.3, .8, .3, 1) both; }
+@keyframes hf-copo-desliza { from { opacity: 0; transform: translateX(-30px) rotate(-6deg); } to { opacity: 1; transform: none; } }
+.hf-copo { position: relative; width: 96px; height: 124px; }
+.hf-copo svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.hf-copo-vapor path { fill: none; stroke: #FBF9F5; stroke-width: 2.4; stroke-linecap: round; animation: hf-copo-vapor 2.6s ease-in-out infinite; }
+.hf-copo-vapor path:nth-child(2) { animation-delay: .6s; }
+@keyframes hf-copo-vapor { 0% { transform: translateY(4px); opacity: 0; } 40% { opacity: .9; } 100% { transform: translateY(-8px); opacity: 0; } }
+.hf-copo-nome { position: absolute; left: 12px; right: 12px; top: 58px; text-align: center; font-family: var(--font-he); font-weight: 700; font-size: 22px; line-height: 1.05;
+  color: #1B211F; direction: rtl; unicode-bidi: isolate; transform: rotate(-4deg); }
+.hf-copo-certo .hf-copo { animation: hf-copo-levanta .6s ease both; }
+.hf-copo-certo .hf-copo::after { content: ""; position: absolute; inset: -6px; border-radius: 14px; outline: 4px solid var(--teal); }
+@keyframes hf-copo-levanta { 40% { transform: translateY(-14px) rotate(4deg); } 100% { transform: translateY(-6px); } }
+.hf-copo-errado { animation: hf-sacode .4s !important; opacity: .5; }
+
 /* ── os cartões ilustrados (05/11/2026, aprovados pelo dono) ─────────────
    Uma cena desenhada em cima (components/ilustra/), o texto embaixo, sombra
    macia e o cartão que sobe um pouco no toque. A cena é um SVG em "meet",

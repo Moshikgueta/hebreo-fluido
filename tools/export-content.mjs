@@ -879,6 +879,24 @@ function main() {
     cartoesDoDia.push({ ...publico, he: NFC(c.he) });
   }
 
+  /* ── Um dia em Israel: os nomes no copo (05/11/2026) ─────────────────
+     A parada das 10h30 (lib/engine/copos.ts). Só o nome e a leitura; as
+     mesmas regras de nikud. */
+  const nomesNoCopo = [];
+  const idsDosNomes = new Set();
+  for (const n of readJson('data/nomes-no-copo.json').nomes) {
+    if (n.revisado !== true) continue;
+    for (const campo of ['id', 'he', 'translit']) {
+      if (!n[campo]) throw new Error(`nomes-no-copo.json: o nome ${n.id ?? '?'} não tem ${campo}`);
+    }
+    if (idsDosNomes.has(n.id)) throw new Error(`nomes-no-copo.json: id repetido ${n.id}`);
+    idsDosNomes.add(n.id);
+    const comPonto = [...NFC(n.he).matchAll(/([\u05D0-\u05EA])[\u05B0-\u05BB\u05C1\u05C2\u05C7]*\u05BC/gu)].map(m => m[1]);
+    if (comPonto.some(l => !'בכךפףו'.includes(l))) throw new Error(`nomes-no-copo.json: daguesh fora de בּ/כּ/פּ em ${n.id}: ${n.he}`);
+    if (/[\u05B1-\u05B3]/u.test(n.he)) throw new Error(`nomes-no-copo.json: chataf em ${n.id}: ${n.he} (use a vogal simples)`);
+    nomesNoCopo.push({ id: n.id, he: NFC(n.he), translit: n.translit });
+  }
+
   /* ── os mini-textos de leitura corrida ─────────────────────────────
      Um texto curto por módulo, do 3 ao 7. São as únicas frases do curso
      escritas para ele, e por isso cada um nasce com `revisado: false`: o
@@ -994,7 +1012,7 @@ function main() {
     })),
     rua: placasDaRua,
     cardapios,
-    umDia: { placas: placasDoDia, cartoes: cartoesDoDia }
+    umDia: { placas: placasDoDia, cartoes: cartoesDoDia, copos: nomesNoCopo }
   }, null, 2) + '\n');
 
   /* ── o curso Hebraico A1 (06/10/2026) ────────────────────────────────
