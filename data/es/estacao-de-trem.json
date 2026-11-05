@@ -1,0 +1,54 @@
+{
+  "cidades/telaviv/pt": {
+    "pt": "Tel Aviv",
+    "es": "Tel Aviv"
+  },
+  "cidades/yerushalayim/pt": {
+    "pt": "Jerusalém",
+    "es": "Jerusalén"
+  },
+  "cidades/haifa/pt": {
+    "pt": "Haifa",
+    "es": "Haifa"
+  },
+  "cidades/beersheva/pt": {
+    "pt": "Beer Sheva",
+    "es": "Beerseba"
+  },
+  "cidades/nahariya/pt": {
+    "pt": "Nahariya",
+    "es": "Nahariya"
+  },
+  "cidades/ako/pt": {
+    "pt": "Acre",
+    "es": "Acre"
+  },
+  "cidades/ashdod/pt": {
+    "pt": "Ashdod",
+    "es": "Ashdod"
+  },
+  "cidades/netanya/pt": {
+    "pt": "Netanya",
+    "es": "Netanya"
+  },
+  "cidades/herzliya/pt": {
+    "pt": "Herzliya",
+    "es": "Herzliya"
+  },
+  "cidades/modiin/pt": {
+    "pt": "Modiin",
+    "es": "Modi'in"
+  },
+  "cidades/ashkelon/pt": {
+    "pt": "Ashkelon",
+    "es": "Ascalón"
+  },
+  "cidades/beitshemesh/pt": {
+    "pt": "Beit Shemesh",
+    "es": "Beit Shemesh"
+  },
+  "cidades/rishon/pt": {
+    "pt": "Rishon LeZion",
+    "es": "Rishón LeZion"
+  }
+}
