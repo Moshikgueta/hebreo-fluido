@@ -13,9 +13,9 @@ export const metadata: Metadata = meta({
   title: process.env.NEXT_PUBLIC_LOCALE === 'en' ? 'Refund and Cancellation Policy - Hebraico Fluente'
     : process.env.NEXT_PUBLIC_LOCALE === 'es' ? 'Reembolso y Cancelación - Hebraico Fluente' : 'Reembolso e Cancelamento - Hebraico Fluente',
   description: process.env.NEXT_PUBLIC_LOCALE === 'en'
-    ? '14 days to cancel, no reason needed, with your money back. How to ask, when the money comes back, and what happens to your access.'
+    ? `${empresa.politicas.arrependimentoDias} days to cancel, no reason needed, with your money back. How to ask, when the money comes back, and what happens to your access.`
     : process.env.NEXT_PUBLIC_LOCALE === 'es'
-    ? '14 días para desistir, sin dar motivos, con tu dinero de vuelta. Cómo pedirlo, cuándo vuelve el dinero y qué pasa con tu acceso.'
+    ? `${empresa.politicas.arrependimentoDias} días para desistir, sin dar motivos, con tu dinero de vuelta. Cómo pedirlo, cuándo vuelve el dinero y qué pasa con tu acceso.`
     : 'Sete dias para desistir, sem justificativa, com o dinheiro de volta. Como pedir, ' +
     'em quanto tempo o valor retorna, e o que acontece com o acesso.'
 });

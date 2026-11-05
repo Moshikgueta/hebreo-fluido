@@ -106,7 +106,7 @@ const en: Traducao<typeof pt> = {
   duvidasFrequentes: 'frequently asked questions',
   ctaTitulo: 'Not a student yet?',
   // etapa 5: o site em inglês cobra pelo Paddle
-  ctaLinha: 'The first letter takes ten minutes, and you have 14 days to cancel without having to explain why.'
+  ctaLinha: 'The first letter takes ten minutes, and you have 7 days to cancel without having to explain why.'
 };
 
 const es: Traducao<typeof pt> = {
@@ -163,7 +163,7 @@ const es: Traducao<typeof pt> = {
   duvidasFrequentes: 'preguntas frecuentes',
   ctaTitulo: '¿Todavía no eres alumno?',
   // etapa 5: o site em espanhol cobra pelo Paddle
-  ctaLinha: 'La primera letra toma diez minutos, y tienes 14 días para cancelar sin tener que explicar por qué.'
+  ctaLinha: 'La primera letra toma diez minutos, y tienes 7 días para cancelar sin tener que explicar por qué.'
 };
 
 export const DICIONARIO = { pt, en, es };

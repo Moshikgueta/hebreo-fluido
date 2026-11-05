@@ -246,7 +246,7 @@ describe('o acesso só abre pela consulta ao Stripe', () => {
     const recibos = enviados.filter(e => e.to === 'buyer@example.com' && /access is open/.test(e.subject));
     expect(recibos).toHaveLength(1);
     expect(recibos[0]!.text).toContain('Amount: $47.00');
-    expect(recibos[0]!.text).toContain('14 days');
+    expect(recibos[0]!.text).toContain('7 days');
     expect(recibos[0]!.text).toContain('Stripe');
     expect(recibos[0]!.text).not.toContain('Paddle');
 
@@ -296,7 +296,7 @@ describe('o acesso só abre pela consulta ao Stripe', () => {
 });
 
 describe('a desistência no Stripe', () => {
-  it('no 10º dia ainda vale (14 dias), pede o estorno ao Stripe e o acesso fecha quando ele devolve', async () => {
+  it('no 5º dia ainda vale (7 dias), pede o estorno ao Stripe e o acesso fecha quando ele devolve', async () => {
     const env = envStripe();
     const a = await compradora(env);
     const o = await (await criar(env, a.cookie)).json() as Criado;
@@ -304,7 +304,7 @@ describe('a desistência no Stripe', () => {
     await pay.webhookStripe({ request: await aviso('checkout.session.completed', { id: sessaoDe(o), client_reference_id: o.id }), env });
     expect(await hasEntitlement(env, a.id, 'alfabetizacao')).toBe(true);
 
-    vi.useFakeTimers({ now: Date.now() + 10 * 86_400_000, toFake: ['Date'] });
+    vi.useFakeTimers({ now: Date.now() + 5 * 86_400_000, toFake: ['Date'] });
     const login = await auth.login({ request: pedido(`${SITE}/api/auth/login`, { email: 'buyer@example.com', password: 'good-password-123' }), env, ctx });
     const r = await pay.desistir({ request: pedido(`${SITE}/api/pay/desistir`, { order: o.id }, { Cookie: cookieDe(login) }), env, ctx });
     expect(r.status).toBe(200);
@@ -321,16 +321,22 @@ describe('a desistência no Stripe', () => {
     expect(linha(env, `SELECT status FROM orders WHERE id = '${o.id}'`)).toEqual({ status: 'refunded' });
   });
 
-  it('o prazo no pedido é de 14 dias', async () => {
+  it('o prazo no pedido é de 7 dias (decisão do dono), e no 9º dia não vale mais', async () => {
     const env = envStripe();
     const a = await compradora(env);
     const o = await (await criar(env, a.cookie)).json() as Criado;
     pagar(sessaoDe(o));
     await pay.webhookStripe({ request: await aviso('checkout.session.completed', { id: sessaoDe(o), client_reference_id: o.id }), env });
-    const lista = await (await pay.orders({ request: new Request(`${SITE}/api/orders`, { headers: { Cookie: a.cookie } }), env })).json() as { orders: { desistirAte: string }[] };
+    const lista = await (await pay.orders({ request: new Request(`${SITE}/api/orders`, { headers: { Cookie: a.cookie } }), env })).json() as { orders: { id: string; desistirAte: string }[] };
     const dias = (Date.parse(lista.orders[0]!.desistirAte) - Date.now()) / 86_400_000;
-    expect(dias).toBeGreaterThan(13.5);
-    expect(dias).toBeLessThan(15.1);
+    expect(dias).toBeGreaterThan(6.5);
+    expect(dias).toBeLessThan(8.1);
+
+    vi.useFakeTimers({ now: Date.now() + 9 * 86_400_000, toFake: ['Date'] });
+    const login = await auth.login({ request: pedido(`${SITE}/api/auth/login`, { email: 'buyer@example.com', password: 'good-password-123' }), env, ctx });
+    const r = await pay.desistir({ request: pedido(`${SITE}/api/pay/desistir`, { order: lista.orders[0]!.id }, { Cookie: cookieDe(login) }), env, ctx });
+    expect(r.status).not.toBe(200);
+    expect(estornos).toHaveLength(0);
   });
 });
 
