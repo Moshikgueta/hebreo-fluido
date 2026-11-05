@@ -1070,3 +1070,36 @@ export function letraAtual(state: LearnerState, ordem: readonly string[], portas
   }
   return ultima;
 }
+
+/* ── o que ficou para trás, antes do fim do curso (05/11/2026, decisão do dono) ──
+   A porta entre módulos (acima) só pede a revisão e as leituras de um módulo
+   para ENTRAR no seguinte. Quem já tinha entrado antes dela existir, ou passou
+   rápido pelas letras, chega ao fim com textos e revisões para trás. Antes dos
+   módulos 6 e 7 e do exame final, o que falta nos módulos de letras (1 a 5)
+   tem de ser feito.
+
+   NUNCA TIRA O QUE JÁ FOI DADO: quem já começou o módulo 6 ou 7, ou já fez o
+   exame alguma vez, segue com ele aberto. */
+export type PendenciaDeModulo = {
+  modulo: number;
+  faltaCheckpoint: boolean;
+  faltaLer: { tipo: 'primeira' | 'texto'; id: string }[];
+};
+
+export function pendenciasDasLetras(
+  state: LearnerState,
+  modulos: readonly { n: number; kind?: string; checkpoint: { id: string } | null; textoPrincipal?: boolean }[]
+): PendenciaDeModulo[] {
+  const out: PendenciaDeModulo[] = [];
+  for (const m of modulos) {
+    if (m.kind !== 'letters') continue;
+    const faltaCheckpoint = !!m.checkpoint && !state.checkpoints?.[m.checkpoint.id]?.passedAt;
+    const faltaLer: PendenciaDeModulo['faltaLer'] = [];
+    const primeira = `primeira-leitura-m${m.n}`;
+    const texto = `texto-${m.n}`;
+    if (!state.firsts?.[primeira]) faltaLer.push({ tipo: 'primeira', id: primeira });
+    if (m.textoPrincipal && !state.firsts?.[texto]) faltaLer.push({ tipo: 'texto', id: texto });
+    if (faltaCheckpoint || faltaLer.length) out.push({ modulo: m.n, faltaCheckpoint, faltaLer });
+  }
+  return out;
+}

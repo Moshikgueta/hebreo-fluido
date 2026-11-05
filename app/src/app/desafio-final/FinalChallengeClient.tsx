@@ -30,7 +30,9 @@ import { useProgress } from '@/lib/state/store';
 import { allLetters, course, extras, scenesUpTo, sentencesUpTo } from '@/lib/content';
 import { buildExam, examReport, EXAM_PASS, type Exam, type PartResult }
   from '@/lib/engine/exam';
-import { alphabetComplete, isExtraModuleDone, isLessonComplete, isLessonMastered, lettersLeft, REGRA_DA_CONCLUSAO } from '@/lib/state/rules';
+import { alphabetComplete, isExtraModuleDone, isLessonComplete, isLessonMastered, lettersLeft, pendenciasDasLetras, REGRA_DA_CONCLUSAO } from '@/lib/state/rules';
+import { PendenciasAntesDoFim } from '@/components/learn/PendenciasAntesDoFim';
+import { tx as txPendencias } from '@/i18n/telas/pendencias-antes-do-fim';
 import { idDoSom } from '@/lib/sons';
 import { track } from '@/lib/analytics';
 import { tx } from '@/i18n/telas/academia-final-challenge-client';
@@ -181,6 +183,13 @@ export function FinalChallengeClient() {
         </Card>
       </div>
     );
+  }
+
+  /* ── o que ficou para trás nos módulos 1 a 5 (05/11/2026) ─────────────
+     Quem já fez o exame alguma vez segue com ele aberto. */
+  const pendencias = p.ready ? pendenciasDasLetras(p.state, course.modules) : [];
+  if (pendencias.length && !(p.state.finalChallenge.attempts ?? 0) && !p.state.finalChallenge.completedAt) {
+    return <PendenciasAntesDoFim titulo={txPendencias.tituloExame} pendencias={pendencias} />;
   }
 
   /* ── o prazo de desistência (03/11/2026) ─────────────────────────────── */
