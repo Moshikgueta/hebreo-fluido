@@ -1,0 +1,96 @@
+{
+  "_nota": "A estação de trem (05/11/2026): a parada das 9h de Um dia em Israel (lib/engine/trem.ts). Cidades com estação de trem em Israel. Sem chataf e com daguesh só em בּ/כּ/פּ. Só sai o que tem revisado: true.",
+  "cidades": [
+    {
+      "id": "telaviv",
+      "he": "תֵל אָבִיב",
+      "translit": "Tel Avív",
+      "pt": "Tel Aviv",
+      "revisado": true
+    },
+    {
+      "id": "yerushalayim",
+      "he": "יְרוּשָׁלַיִם",
+      "translit": "Yerushaláyim",
+      "pt": "Jerusalém",
+      "revisado": true
+    },
+    {
+      "id": "haifa",
+      "he": "חֵיפָה",
+      "translit": "Chéifa",
+      "pt": "Haifa",
+      "revisado": true
+    },
+    {
+      "id": "beersheva",
+      "he": "בְּאֵר שֶׁבַע",
+      "translit": "Be'ér Shéva",
+      "pt": "Beer Sheva",
+      "revisado": true
+    },
+    {
+      "id": "nahariya",
+      "he": "נַהַרִיָה",
+      "translit": "Naharíya",
+      "pt": "Nahariya",
+      "revisado": true
+    },
+    {
+      "id": "ako",
+      "he": "עַכּוֹ",
+      "translit": "Akó",
+      "pt": "Acre",
+      "revisado": true
+    },
+    {
+      "id": "ashdod",
+      "he": "אַשְׁדוֹד",
+      "translit": "Ashdód",
+      "pt": "Ashdod",
+      "revisado": true
+    },
+    {
+      "id": "netanya",
+      "he": "נְתַנְיָה",
+      "translit": "Netanyá",
+      "pt": "Netanya",
+      "revisado": true
+    },
+    {
+      "id": "herzliya",
+      "he": "הֶרְצְלִיָה",
+      "translit": "Hertsliyá",
+      "pt": "Herzliya",
+      "revisado": true
+    },
+    {
+      "id": "modiin",
+      "he": "מוֹדִיעִין",
+      "translit": "Modi'ín",
+      "pt": "Modiin",
+      "revisado": true
+    },
+    {
+      "id": "ashkelon",
+      "he": "אַשְׁקְלוֹן",
+      "translit": "Ashkelón",
+      "pt": "Ashkelon",
+      "revisado": true
+    },
+    {
+      "id": "beitshemesh",
+      "he": "בֵּית שֶׁמֶשׁ",
+      "translit": "Beit Shémesh",
+      "pt": "Beit Shemesh",
+      "revisado": true
+    },
+    {
+      "id": "rishon",
+      "he": "רִאשׁוֹן לְצִיוֹן",
+      "translit": "Rishón LeTsiyón",
+      "pt": "Rishon LeZion",
+      "revisado": true
+    }
+  ]
+}

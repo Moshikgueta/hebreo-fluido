@@ -28,12 +28,14 @@ export type DadosDoDia = {
   cartoes?: import('./cartoes').CartaoDeFesta[];
   /** Os nomes no copo (lib/engine/copos.ts). Opcional, como os cartões. */
   copos?: import('./copos').NomeNoCopo[];
+  /** As cidades do painel do trem (lib/engine/trem.ts). Opcional, como os cartões. */
+  trem?: import('./trem').CidadeDoTrem[];
 };
 
 /** As paradas, na ordem do dia. `rota` só nas que já existem. */
 export const PARADAS = [
   { id: 'placas', hora: '8h', rota: '/um-dia-em-israel/placas' },
-  { id: 'trem', hora: '9h', rota: null },
+  { id: 'trem', hora: '9h', rota: '/um-dia-em-israel/trem' },
   { id: 'cafe', hora: '10h', rota: '/cardapios' },
   { id: 'copo', hora: '10h30', rota: '/um-dia-em-israel/copos' },
   { id: 'shuk', hora: '12h', rota: null },

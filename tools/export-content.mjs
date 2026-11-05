@@ -897,6 +897,26 @@ function main() {
     nomesNoCopo.push({ id: n.id, he: NFC(n.he), translit: n.translit });
   }
 
+  /* ── Um dia em Israel: a estação de trem (05/11/2026) ────────────────
+     A parada das 9h (lib/engine/trem.ts): as cidades do painel de partidas.
+     As mesmas regras de nikud. */
+  const cidadesDoTrem = [];
+  const idsDasCidades = new Set();
+  for (const c of readJson('data/estacao-de-trem.json').cidades) {
+    if (c.revisado !== true) continue;
+    for (const campo of ['id', 'he', 'translit', 'pt']) {
+      if (!c[campo]) throw new Error(`estacao-de-trem.json: a cidade ${c.id ?? '?'} não tem ${campo}`);
+    }
+    if (idsDasCidades.has(c.id)) throw new Error(`estacao-de-trem.json: id repetido ${c.id}`);
+    idsDasCidades.add(c.id);
+    const comPonto = [...NFC(c.he).matchAll(/([\u05D0-\u05EA])[\u05B0-\u05BB\u05C1\u05C2\u05C7]*\u05BC/gu)].map(m => m[1]);
+    if (comPonto.some(l => !'בכךפףו'.includes(l))) throw new Error(`estacao-de-trem.json: daguesh fora de בּ/כּ/פּ em ${c.id}: ${c.he}`);
+    if (/[\u05B1-\u05B3]/u.test(c.he)) throw new Error(`estacao-de-trem.json: chataf em ${c.id}: ${c.he} (use a vogal simples)`);
+    const { revisado, ...publico } = c;
+    void revisado;
+    cidadesDoTrem.push({ ...publico, he: NFC(c.he) });
+  }
+
   /* ── os mini-textos de leitura corrida ─────────────────────────────
      Um texto curto por módulo, do 3 ao 7. São as únicas frases do curso
      escritas para ele, e por isso cada um nasce com `revisado: false`: o
@@ -1012,7 +1032,7 @@ function main() {
     })),
     rua: placasDaRua,
     cardapios,
-    umDia: { placas: placasDoDia, cartoes: cartoesDoDia, copos: nomesNoCopo }
+    umDia: { placas: placasDoDia, cartoes: cartoesDoDia, copos: nomesNoCopo, trem: cidadesDoTrem }
   }, null, 2) + '\n');
 
   /* ── o curso Hebraico A1 (06/10/2026) ────────────────────────────────
