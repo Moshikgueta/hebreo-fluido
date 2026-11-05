@@ -92,7 +92,7 @@ export type AcessoVencido = { courseSlug: string; expiredAt: string };
 /** O que o /perfil lê da conta: os pedidos e os acessos vencidos. */
 export type Compras = { orders: Order[]; vencidos: AcessoVencido[] };
 
-export type PaymentMethod = 'pix' | 'card' | 'paddle';
+export type PaymentMethod = 'pix' | 'card' | 'paddle' | 'stripe';
 
 /** O que o checkout precisa para abrir o Paddle (site em inglês). */
 export type PaddleCheckout = { transactionId: string; clientToken: string; sandbox: boolean };

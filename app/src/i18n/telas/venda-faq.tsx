@@ -121,13 +121,13 @@ const en: Traducao<typeof pt> = {
   pagoPixCartao: (parcelas: string) => `PIX, credit card paid in full or in installments ${parcelas}.`,
   // etapa 5: o site em inglês cobra pelo Paddle
   pagoCartao: () =>
-    'Card, PayPal, Apple Pay or Google Pay, on the secure checkout of Paddle, our authorized reseller. One-time payment, taxes included.',
+    'Card, Apple Pay or Google Pay, on the secure payment page of Stripe, our payment processor. One-time payment.',
   // etapa 5/6: Brasil, rever (PIX)
   pagoAVista: (preco: string, pix: string | null) => `Paid in full, the course comes to ${preco}${pix ? `, or ${pix} by PIX` : ''}.`,
   pagoPreLancamento: (fim: string | null, cheio: string, meses: number) =>
     `That is the pre-launch price${fim ? `, valid until ${fim}` : ''}. After that, the course will cost ${cheio}. If you buy now, you pay once and get the ${meses} months of access.`,
   // etapa 5: o site em inglês cobra pelo Paddle
-  pagoJuros: 'Paddle processes the payment and handles the sales tax for your country. The total in US dollars appears before you confirm, and this platform never receives your card details.',
+  pagoJuros: 'Stripe processes the payment. The total in US dollars appears before you confirm, and this platform never receives your card details.',
 
   liberadoQ: 'When is access granted?',
   liberadoCartao: 'By card, right away - confirmation comes in seconds.',
@@ -187,7 +187,7 @@ const en: Traducao<typeof pt> = {
     `You have ${dias} days to cancel, ${inicio}. Within that period, just ask: you get the full amount back, no questions and no extra steps.`,
   // etapa 5/6: Brasil, rever (Mercado Pago)
   gostarA2: (sozinho: boolean, email: string, confirmacao: string) =>
-    `In Your account, under the purchase, use "Cancel the purchase"${sozinho ? ': the refund is requested from Paddle right away, automatically' : ''}. If you prefer, write to ${email} with the email you used to buy. ${confirmacao}`,
+    `In Your account, under the purchase, use "Cancel the purchase"${sozinho ? ': the refund is requested from Stripe right away, automatically' : ''}. If you prefer, write to ${email} with the email you used to buy. ${confirmacao}`,
 
   niveisQ: 'Are you really going to launch the other levels?',
   niveisA1: 'A1 is in production and comes next. A2 and B1 come after, in that order.',
@@ -227,13 +227,13 @@ const es: Traducao<typeof pt> = {
   pagoPixCartao: (parcelas: string) => `PIX, tarjeta de crédito en un pago o en cuotas ${parcelas}.`,
   // etapa 5: o site em espanhol cobra pelo Paddle
   pagoCartao: () =>
-    'Tarjeta, PayPal, Apple Pay o Google Pay, en el checkout seguro de Paddle, nuestro revendedor autorizado. Pago único, impuestos incluidos.',
+    'Tarjeta, Apple Pay o Google Pay, en la página de pago segura de Stripe, nuestro procesador de pagos. Pago único.',
   // etapa 5/6: Brasil, rever (PIX)
   pagoAVista: (preco: string, pix: string | null) => `En un solo pago, el curso cuesta ${preco}${pix ? `, o ${pix} por PIX` : ''}.`,
   pagoPreLancamento: (fim: string | null, cheio: string, meses: number) =>
     `Ese es el precio de preventa${fim ? `, válido hasta el ${fim}` : ''}. Después, el curso pasará a costar ${cheio}. Si compras ahora, pagas una vez y tienes los ${meses} meses de acceso.`,
   // etapa 5: o site em espanhol cobra pelo Paddle
-  pagoJuros: 'Paddle procesa el pago y se encarga de los impuestos de tu país. El total en dólares estadounidenses aparece antes de que confirmes, y esta plataforma nunca recibe los datos de tu tarjeta.',
+  pagoJuros: 'Stripe procesa el pago. El total en dólares estadounidenses aparece antes de que confirmes, y esta plataforma nunca recibe los datos de tu tarjeta.',
 
   liberadoQ: '¿Cuándo se habilita el acceso?',
   liberadoCartao: 'Con tarjeta, en el momento - la confirmación llega en segundos.',
@@ -293,7 +293,7 @@ const es: Traducao<typeof pt> = {
     `Tienes ${dias} días para cancelar, ${inicio}. Dentro de ese plazo, basta con pedirlo: te devolvemos el monto completo, sin preguntas y sin pasos extra.`,
   // etapa 5/6: Brasil, rever (Mercado Pago)
   gostarA2: (sozinho: boolean, email: string, confirmacao: string) =>
-    `En Tu cuenta, en la compra, usa "Cancelar la compra"${sozinho ? ': el reembolso se le pide a Paddle en el momento, de forma automática' : ''}. Si prefieres, escribe a ${email} con el correo de la compra. ${confirmacao}`,
+    `En Tu cuenta, en la compra, usa "Cancelar la compra"${sozinho ? ': el reembolso se le pide a Stripe en el momento, de forma automática' : ''}. Si prefieres, escribe a ${email} con el correo de la compra. ${confirmacao}`,
 
   niveisQ: '¿De verdad van a lanzar los otros niveles?',
   niveisA1: 'El A1 está en producción y es el próximo. El A2 y el B1 vienen después, en ese orden.',

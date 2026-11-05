@@ -154,6 +154,14 @@ const pt = {
     'A janela de pagamento não abriu. Confira a conexão, desligue bloqueadores nesta página e tente de novo.',
   paddleConfirmando: 'Pagamento recebido. Confirmando o seu acesso…',
   paddleResumo: 'Pagamento único · impostos incluídos',
+  /* O Stripe dos sites de fora (05/11/2026): o Checkout hospedado, numa
+     página do próprio Stripe. Sem frase sobre imposto: isso depende do Stripe
+     Tax, decisão do dono com o contador. */
+  stripeComoPaga: 'Cartão, Apple Pay ou Google Pay',
+  stripeTexto: (preco: string) =>
+    `${preco}, em pagamento único. Você paga na página segura do Stripe, que processa o pagamento; ` +
+    'esta plataforma nunca recebe os dados do seu cartão.',
+  stripeResumo: 'Pagamento único',
 } as const;
 
 /* etapa 5/6: Brasil, rever - quase tudo aqui é a cobrança brasileira (PIX,
@@ -310,6 +318,11 @@ const en: Traducao<typeof pt> = {
     'The payment window did not open. Check your connection, turn off any blocker on this page and try again.',
   paddleConfirmando: 'Payment received. Confirming your access…',
   paddleResumo: 'One-time payment · taxes included',
+  stripeComoPaga: 'Card, Apple Pay or Google Pay',
+  stripeTexto: (preco: string) =>
+    `${preco}, one-time payment. You pay on the secure Stripe page, which processes the payment; ` +
+    'this platform never receives your card details.',
+  stripeResumo: 'One-time payment',
 };
 
 /* etapa 5/6: Brasil, rever - quase tudo aqui é a cobrança brasileira (PIX,
@@ -465,6 +478,11 @@ const es: Traducao<typeof pt> = {
     'La ventana de pago no se abrió. Revisa la conexión, desactiva los bloqueadores en esta página e inténtalo de nuevo.',
   paddleConfirmando: 'Pago recibido. Confirmando tu acceso…',
   paddleResumo: 'Pago único · impuestos incluidos',
+  stripeComoPaga: 'Tarjeta, Apple Pay o Google Pay',
+  stripeTexto: (preco: string) =>
+    `${preco}, en un pago único. Pagas en la página segura de Stripe, que procesa el pago; ` +
+    'esta plataforma nunca recibe los datos de tu tarjeta.',
+  stripeResumo: 'Pago único',
 };
 
 export const DICIONARIO = { pt, en, es };

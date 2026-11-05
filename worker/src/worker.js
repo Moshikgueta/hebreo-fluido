@@ -95,6 +95,8 @@ const ROUTES = {
   'GET /api/pay/webhook': pay.webhook,
   /* O aviso do Paddle (site em inglês). Assinatura própria, ver lib/paddle.js. */
   'POST /api/pay/paddle': pay.webhookPaddle,
+  /* O aviso do Stripe (sites de fora, desde 05/11/2026). Ver lib/stripe.js. */
+  'POST /api/pay/stripe': pay.webhookStripe,
 
   'GET /api/orders': pay.orders,
   /* O PIX ainda pagável do próprio pedido, para o checkout e o /perfil
@@ -339,7 +341,7 @@ async function responder(request, env, ctx) {
          origem do mesmo jeito, e ele não escreve nada além de uma linha de
          trilha com freio. */
       if (request.method !== 'GET' && request.method !== 'HEAD'
-          && path !== '/api/pay/webhook' && path !== '/api/pay/paddle' && path !== '/api/csp-report') {
+          && path !== '/api/pay/webhook' && path !== '/api/pay/paddle' && path !== '/api/pay/stripe' && path !== '/api/csp-report') {
         const site = request.headers.get('Sec-Fetch-Site');
         const origin = request.headers.get('Origin');
         const cruzada = site === 'cross-site' || site === 'same-site'

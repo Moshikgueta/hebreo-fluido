@@ -309,6 +309,12 @@ empurra PADDLE_API_KEY        "${PADDLE_API_KEY:-}" \
   || info "PADDLE_API_KEY ausente - o checkout em espanhol diz que o pagamento não está ligado."
 empurra PADDLE_WEBHOOK_SECRET "${PADDLE_WEBHOOK_SECRET:-}" \
   || info "PADDLE_WEBHOOK_SECRET ausente - o aviso do Paddle recusa tudo, de propósito."
+# O Stripe dos sites de fora (05/11/2026; worker/src/lib/stripe.js), quando
+# `pagamento.exterior` em data/empresa.json é "stripe".
+empurra STRIPE_SECRET_KEY     "${STRIPE_SECRET_KEY:-}" \
+  || info "STRIPE_SECRET_KEY ausente - o checkout diz que o pagamento não está ligado."
+empurra STRIPE_WEBHOOK_SECRET "${STRIPE_WEBHOOK_SECRET:-}" \
+  || info "STRIPE_WEBHOOK_SECRET ausente - o aviso do Stripe recusa tudo, de propósito."
 empurra RESEND_API_KEY    "${RESEND_API_KEY:-}" \
   || info "RESEND_API_KEY ausente - ninguém recupera a senha sozinho (ver .env.example)."
 

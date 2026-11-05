@@ -16,11 +16,14 @@
 import Link from 'next/link';
 import { Artigo, LegalPage, Lista } from '@/components/legal/Legal';
 import { Card } from '@/components/ui/Card';
-import { empresa } from '@/lib/empresa';
+import { empresa, pagaPeloStripe } from '@/lib/empresa';
 
 const link = 'font-semibold text-[var(--accent)] hover:underline';
 
 export function PrivacyEs() {
+  /* Stripe o Paddle (`pagamento.exterior` en data/empresa.json, 05/11/2026). */
+  const STRIPE = pagaPeloStripe();
+  const PROC = STRIPE ? 'Stripe' : 'Paddle';
   const { contato, privacidade, nomeFantasia } = empresa;
 
   const DADOS: [string, string, string][] = [
@@ -30,7 +33,7 @@ export function PrivacyEs() {
      'acreditar el contrato entre tú y el curso', 'mientras exista la cuenta'],
     ['Progreso de estudio', 'mostrar dónde te quedaste, elegir tu próximo repaso y emitir el certificado', 'mientras exista la cuenta, o hasta que lo borres'],
     ['Datos del pedido', 'registrar la compra, otorgar el acceso y cumplir obligaciones fiscales y contables', 'durante el plazo que la ley exige para los registros de ventas'],
-    ['Resultado del pago', 'confirmar la compra, otorgar el acceso y gestionar reembolsos: lo que Paddle nos informa sobre la transacción (estado, monto, moneda, su identificador y nuestra referencia del pedido). Ningún dato de tarjeta', 'durante el plazo que la ley exige para los registros de ventas'],
+    ['Resultado del pago', `confirmar la compra, otorgar el acceso y gestionar reembolsos: lo que ${PROC} nos informa sobre la transacción (estado, monto, moneda, su identificador y nuestra referencia del pedido). Ningún dato de tarjeta`, 'durante el plazo que la ley exige para los registros de ventas'],
     ['Confirmación del correo', 'acreditar que la dirección de la cuenta es tuya (el enlace que enviamos al registrarte)', 'mientras exista la cuenta'],
     ['Pedido de aviso cuando abra el próximo curso (solo si lo marcas en Tu cuenta)',
      'enviar un correo cuando abra el próximo curso; base legal: tu consentimiento, que puedes retirar en cualquier momento', 'hasta que lo desmarques, salgas por el enlace del correo o elimines tu cuenta'],
@@ -139,7 +142,7 @@ export function PrivacyEs() {
           nadie.
         </p>
         <Lista itens={[
-          <><strong>Paddle</strong>: nuestro revendedor en línea y el comerciante registrado (Merchant of Record) de cada compra. Cuando pagas, pasamos tu <strong>correo</strong> al pago de Paddle, y Paddle recopila directamente lo que necesita para el pago y los impuestos (como los datos de tu tarjeta o de PayPal, el país y el código postal). Paddle trata esos datos como responsable independiente, según su propia{' '}<a href="https://www.paddle.com/legal/privacy" className="text-[var(--accent)] hover:underline" rel="noopener noreferrer">política de privacidad</a>. Nunca recibimos ni guardamos los datos de tu tarjeta.</>,
+          STRIPE ? <><strong>Stripe</strong>: nuestro procesador de pagos. Cuando pagas, pasamos tu <strong>correo</strong> y el pedido a la página de pago segura de Stripe, y Stripe recopila directamente lo que necesita para el pago (como los datos de tu tarjeta, el país y el código postal), según su propia{' '}<a href="https://stripe.com/privacy" className="text-[var(--accent)] hover:underline" rel="noopener noreferrer">política de privacidad</a>. Nunca recibimos ni guardamos los datos de tu tarjeta.</> : <><strong>Paddle</strong>: nuestro revendedor en línea y el comerciante registrado (Merchant of Record) de cada compra. Cuando pagas, pasamos tu <strong>correo</strong> al pago de Paddle, y Paddle recopila directamente lo que necesita para el pago y los impuestos (como los datos de tu tarjeta o de PayPal, el país y el código postal). Paddle trata esos datos como responsable independiente, según su propia{' '}<a href="https://www.paddle.com/legal/privacy" className="text-[var(--accent)] hover:underline" rel="noopener noreferrer">política de privacidad</a>. Nunca recibimos ni guardamos los datos de tu tarjeta.</>,
           <><strong>Resend</strong>: entrega nuestros correos (restablecimiento de contraseña, comprobante de compra, hasta tres recordatorios para empezar el curso en los primeros días después de la compra, y avisos sobre tu cuenta). Para eso recibe <strong>tu dirección de correo y el nombre de tu cuenta</strong>. Los correos promocionales solo van a quienes los pidieron, y cada uno lleva un enlace para salir de la lista.</>,
           <><strong>Infraestructura</strong>: la plataforma funciona en Cloudflare, que aloja el sitio, la base de datos y las copias de seguridad. Una segunda copia, cifrada, se guarda en Google Drive; Google almacena el archivo pero no puede leerlo.</>,
           <><strong>GitHub</strong>: guarda el código del sitio y nuestras herramientas de operación. Cuando consultamos o cambiamos el acceso de una cuenta (por ejemplo, para otorgar un curso o corregir un correo), la operación se ejecuta allí, y su registro muestra el correo parcialmente oculto.</>,
@@ -147,7 +150,7 @@ export function PrivacyEs() {
           <><strong>Autoridades</strong>, cuando haya una orden legal para hacerlo.</>
         ]} />
         <p>
-          La empresa está en Brasil, y Paddle, Resend, Cloudflare, GitHub, Google y Meta son empresas con sede
+          La empresa está en Brasil, y {PROC}, Resend, Cloudflare, GitHub, Google y Meta son empresas con sede
           en otros países, por lo que parte del tratamiento ocurre en servidores fuera del país donde vives,
           incluidos los Estados Unidos. Estas transferencias son necesarias para ejecutar el contrato que
           celebraste con nosotros: son las que permiten que el sitio responda, que el pago se realice, que el
@@ -163,9 +166,9 @@ export function PrivacyEs() {
         <p>
           Tu navegador también guarda tu progreso de forma local, para que el curso funcione sin conexión, y
           algunas de tus preferencias (como los ajustes de accesibilidad). Eso queda solo en tu dispositivo. No
-          usamos cookies publicitarias, ni redes de anuncios, ni scripts de terceros para medir la audiencia. El
-          pago de Paddle, que solo se carga en la página de pago, es de Paddle y sigue la política de
-          privacidad de Paddle.
+          usamos cookies publicitarias, ni redes de anuncios, ni scripts de terceros para medir la audiencia. La
+          página de pago de {PROC}, que solo se abre cuando pagas, es de {PROC} y sigue la política de
+          privacidad de {PROC}.
         </p>
         <p>
           Para mejorar las lecciones, las personas con sesión iniciada en el curso también envían, en lotes,

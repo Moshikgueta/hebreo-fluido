@@ -44,6 +44,10 @@ import {
   buscarTransacao, conferirAssinatura, criarTransacao, ehSandbox, estornarTransacao, idDeTransacao,
   paddlePronto, pagamentoDe, tokenDoCliente
 } from '../lib/paddle.js';
+import {
+  buscarSessao, conferirAssinatura as conferirAssinaturaStripe, criarSessao, estornarSessao, idDeSessao,
+  pagamentoDe as pagamentoDoStripe, pedidoDoAviso, stripePronto
+} from '../lib/stripe.js';
 import empresa from '../../../data/empresa.json';
 import { DIAS_PADDLE, diasDoPedido, prazoDeDesistencia } from '../lib/desistencia.js';
 import { gravarTermosDoPedido, linkDaVersao, versaoAtual } from '../lib/versoes.js';
@@ -62,7 +66,14 @@ const pixDireto = () => PAGAMENTO === 'pix-direto';
    Decidido pelo idioma do Worker, e não por data/empresa.json: o arquivo é o
    mesmo nas duas builds, e o build do app decide pelo mesmo critério
    (NEXT_PUBLIC_LOCALE, lib/empresa.ts). */
-const paddle = env => !!env && (env.LOCALE === 'en' || env.LOCALE === 'es');
+const deFora = env => !!env && (env.LOCALE === 'en' || env.LOCALE === 'es');
+/* Desde 05/11/2026 (pedido do dono) os sites de fora podem cobrar pelo
+   Stripe: `pagamento.exterior` em data/empresa.json, o mesmo arquivo que a
+   build lê para desenhar o botão (tools/export-content.mjs). Sem o campo,
+   Paddle, como antes. */
+const PROVEDOR_DE_FORA = (empresa.pagamento && empresa.pagamento.exterior) === 'stripe' ? 'stripe' : 'paddle';
+const paddle = env => deFora(env) && PROVEDOR_DE_FORA === 'paddle';
+const stripe = env => deFora(env) && PROVEDOR_DE_FORA === 'stripe';
 
 /* E QUAIS FORMAS a conta do provedor aceita nesta build.
  * ─────────────────────────────────────────────────────────────────────────
@@ -151,6 +162,9 @@ export async function create({ request, env }) {
        abriria e recusaria todo cartão: melhor dizer que não está ligado. */
     if (!paddlePronto(env) || !tokenDoCliente(env)) return fail('payments-off', 503);
     if (!(Number(course.price && course.price.usd) > 0)) return fail('server', 404);
+  } else if (stripe(env)) {
+    if (!stripePronto(env)) return fail('payments-off', 503);
+    if (!(Number(course.price && course.price.usd) > 0)) return fail('server', 404);
   } else if (!pixDireto() && !env.MP_ACCESS_TOKEN) return fail('payments-off', 503);
 
   /* Já é dono: não cobra de novo. Vender duas vezes a mesma coisa para a mesma
@@ -185,6 +199,7 @@ export async function create({ request, env }) {
      O checkout já esconde o que não dá para cobrar. Isto é para quem chama a
      API direto, e para o dia em que a tela e o servidor discordarem. */
   if (paddle(env)) return criarNoPaddle(env, request, account, course, body);
+  if (stripe(env)) return criarNoStripe(env, request, account, course, body);
 
   const pedido = body.method === 'card' ? 'card' : 'pix';
   if (!aceita(pedido)) return fail(pedido === 'card' ? 'card-off' : 'pix-off', 409);
@@ -344,6 +359,36 @@ async function criarNoPaddle(env, request, account, course, body) {
     let detalhe = '';
     try { detalhe = e && e.data ? JSON.stringify(e.data).slice(0, 400) : ''; } catch { /* idem */ }
     await log(env, account.id, 'pay-create-failed', `${order.id} paddle ${e.message || e} ${detalhe}`.trim());
+    return fail('payment-failed', 502);
+  }
+}
+
+/* ── o pedido no Stripe ─────────────────────────────────────────────────
+ * Um meio só (`stripe`): o Checkout hospedado do Stripe mostra cartão (e
+ * Apple Pay, Google Pay ou Link, conforme o painel e o aparelho). Sem
+ * parcelas e sem desconto: o valor é `price.usd` do catálogo, em centavos.
+ * A tela recebe `redirectUrl` e vai para checkout.stripe.com, como o cartão
+ * da Mercado Pago; o Stripe devolve para /checkout/<curso>/obrigado/. */
+async function criarNoStripe(env, request, account, course, body) {
+  const amountCents = Math.round(Number(course.price.usd) * 100);
+  const { fonte: origem, campanha } = origemDoCorpo(body.origem);
+  const order = await createOrder(env, {
+    accountId: account.id, courseSlug: course.slug, amountCents, method: 'stripe', installments: 1,
+    origem, campanha, currency: 'USD', provider: 'stripe'
+  });
+  await gravarTermosDoPedido(env, order.id);
+  try {
+    const sessao = await criarSessao(env, { order, course, account, origin: origin(request) });
+    if (!sessao || !idDeSessao(sessao.id) || !/^https:\/\/checkout\.stripe\.com\//.test(String(sessao.url || ''))) {
+      throw new Error('stripe sem sessao');
+    }
+    await updateOrder(env, order.id, { provider_ref: sessao.id, pay_url: sessao.url });
+    return json({ ...toOrder(await getOrder(env, order.id)), redirectUrl: sessao.url });
+  } catch (e) {
+    await updateOrder(env, order.id, { status: 'failed' });
+    let detalhe = '';
+    try { detalhe = e && e.data ? JSON.stringify(e.data).slice(0, 400) : ''; } catch { /* idem */ }
+    await log(env, account.id, 'pay-create-failed', `${order.id} stripe ${e.message || e} ${detalhe}`.trim());
     return fail('payment-failed', 502);
   }
 }
@@ -520,6 +565,8 @@ const espera = n => Math.min(5 * 60_000 * 2 ** Math.max(0, n - 1), 6 * 3_600_000
 const estornavel = (env, order) =>
   order.provider === 'paddle'
     ? paddlePronto(env) && idDeTransacao(order.provider_ref)
+    : order.provider === 'stripe'
+    ? stripePronto(env) && idDeSessao(order.provider_ref)
     : !pixDireto() && !!env.MP_ACCESS_TOKEN && order.provider === 'mercadopago'
       && /^\d{1,24}$/.test(String(order.provider_ref || ''));
 
@@ -553,6 +600,8 @@ async function tentarEstorno(env, row) {
   try {
     const refund = idDeTransacao(row.payment_id)
       ? await estornarTransacao(env, row.payment_id)
+      : idDeSessao(row.payment_id)
+      ? await estornarSessao(env, row.payment_id, `estorno-${order.id}`)
       : await refundPayment(env, row.payment_id, `estorno-${order.id}`);
     await estornoAtualizar(env, order.id, {
       estado: 'pedido', tentativas, refund_id: String(refund && refund.id || ''), erro: ''
@@ -615,6 +664,10 @@ async function avisarEstornoTravado(env, order, motivo) {
             `Última resposta do Paddle: ${motivo || 'sem detalhe'}.`,
             '',
             `Devolva pelo painel do Paddle (Transactions -> ${order.provider_ref || 'a transação'} -> Refund).`
+          ] : order.provider === 'stripe' ? [
+            `Última resposta do Stripe: ${motivo || 'sem detalhe'}.`,
+            '',
+            'Devolva pelo painel do Stripe (Payments -> o pagamento -> Refund).'
           ] : [
             `Última resposta da Mercado Pago: ${motivo || 'sem detalhe'}.`,
             '',
@@ -814,6 +867,46 @@ export async function webhookPaddle({ request, env }) {
   return json({ ok: true });
 }
 
+/* ── POST /api/pay/stripe ─────────────────────────────────────────────────
+ * O aviso do Stripe. Mesmo desenho dos outros: a assinatura prova QUEM
+ * mandou; o que aconteceu vem de uma consulta nossa à sessão do pedido, que
+ * segue pelo mesmo `applyPayment`. Interessa `checkout.session.*` (pago,
+ * pago depois, vencido) e `charge.*` (estorno, contestação); o resto
+ * responde 200. Os eventos a marcar no painel do Stripe estão em
+ * lib/stripe.js. */
+export async function webhookStripe({ request, env }) {
+  if (!stripe(env)) return json({ ok: true });
+  const corpo = await request.text();
+  if (corpo.length > 256 * 1024) return json({ ok: true });
+
+  const recusa = {};
+  if (!await conferirAssinaturaStripe(env, request, corpo, recusa)) {
+    if (!await throttled(env, `whk-h:${ip(request)}`, 1, 3_600_000)) {
+      await log(env, null, 'webhook-bad-signature', `stripe ${recusa.motivo || ''}`.trim());
+    }
+    return json({ error: 'bad-signature' }, 401);
+  }
+
+  let aviso;
+  try { aviso = JSON.parse(corpo); } catch { return json({ ok: true }); }
+  const tipo = String(aviso && aviso.type || '');
+  let orderId;
+  try { orderId = await pedidoDoAviso(env, aviso); }
+  catch (e) {
+    if (e && e.status === 404) return json({ ok: true });
+    await erroDeLiberacao(env, null, `aviso stripe ${tipo} ${e.message || e}`);
+    return json({ error: 'retry' }, 500);
+  }
+  const order = orderId ? await getOrder(env, String(orderId)) : null;
+  if (!order || order.provider !== 'stripe') return json({ ok: true });
+
+  const r = await settleFromProvider(env, order, 'webhook');
+  if (tipo.startsWith('charge.dispute.')) await log(env, order.account_id, 'contestacao', `stripe ${order.id} ${tipo}`);
+  /* 500 faz o Stripe reenviar, que é o que se quer de um erro nosso. */
+  if (r === 'erro') return json({ error: 'retry' }, 500);
+  return json({ ok: true });
+}
+
 /* ── a liberação ────────────────────────────────────────────────────────── */
 
 /**
@@ -831,6 +924,11 @@ export async function settleFromProvider(env, order, source) {
     if (order.provider === 'paddle') {
       if (!idDeTransacao(order.provider_ref)) return null;
       return await applyPayment(env, order, pagamentoDe(await buscarTransacao(env, order.provider_ref)), source);
+    }
+    /* No Stripe também: a sessão nasce com o pedido. */
+    if (order.provider === 'stripe') {
+      if (!idDeSessao(order.provider_ref)) return null;
+      return await applyPayment(env, order, pagamentoDoStripe(await buscarSessao(env, order.provider_ref)), source);
     }
     const found = await paymentsFor(env, order.id);
     if (!found.length) return null;
@@ -854,6 +952,8 @@ export async function settleFromPaymentId(env, paymentId, source) {
   try {
     const payment = idDeTransacao(paymentId)
       ? pagamentoDe(await buscarTransacao(env, paymentId))
+      : idDeSessao(paymentId)
+      ? pagamentoDoStripe(await buscarSessao(env, paymentId))
       : await getPayment(env, paymentId);
     const orderId = payment?.external_reference;
     if (!orderId) return null;

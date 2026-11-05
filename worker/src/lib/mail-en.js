@@ -15,6 +15,10 @@
 import { MARCA } from './idioma.js';
 import { nomeSeguro } from './nome.js';
 import { escapar } from './mail.js';
+import empresa from '../../../data/empresa.json';
+
+/* Stripe ou Paddle nos sites de fora (`pagamento.exterior`, 05/11/2026). */
+const PELO_STRIPE = (empresa.pagamento && empresa.pagamento.exterior) === 'stripe';
 
 function saudacao(nome) {
   const n = nomeSeguro(nome);
@@ -298,8 +302,10 @@ export function mensagemDeCompra({
   const comoDesistir = arrependimentoDias && desistir
     ? `To cancel, open ${desistir} and use "Cancel the purchase", or reply to this email.`
     : null;
-  const vendedor = 'The payment was processed by Paddle, our authorized reseller, so the charge on ' +
-    'your statement shows Paddle. Paddle also emails you the invoice.';
+  const vendedor = PELO_STRIPE
+    ? 'The payment was processed by Stripe, our payment processor.'
+    : 'The payment was processed by Paddle, our authorized reseller, so the charge on ' +
+      'your statement shows Paddle. Paddle also emails you the invoice.';
 
   const text = [
     ola,
@@ -381,7 +387,7 @@ export function mensagemDeArrependimento({
 }) {
   const ola = saudacao(nome);
   const assinatura = marca || MARCA.en;
-  const devolucao = (estornoPedido ? 'The refund has already been requested from Paddle. ' : '') +
+  const devolucao = (estornoPedido ? `The refund has already been requested from ${PELO_STRIPE ? 'Stripe' : 'Paddle'}. ` : '') +
     'It goes back through the payment method you used, on your bank\'s or card issuer\'s timeline.';
   const fim = 'Your access to the course ends when the refund is processed; your study progress ' +
     'stays saved, in case you come back one day.';

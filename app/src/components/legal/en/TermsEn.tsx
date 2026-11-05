@@ -17,7 +17,7 @@
 import Link from 'next/link';
 import { Artigo, LegalPage, Lista } from '@/components/legal/Legal';
 import { brl, flagship } from '@/lib/catalog';
-import { confirmacaoDaDesistencia, empresa, INICIO_DO_ACESSO, renovacaoTexto } from '@/lib/empresa';
+import { confirmacaoDaDesistencia, empresa, INICIO_DO_ACESSO, pagaPeloStripe, renovacaoTexto } from '@/lib/empresa';
 
 const link = 'text-[var(--accent)] hover:underline';
 
@@ -25,6 +25,8 @@ export function TermsEn() {
   const c = flagship();
   const nome = c.titlePt;
   const { politicas, contato } = empresa;
+  /* Stripe ou Paddle (`pagamento.exterior` em data/empresa.json, 05/11/2026). */
+  const STRIPE = pagaPeloStripe();
 
   return (
     <LegalPage
@@ -52,7 +54,7 @@ export function TermsEn() {
           'physical materials.'
         ]} />
         <p>
-          {nome} costs <strong>{brl(c.price.brl)}</strong>, a one-time payment with taxes included, and
+          {nome} costs <strong>{brl(c.price.brl)}</strong>, {STRIPE ? 'a one-time payment' : 'a one-time payment with taxes included'}, and
           gives you <strong>{c.accessMonths} months of access</strong> {INICIO_DO_ACESSO}. The price that
           applies is always the one shown on the course page and at checkout at the time of purchase.
         </p>
@@ -62,6 +64,21 @@ export function TermsEn() {
         </p>
       </Artigo>
 
+      {STRIPE ? (
+      <Artigo n={2} titulo="Payment through Stripe">
+        <p>
+          The seller of the course is{' '}
+          {empresa.razaoSocial ? <strong>{empresa.razaoSocial}</strong> : 'the company that operates Hebrew Unlocked'},
+          in Brazil. Payments are processed by <strong>Stripe</strong>, our payment processor, on a secure
+          Stripe page: Stripe receives your card details directly, and we never see or store them.
+        </p>
+        <p>
+          The price is charged in US dollars, in a single payment, with no subscription and no automatic
+          renewal. Your bank may add its own fees for international purchases. Refunds are processed through
+          Stripe, as described in the Refund Policy.
+        </p>
+      </Artigo>
+      ) : (
       <Artigo n={2} titulo="Payment through Paddle">
         <p>
           Our order process is conducted by our online reseller <strong>Paddle.com</strong>. Paddle.com is
@@ -77,10 +94,11 @@ export function TermsEn() {
           also apply to your purchase. These terms cover the course and your access to it.
         </p>
       </Artigo>
+      )}
 
       <Artigo n={3} titulo="How access is granted">
         <Lista itens={[
-          <>Access opens as soon as Paddle confirms the payment, usually within minutes.</>,
+          <>Access opens as soon as {STRIPE ? 'Stripe' : 'Paddle'} confirms the payment, usually within minutes.</>,
           <>Access is tied to the <strong>account</strong> created with your email, not to a device: you can sign in on your phone and on your computer with the same login.</>,
           <>Your account can stay signed in on up to <strong>3 devices</strong> at the same time. When you sign in on a fourth, the device you signed in on longest ago is signed out and asks for your login again; your progress is not lost.</>,
           <>Your progress is saved in your account and follows you across devices.</>

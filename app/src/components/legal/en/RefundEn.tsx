@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { Artigo, LegalPage, Lista } from '@/components/legal/Legal';
 import { Card } from '@/components/ui/Card';
 import { flagship } from '@/lib/catalog';
-import { confirmacaoDaDesistencia, empresa, INICIO_DO_ACESSO } from '@/lib/empresa';
+import { confirmacaoDaDesistencia, empresa, INICIO_DO_ACESSO, pagaPeloStripe } from '@/lib/empresa';
 
 const link = 'text-[var(--accent)] hover:underline';
 
@@ -75,9 +75,14 @@ export function RefundEn() {
 
       <Artigo n={3} titulo="When the money comes back">
         <p>
-          The refund is requested from <strong>Paddle</strong>, our reseller and the Merchant of Record of
-          the purchase, right away. It goes back to the payment method you used (card, PayPal, Apple Pay or
-          Google Pay), for the full amount. When it shows up on your statement depends on your bank or card
+          {pagaPeloStripe() ? (
+            <>We request the refund from <strong>Stripe</strong>, our payment processor, right away. It goes
+            back to the payment method you used (card, Apple Pay or Google Pay), for the full amount.</>
+          ) : (
+            <>The refund is requested from <strong>Paddle</strong>, our reseller and the Merchant of Record of
+            the purchase, right away. It goes back to the payment method you used (card, PayPal, Apple Pay or
+            Google Pay), for the full amount.</>
+          )} When it shows up on your statement depends on your bank or card
           issuer, not on us.
         </p>
       </Artigo>

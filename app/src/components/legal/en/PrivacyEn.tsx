@@ -17,12 +17,15 @@
 import Link from 'next/link';
 import { Artigo, LegalPage, Lista } from '@/components/legal/Legal';
 import { Card } from '@/components/ui/Card';
-import { empresa } from '@/lib/empresa';
+import { empresa, pagaPeloStripe } from '@/lib/empresa';
 
 const link = 'font-semibold text-[var(--accent)] hover:underline';
 
 export function PrivacyEn() {
   const { contato, privacidade, nomeFantasia } = empresa;
+  /* Stripe ou Paddle (`pagamento.exterior` em data/empresa.json, 05/11/2026). */
+  const STRIPE = pagaPeloStripe();
+  const PROC = STRIPE ? 'Stripe' : 'Paddle';
 
   const DADOS: [string, string, string][] = [
     ['Name and email', 'create and identify your account, and talk to you about your purchase', 'while the account exists'],
@@ -31,7 +34,7 @@ export function PrivacyEn() {
      'prove the contract between you and the course', 'while the account exists'],
     ['Study progress', 'show where you stopped, choose your next review and issue the certificate', 'while the account exists, or until you erase it'],
     ['Order details', 'record the purchase, grant access and meet tax and accounting obligations', 'for the period the law requires for sales records'],
-    ['Payment result', 'confirm the purchase, grant access and handle refunds - what Paddle tells us about the transaction: status, amount, currency, its id and our order reference. No card details', 'for the period the law requires for sales records'],
+    ['Payment result', `confirm the purchase, grant access and handle refunds - what ${PROC} tells us about the transaction: status, amount, currency, its id and our order reference. No card details`, 'for the period the law requires for sales records'],
     ['Email confirmation', 'prove that the account address is yours (the link we send when you sign up)', 'while the account exists'],
     ['Request to be told when the next course opens (only if you tick it on Your account)',
      'send one email when the next course opens - legal basis: your consent, which you can withdraw at any time', 'until you untick it, leave through the link in the email or delete your account'],
@@ -140,7 +143,7 @@ export function PrivacyEn() {
           to anyone.
         </p>
         <Lista itens={[
-          <><strong>Paddle</strong>: our online reseller and the Merchant of Record of every purchase. When you pay, we pass your <strong>email</strong> to Paddle&apos;s checkout, and Paddle collects what it needs for the payment and for tax (such as your card or PayPal details, country and postal code) directly. Paddle processes that data as an independent controller, under its own{' '}<a href="https://www.paddle.com/legal/privacy" className="text-[var(--accent)] hover:underline" rel="noopener noreferrer">privacy policy</a>. We never receive or store your card details.</>,
+          STRIPE ? <><strong>Stripe</strong>: our payment processor. When you pay, we pass your <strong>email</strong> and the order to Stripe&apos;s secure payment page, and Stripe collects what it needs for the payment (such as your card details, country and postal code) directly, under its own{' '}<a href="https://stripe.com/privacy" className="text-[var(--accent)] hover:underline" rel="noopener noreferrer">privacy policy</a>. We never receive or store your card details.</> : <><strong>Paddle</strong>: our online reseller and the Merchant of Record of every purchase. When you pay, we pass your <strong>email</strong> to Paddle&apos;s checkout, and Paddle collects what it needs for the payment and for tax (such as your card or PayPal details, country and postal code) directly. Paddle processes that data as an independent controller, under its own{' '}<a href="https://www.paddle.com/legal/privacy" className="text-[var(--accent)] hover:underline" rel="noopener noreferrer">privacy policy</a>. We never receive or store your card details.</>,
           <><strong>Resend</strong>: delivers our emails (password reset, purchase receipt, up to three reminders to start the course in the first days after buying, and notices about your account). For that it receives <strong>your email address and the name on your account</strong>. Promotional emails only go to people who asked for them, and each one carries a link to leave the list.</>,
           <><strong>Infrastructure</strong>: the platform runs on Cloudflare, which hosts the site, the database and the backups. A second, encrypted backup is kept on Google Drive; Google stores the file but cannot read it.</>,
           <><strong>GitHub</strong>: stores the site&apos;s code and our operations tools. When we look up or change an account&apos;s access (for example, to grant a course or fix an email), the operation runs there, and its record shows the email partly hidden.</>,
@@ -148,7 +151,7 @@ export function PrivacyEn() {
           <><strong>Authorities</strong>, when there is a legal order to do so.</>
         ]} />
         <p>
-          The company is in Brazil, and Paddle, Resend, Cloudflare, GitHub, Google and Meta are companies
+          The company is in Brazil, and {PROC}, Resend, Cloudflare, GitHub, Google and Meta are companies
           based in other countries, so part of the processing happens on servers outside the country where
           you live, including the United States. These transfers are necessary to perform the contract you
           made with us - they are what lets the site respond, the payment happen, the email arrive and
@@ -164,8 +167,8 @@ export function PrivacyEn() {
         <p>
           Your browser also keeps your progress locally, so the course works offline, and some of your
           preferences (such as the accessibility settings). That stays on your device only. We use no
-          advertising cookies, no ad network and no third-party script to measure audience. The Paddle
-          checkout, which only loads on the payment page, is Paddle&apos;s and follows Paddle&apos;s
+          advertising cookies, no ad network and no third-party script to measure audience. The {PROC}
+          payment page, which only opens when you pay, is {PROC}&apos;s and follows {PROC}&apos;s
           privacy policy.
         </p>
         <p>

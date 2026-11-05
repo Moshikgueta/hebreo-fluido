@@ -373,7 +373,10 @@ function main() {
        desistir (PLANO-INGLES.md, etapa 5; o Worker usa os mesmos 14, DIAS_PADDLE
        em api/pay.js). Sem PIX e sem a chave PIX no pacote do navegador. */
     if (EXTERIOR) {
-      empresa.pagamento = { modo: 'paddle', formas: { pix: false, cartao: true } };
+      /* Ou pelo Stripe, desde 05/11/2026 (pedido do dono): `pagamento.exterior`
+         em data/empresa.json, o mesmo campo que o Worker lê (api/pay.js). */
+      const deFora = empresa.pagamento && empresa.pagamento.exterior === 'stripe' ? 'stripe' : 'paddle';
+      empresa.pagamento = { modo: deFora, exterior: deFora, formas: { pix: false, cartao: true } };
       /* E as políticas em inglês (e em espanhol) têm data própria (etapa 6). */
       const { atualizadoEmEn, atualizadoEmEs, ...politicas } = empresa.politicas;
       const data = LOCALE === 'es' ? atualizadoEmEs : atualizadoEmEn;

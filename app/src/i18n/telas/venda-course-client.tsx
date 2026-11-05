@@ -137,8 +137,8 @@ const en: Traducao<typeof pt> = {
   // etapa 5/6: Brasil, rever (PIX)
   noPix: 'by PIX',
   descontoSobre: (pct: number, preco: string) => ` · ${pct}% off ${preco}`,
-  // etapa 5: o site em inglês cobra pelo Paddle
-  noCartao: () => 'one-time payment, taxes included',
+  // os sites de fora cobram pelo Stripe desde 05/11/2026 (data/empresa.json, pagamento.exterior)
+  noCartao: () => 'one-time payment',
   // etapa 5/6: Brasil, rever (PIX)
   descontoNoPix: (pct: number, preco: string) => `${pct}% off by PIX: ${preco}`,
   desbloquear: 'Unlock the course',
@@ -146,8 +146,8 @@ const en: Traducao<typeof pt> = {
   pagamentoPix: 'Payment by PIX, in your bank\'s app.',
   // etapa 5/6: Brasil, rever (PIX e parcelamento)
   pixCartao: (parcelas: string) => `PIX, card or installments ${parcelas}.`,
-  // etapa 5: o site em inglês cobra pelo Paddle
-  cartao: () => 'Card, PayPal, Apple Pay or Google Pay, through Paddle.',
+  // os sites de fora cobram pelo Stripe desde 05/11/2026 (data/empresa.json, pagamento.exterior)
+  cartao: () => 'Card, Apple Pay or Google Pay, through Stripe.',
   automatico: 'Access granted automatically.',
   aMao: (prazo: string) => `Access granted by hand, ${prazo} after payment.`,
   mesesAparelhos: (meses: number) => `${meses} months, from phone to computer.`,
@@ -219,8 +219,8 @@ const es: Traducao<typeof pt> = {
   // etapa 5/6: Brasil, rever (PIX)
   noPix: 'por PIX',
   descontoSobre: (pct: number, preco: string) => ` · ${pct}% de descuento sobre ${preco}`,
-  // etapa 5: el sitio de fuera cobra por Paddle
-  noCartao: () => 'pago único, impuestos incluidos',
+  // los sitios de fuera cobran por Stripe desde el 05/11/2026 (data/empresa.json, pagamento.exterior)
+  noCartao: () => 'pago único',
   // etapa 5/6: Brasil, rever (PIX)
   descontoNoPix: (pct: number, preco: string) => `${pct}% de descuento por PIX: ${preco}`,
   desbloquear: 'Desbloquear el curso',
@@ -228,8 +228,8 @@ const es: Traducao<typeof pt> = {
   pagamentoPix: 'Pago por PIX, en la aplicación de tu banco.',
   // etapa 5/6: Brasil, rever (PIX e parcelamento)
   pixCartao: (parcelas: string) => `PIX, tarjeta o en cuotas ${parcelas}.`,
-  // etapa 5: el sitio de fuera cobra por Paddle
-  cartao: () => 'Tarjeta, PayPal, Apple Pay o Google Pay, a través de Paddle.',
+  // los sitios de fuera cobran por Stripe desde el 05/11/2026 (data/empresa.json, pagamento.exterior)
+  cartao: () => 'Tarjeta, Apple Pay o Google Pay, a través de Stripe.',
   automatico: 'Acceso liberado automáticamente.',
   aMao: (prazo: string) => `Acceso liberado a mano, ${prazo} después del pago.`,
   mesesAparelhos: (meses: number) => `${meses} meses, del celular a la computadora.`,

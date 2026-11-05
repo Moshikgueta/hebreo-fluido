@@ -164,8 +164,8 @@ const en: Traducao<typeof pt> = {
   acessoCompleto: 'Full access',
   // etapa 5/6: Brasil, rever (PIX)
   noPix: 'by PIX, paid in full',
-  // etapa 5: o site em inglês cobra pelo Paddle
-  noCartao: () => 'one-time payment, taxes included',
+  // os sites de fora cobram pelo Stripe desde 05/11/2026 (data/empresa.json, pagamento.exterior)
+  noCartao: () => 'one-time payment',
   continua: 'Your progress picks up exactly where you left off.',
   liberadoNaHora: (meses: number) => `Access granted as soon as payment is confirmed, for ${meses} months.`,
   // etapa 5/6: Brasil, rever (PIX)
@@ -265,8 +265,8 @@ const es: Traducao<typeof pt> = {
   acessoCompleto: 'Acceso completo',
   // etapa 5/6: Brasil, rever (PIX)
   noPix: 'por PIX, en un solo pago',
-  // etapa 5: o site em espanhol cobra pelo Paddle
-  noCartao: () => 'pago único, impuestos incluidos',
+  // los sitios de fuera cobran por Stripe desde el 05/11/2026 (data/empresa.json, pagamento.exterior)
+  noCartao: () => 'pago único',
   continua: 'Tu progreso sigue exactamente donde lo dejaste.',
   liberadoNaHora: (meses: number) => `Acceso habilitado en cuanto se confirma el pago, por ${meses} meses.`,
   // etapa 5/6: Brasil, rever (PIX)

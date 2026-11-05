@@ -40,7 +40,7 @@ import { AuthError, MESSAGES, daysLeft, type Order, type PaymentMethod } from '@
 import { ancora, brl, fimDoPreLancamento, getCourse, parcelasMax, pixPrice, tipoDe, type CatalogCourse, paginaDeVenda } from '@/lib/catalog';
 import { comParceria, fimDaParceria, parceriaAtual, precoDaParceria } from '@/lib/parceria';
 import { contarComOrigem, origemAtual } from '@/lib/origem';
-import { confirmaSozinho, empresa, formasAtivas, INICIO_DO_ACESSO, JANELA_DE_RENOVACAO_DIAS, pagaPeloPaddle, parcelasTexto, soPix, temPix } from '@/lib/empresa';
+import { confirmaSozinho, empresa, formasAtivas, INICIO_DO_ACESSO, JANELA_DE_RENOVACAO_DIAS, pagaDeFora, pagaPeloStripe, parcelasTexto, soPix, temPix } from '@/lib/empresa';
 import { abrirCheckout } from '@/lib/paddle-checkout';
 import { AuthForm } from '@/components/platform/AuthForm';
 import { track } from '@/lib/analytics';
@@ -79,13 +79,15 @@ export function CheckoutClient({ slug }: { slug: string }) {
      forma só, a tela para de perguntar e passa a informar: uma escolha com
      uma opção não é uma escolha, e dá ao comprador a impressão de que ele
      perdeu alguma coisa. */
-  /* O site em inglês: um botão só, que abre o checkout do Paddle. */
-  const PADDLE = pagaPeloPaddle();
+  /* Os sites de fora: um botão só, que abre o checkout do Paddle ou leva à
+     página do Stripe (desde 05/11/2026). */
+  const PADDLE = pagaDeFora();
+  const STRIPE = pagaPeloStripe();
   const FORMAS = formasAtivas();
   const UMA_FORMA = FORMAS.length === 1;
   const SO_CARTAO = UMA_FORMA && FORMAS[0] === 'card';
 
-  const [method, setMethod] = useState<PaymentMethod>(PADDLE ? 'paddle' : (FORMAS[0] ?? 'pix'));
+  const [method, setMethod] = useState<PaymentMethod>(STRIPE ? 'stripe' : PADDLE ? 'paddle' : (FORMAS[0] ?? 'pix'));
   /* O aviso do checkout do Paddle (fechou sem pagar, não carregou). */
   const [avisoPaddle, setAvisoPaddle] = useState<string | null>(null);
   const [order, setOrder] = useState<Order | null>(null);
@@ -412,7 +414,7 @@ export function CheckoutClient({ slug }: { slug: string }) {
         {PADDLE ? (
           <p className="font-ui text-[14.5px] leading-relaxed text-ink-body
                         bg-surface-2 rounded-[var(--r-md)] px-4 py-3">
-            <strong>{tx.paddleComoPaga}</strong>{' · '}{tx.paddleTexto(brl(c.price.brl))}
+            <strong>{STRIPE ? tx.stripeComoPaga : tx.paddleComoPaga}</strong>{' · '}{(STRIPE ? tx.stripeTexto : tx.paddleTexto)(brl(c.price.brl))}
           </p>
         ) : UMA_FORMA ? (
           <p className="font-ui text-[14.5px] leading-relaxed text-ink-body
@@ -486,7 +488,7 @@ export function CheckoutClient({ slug }: { slug: string }) {
           />
         ) : order?.status === 'pending' ? (
           <p aria-live="polite" className="font-ui text-[14px] text-ink-body">
-            {order.method === 'paddle' ? tx.paddleConfirmando : tx.aguardandoConfirmacao}
+            {order.method === 'paddle' || order.method === 'stripe' ? tx.paddleConfirmando : tx.aguardandoConfirmacao}
           </p>
         ) : (
           <>
@@ -771,7 +773,7 @@ function Shell({ course, children }: {
               {brl(c.price.brl)}
             </p>
             <p className="font-ui text-[12.5px] text-ink-body">
-              {pagaPeloPaddle() ? tx.paddleResumo : tx.ouNoCartao(parcelasTexto(parcelas))}
+              {pagaPeloStripe() ? tx.stripeResumo : pagaDeFora() ? tx.paddleResumo : tx.ouNoCartao(parcelasTexto(parcelas))}
             </p>
             {c.price.pixDiscountPct > 0 && temPix() && (
               <p className="font-ui text-[12.5px] font-medium text-[var(--accent)]">

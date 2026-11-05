@@ -13,13 +13,15 @@
 import Link from 'next/link';
 import { Artigo, LegalPage, Lista } from '@/components/legal/Legal';
 import { brl, flagship } from '@/lib/catalog';
-import { confirmacaoDaDesistencia, empresa, INICIO_DO_ACESSO, renovacaoTexto } from '@/lib/empresa';
+import { confirmacaoDaDesistencia, empresa, INICIO_DO_ACESSO, pagaPeloStripe, renovacaoTexto } from '@/lib/empresa';
 
 const link = 'text-[var(--accent)] hover:underline';
 
 export function TermsEs() {
   const c = flagship();
   const nome = c.titlePt;
+  /* Stripe o Paddle (`pagamento.exterior` en data/empresa.json, 05/11/2026). */
+  const STRIPE = pagaPeloStripe();
   const { politicas, contato } = empresa;
 
   return (
@@ -48,7 +50,7 @@ export function TermsEs() {
           'materiales físicos.'
         ]} />
         <p>
-          {nome} cuesta <strong>{brl(c.price.brl)}</strong>, en un solo pago con impuestos incluidos, y te
+          {nome} cuesta <strong>{brl(c.price.brl)}</strong>, {STRIPE ? 'en un solo pago' : 'en un solo pago con impuestos incluidos'}, y te
           da <strong>{c.accessMonths} meses de acceso</strong> {INICIO_DO_ACESSO}. El precio que se aplica es
           siempre el que se muestra en la página del curso y en el pago al momento de la compra.
         </p>
@@ -58,6 +60,22 @@ export function TermsEs() {
         </p>
       </Artigo>
 
+      {STRIPE ? (
+      <Artigo n={2} titulo="El pago a través de Stripe">
+        <p>
+          El vendedor del curso es{' '}
+          {empresa.razaoSocial ? <strong>{empresa.razaoSocial}</strong> : 'la empresa que opera el sitio'},
+          con sede en Brasil. Los pagos los procesa <strong>Stripe</strong>, nuestro procesador de pagos, en
+          una página segura de Stripe: Stripe recibe directamente los datos de tu tarjeta, y nosotros nunca
+          los vemos ni los guardamos.
+        </p>
+        <p>
+          El precio se cobra en dólares estadounidenses, en un solo pago, sin suscripción ni renovación
+          automática. Tu banco puede cobrar sus propias comisiones por compras internacionales. Los reembolsos
+          se procesan a través de Stripe, como se describe en la Política de Reembolso.
+        </p>
+      </Artigo>
+      ) : (
       <Artigo n={2} titulo="El pago a través de Paddle">
         <p>
           Nuestro proceso de pedidos lo lleva a cabo nuestro revendedor en línea <strong>Paddle.com</strong>.
@@ -73,10 +91,11 @@ export function TermsEs() {
           de Paddle también se aplican a tu compra. Estos términos se refieren al curso y a tu acceso a él.
         </p>
       </Artigo>
+      )}
 
       <Artigo n={3} titulo="Cómo se otorga el acceso">
         <Lista itens={[
-          <>El acceso se abre en cuanto Paddle confirma el pago, por lo general en pocos minutos.</>,
+          <>El acceso se abre en cuanto {STRIPE ? 'Stripe' : 'Paddle'} confirma el pago, por lo general en pocos minutos.</>,
           <>El acceso está vinculado a la <strong>cuenta</strong> creada con tu correo, no a un dispositivo: puedes iniciar sesión en el celular y en la computadora con los mismos datos.</>,
           <>Tu cuenta puede mantener la sesión abierta en hasta <strong>3 dispositivos</strong> al mismo tiempo. Si inicias sesión en un cuarto, el dispositivo en el que iniciaste sesión hace más tiempo se desconecta y vuelve a pedir tus datos; tu progreso no se pierde.</>,
           <>Tu progreso se guarda en tu cuenta y te acompaña de un dispositivo a otro.</>
