@@ -97,7 +97,9 @@ function rebaixar(porque) {
    resumo diz. Sem a chave o site sobe e o checkout diz que o pagamento não
    está ligado. PLANO-INGLES.md, etapa 5. */
 const TOML = readFileSync(new URL('../wrangler.toml', import.meta.url), 'utf8');
-const ehSiteEmIngles = /^\s*LOCALE\s*=\s*"en"/m.test(TOML);
+/* E o em espanhol (LOCALE = "es", Moshikgueta/hebreo-fluido), do mesmo jeito: o
+   nome ficou do tempo em que o inglês era o único site de fora. */
+const ehSiteEmIngles = /^\s*LOCALE\s*=\s*"(en|es)"/m.test(TOML);
 /* Sem domínio próprio (SITE_ORIGIN no workers.dev) o site em inglês ainda não
    vende a ninguém, e o teste do Paddle no sandbox roda nele, aviso assinado
    incluído (decisão do dono, 29/10/2026; TESTE-PADDLE.md). Com o domínio, a

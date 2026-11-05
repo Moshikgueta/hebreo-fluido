@@ -23,13 +23,18 @@
 import { createServer } from 'node:http';
 import { readFileSync, existsSync } from 'node:fs';
 import { chromium } from 'playwright';
-import { EM_INGLES, OUT } from './saida.mjs';
+import { EM_ESPANHOL, EM_INGLES, OUT } from './saida.mjs';
 /* Os nomes dos controles, nos dois idiomas da build (dicionários
    conta-botao-acessibilidade.ts e conta-plataforma-pecas.ts). */
 const R = EM_INGLES
   ? { ajustes: 'Accessibility settings', ajustesRe: /Accessibility settings/, contraste: 'More contrast',
       espaco: 'More space between lines', movimento: 'Less animation', normal: 'Reset to default',
       links: 'Underline links', mostrar: 'Show password', ocultar: 'Hide password' }
+  /* O espanhol (04/11/2026): os mesmos botões, com o texto do dicionário. */
+  : EM_ESPANHOL
+  ? { ajustes: 'Ajustes de accesibilidad', ajustesRe: /Ajustes de accesibilidad/, contraste: 'Más contraste',
+      espaco: 'Más espacio entre líneas', movimento: 'Menos animación', normal: 'Volver a lo normal',
+      links: 'Subrayar enlaces', mostrar: 'Mostrar contraseña', ocultar: 'Ocultar contraseña' }
   : { ajustes: 'Ajustes de acessibilidade', ajustesRe: /Ajustes de acessibilidade/, contraste: 'Mais contraste',
       espaco: 'Mais espaço entre linhas', movimento: 'Menos animação', normal: 'Voltar ao normal',
       links: 'Sublinhar links', mostrar: 'Mostrar senha', ocultar: 'Ocultar senha' };

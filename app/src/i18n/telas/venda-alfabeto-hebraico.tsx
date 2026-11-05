@@ -148,8 +148,8 @@ const es: Traducao<typeof pt> = {
     `${nome} (${letra}): la letra del alfabeto hebreo y cómo se lee - Hebraico Fluente`,
   // etapa 3: pronúncia, rever (o erro descrito hoje é o de quem fala português)
   letraMetaDescricao: (nome: string, ordem: number, som: string) =>
-    `${nome}, la letra ${ordem} en el orden del curso: el sonido (${som}), una palabra grabada ` +
-    'por el profesor y el error más común de quien empieza.',
+    `${nome}, la letra ${ordem} en el orden del curso: el sonido (${som}), una palabra con la ` +
+    'voz del profesor y el error más común al empezar.',
   letraEyebrow: (ordem: number) => `Alfabeto hebreo · letra ${ordem} en el orden del curso`,
   letraLead: (som: string, final: ReactNode): ReactNode => (
     <>El sonido: {som}.{final && <> Al final de la palabra, la letra cambia de forma: {final}.</>}</>
