@@ -36,7 +36,9 @@ import { AudioButton, hasAudio, useRegistroDeAudio } from '@/components/learn/Au
 import { BrazilianTip, Prose, TituloComSelo, WordReveal } from '@/components/learn/Blocks';
 import { Compreensao } from '@/components/learn/Compreensao';
 import { useProgress } from '@/lib/state/store';
-import { LIBERA_MARK, MASTERY_MARK, porQueTrancada } from '@/lib/state/rules';
+import { LIBERA_MARK, MASTERY_MARK, porQueTrancada, pendenciasDasLetras } from '@/lib/state/rules';
+import { PendenciasAntesDoFim } from '@/components/learn/PendenciasAntesDoFim';
+import { tx as txPendencias } from '@/i18n/telas/pendencias-antes-do-fim';
 import { allLetters, course } from '@/lib/content';
 import type { SomLicao } from '@/lib/engine/extras';
 import { CONTRASTE, idDoSom, nomeDaLicao, ordemDeEnsino, portasDosModulos, rodadaDoSom, rotaDaLicao } from '@/lib/sons';
@@ -95,6 +97,11 @@ export function SomLessonClient({ som: S }: { som: SomLicao }) {
   if (trancada) return <Trancada titulo={tx.naoAbriu(S.namePt)} trancada={trancada} />;
 
   const stagesDone = p.state.lessons[id]?.stagesDone ?? [];
+
+  /* Os sons do módulo 7 (05/11/2026): o que ficou para trás nos módulos 1 a 5
+     vem antes. Quem já começou esta lição segue com ela aberta. */
+  const pendencias = S.modulo >= 6 && p.ready && !stagesDone.length ? pendenciasDasLetras(p.state, course.modules) : [];
+  if (pendencias.length) return <PendenciasAntesDoFim titulo={txPendencias.tituloModulo(S.modulo)} pendencias={pendencias} />;
 
   return (
     <div className="grid gap-6 reading">

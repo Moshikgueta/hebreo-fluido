@@ -35,7 +35,9 @@ import { useProgress } from '@/lib/state/store';
 import { allLetters, course, extras, type CourseModule } from '@/lib/content';
 import { classificar, exerciciosDoPonto, grupoAnalisado, palavrasDoPonto, POSICAO_PT } from '@/lib/engine/posicao-do-ponto';
 import { buildDageshQuiz, buildGerechQuiz, type Extras } from '@/lib/engine/extras';
-import { EXTRA_STAGE_UNITS } from '@/lib/state/rules';
+import { EXTRA_STAGE_UNITS, pendenciasDasLetras } from '@/lib/state/rules';
+import { PendenciasAntesDoFim } from '@/components/learn/PendenciasAntesDoFim';
+import { tx as txPendencias } from '@/i18n/telas/pendencias-antes-do-fim';
 import { track } from '@/lib/analytics';
 import { escolherRodada, registrarRodada } from '@/lib/rodadas';
 
@@ -85,6 +87,11 @@ export function ExtraLessonClient({ slug, module: mod }: { slug: ExtraSlug; modu
   }, [p, stateId]);
 
   const nextModule = course.modules.find(m => m.n === mod.n + 1);
+
+  /* O que ficou para trás nos módulos 1 a 5 (05/11/2026). Quem já começou
+     este módulo segue com ele aberto. */
+  const pendencias = p.ready && !stagesDone.length ? pendenciasDasLetras(p.state, course.modules) : [];
+  if (pendencias.length) return <PendenciasAntesDoFim titulo={txPendencias.tituloModulo(mod.n)} pendencias={pendencias} />;
 
   return (
     <div className="grid gap-6 reading">
