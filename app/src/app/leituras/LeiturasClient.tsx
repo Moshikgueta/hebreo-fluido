@@ -17,6 +17,7 @@ import { useProgress } from '@/lib/state/store';
 import { cardapiosDoCurso, course, placasDaRua, umDiaEmIsrael } from '@/lib/content';
 import { leiturasDoModulo } from '@/lib/leituras-do-curso';
 import { Cenario, type IdDoCenario } from '@/components/aventura/Cenarios';
+import { LivroDaLeitura, tipoDaLeitura } from '@/components/ilustra/LivroDaLeitura';
 import { He } from '@/components/hebrew/He';
 import { tx } from '@/i18n/telas/academia-leituras-client';
 
@@ -116,33 +117,30 @@ export function LeiturasClient() {
           {leituras.length === 0 ? (
             <p className="m-0 font-ui text-[13.5px] text-ink-muted">{tx.nenhumaAinda}</p>
           ) : (
-            <ul className="grid gap-2 sm:grid-cols-3 list-none p-0 m-0">
+            <ul className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
               {leituras.map(l => {
+                /* Cartão ilustrado, parte 3 (05/11/2026): o livrinho na cor do
+                   tipo de leitura, o selo de feita ao lado. */
                 const corpo = (
                   <>
-                    <span className="flex items-start justify-between gap-2">
+                    <LivroDaLeitura tipo={tipoDaLeitura(l.id)} trancado={!l.aberta} />
+                    <span className="grid gap-1 min-w-0 flex-1">
                       <span className="font-display text-[15.5px] font-semibold leading-snug text-ink">{l.titulo}</span>
-                      {l.feita && (
-                        <span className="shrink-0 rounded-full bg-[var(--teal)] px-2 py-0.5 font-ui text-[11.5px] font-bold text-white">
-                          ✓ {tx.feito}
-                        </span>
-                      )}
+                      <span className="font-ui text-[13px] leading-snug text-ink-muted">{l.aberta ? l.desc : l.porque}</span>
                     </span>
-                    <span className="font-ui text-[13px] leading-snug text-ink-muted">{l.aberta ? l.desc : l.porque}</span>
+                    {l.feita && (
+                      <span className="shrink-0 self-start rounded-full bg-[var(--teal-soft)] px-2.5 py-1 font-ui text-[11.5px] font-bold text-[var(--teal-ink)]">
+                        ✓ {tx.feito}
+                      </span>
+                    )}
                   </>
                 );
                 return (
                   <li key={l.id} className="min-w-0">
                     {l.aberta ? (
-                      <Link href={l.href}
-                            className="h-full grid content-start gap-1 rounded-[16px] border border-line bg-[var(--card)] p-4
-                                       transition-[box-shadow,border-color] duration-200 hover:shadow-[var(--sh)] hover:border-[var(--teal)]">
-                        {corpo}
-                      </Link>
+                      <Link href={l.href} className="hf-topico h-full flex items-center gap-3.5">{corpo}</Link>
                     ) : (
-                      <div className="h-full grid content-start gap-1 rounded-[16px] border border-dashed border-line bg-[var(--paper)] p-4">
-                        {corpo}
-                      </div>
+                      <div className="hf-topico hf-topico-fechado h-full flex items-center gap-3.5 border-dashed">{corpo}</div>
                     )}
                   </li>
                 );

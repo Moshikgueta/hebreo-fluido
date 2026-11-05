@@ -626,3 +626,57 @@ html[data-a11y-movimento='reduzido'] *::after {
 .hf-dia-trilha { position: absolute; inset-inline-start: 27px; top: 8px; bottom: 8px; width: 4px; background: repeating-linear-gradient(var(--line) 0 10px, transparent 10px 18px); }
 .hf-dia-pino { animation: hf-pula 1.6s ease-in-out infinite; }
 @keyframes hf-pula { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+/* ── os cartões ilustrados (05/11/2026, aprovados pelo dono) ─────────────
+   Uma cena desenhada em cima (components/ilustra/), o texto embaixo, sombra
+   macia e o cartão que sobe um pouco no toque. A cena é um SVG em "meet",
+   então o desenho mantém o tamanho em qualquer largura e o chão (um retângulo
+   largo) cobre as laterais. Sem movimento com "menos movimento" (regra geral
+   acima, que também zera as transições). */
+.hf-cartao {
+  display: grid; grid-template-rows: auto 1fr; overflow: hidden;
+  border-radius: 22px; border: 1px solid var(--line); background: var(--card); box-shadow: var(--sh);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.hf-cartao:not(:disabled):hover { transform: translateY(-3px); box-shadow: var(--sh-mock); }
+.hf-cartao:not(:disabled):active { transform: scale(.985); }
+.hf-cartao-fechado { cursor: default; }
+.hf-cartao-fechado .hf-cena { filter: grayscale(.85); opacity: .7; }
+.hf-cena { position: relative; display: block; height: 118px; overflow: hidden; }
+.hf-cena svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hf-flutua { animation: hf-flutua 4s ease-in-out infinite; }
+.hf-cartao:not(:disabled):hover .hf-flutua { animation-duration: 1.8s; }
+@keyframes hf-flutua { 50% { transform: translateY(-4px); } }
+
+/* Cartões ilustrados, parte 2: o cartão compacto com medalha (os treinos por
+   assunto). As cores da medalha são as das ilustrações, iguais nos dois temas. */
+.hf-topico {
+  padding: 14px 16px; border-radius: 18px; border: 1px solid var(--line); background: var(--card); box-shadow: var(--sh);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.hf-topico:not(:disabled):hover { transform: translateY(-2px); box-shadow: var(--sh-mock); }
+.hf-topico:not(:disabled):active { transform: scale(.985); }
+.hf-topico-fechado { cursor: default; background: var(--sand); box-shadow: none; }
+.hf-topico-fechado .hf-medalha { filter: grayscale(.85); opacity: .7; }
+.hf-topico-ref { background: var(--sand); }
+.hf-medalha {
+  position: relative; flex: none; display: grid; place-items: center; overflow: hidden;
+  width: 50px; height: 50px; border-radius: 16px; color: #fff; font-size: 22px; line-height: 1;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .12);
+}
+.hf-medalha::after { content: ""; position: absolute; inset: auto -10px -18px -10px; height: 26px; border-radius: 50%; background: rgba(255, 255, 255, .22); }
+.hf-medalha-teal { background: linear-gradient(140deg, #1F8A7D, #155059); }
+.hf-medalha-ouro { background: linear-gradient(140deg, #E7B65A, #B8862F); color: #1B211F; }
+.hf-medalha-mar { background: linear-gradient(140deg, #3F9A9C, #2C7C80); }
+.hf-medalha-flor { background: linear-gradient(140deg, #D9789A, #C9577E); }
+.hf-medalha-oliva { background: linear-gradient(140deg, #7F9C5C, #3E5B3C); }
+.hf-medalha-terra { background: linear-gradient(140deg, #E07B39, #C9443A); }
+
+/* Cartões ilustrados, parte 3: o livrinho das leituras. */
+.hf-livro { flex: none; width: 40px; height: 50px; filter: drop-shadow(0 3px 4px rgba(27, 33, 31, .12)); }
+a.hf-topico:hover .hf-livro { transform: rotate(-4deg); }
+.hf-livro { transition: transform .25s var(--ease); }
+
+/* Cartões ilustrados, parte 4: o cartão da loja não é um botão (o botão é o
+   "Trocar" dentro dele), então não sobe no toque. */
+.hf-cartao-estatico:hover, .hf-cartao-estatico:active { transform: none !important; box-shadow: var(--sh) !important; }

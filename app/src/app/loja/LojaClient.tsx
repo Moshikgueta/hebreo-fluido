@@ -8,7 +8,7 @@
  * maçaneta.
  */
 
-import { IconeBrilho, IconeEscudo, IconePergaminho } from '@/components/shell/NavIcons';
+import { CenaDaRecompensa, PergaminhoBonus, type Recompensa } from '@/components/ilustra/CenaDaRecompensa';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Card } from '@/components/ui/Card';
@@ -75,14 +75,14 @@ export function LojaClient() {
       </header>
 
       {/* Dia de folga */}
-      <Item titulo={ITENS.folga.titulo} custo={ITENS.folga.custo} icone={<IconeEscudo size={26} />} descricao={ITENS.folga.descricao}
+      <Item titulo={ITENS.folga.titulo} custo={ITENS.folga.custo} cena="folga" descricao={ITENS.folga.descricao}
             detalhe={folgas ? tx.folgasGuardadas(folgas) : tx.nenhumaFolga}
             pode={livre >= ITENS.folga.custo && folgas < MAX_FOLGAS}
             porQueNao={folgas >= MAX_FOLGAS ? MOTIVO.limite : MOTIVO.saldo}
             onTrocar={() => trocar('folga', undefined, tx.folgaFeito)} />
 
       {/* Carta de cultura antecipada */}
-      <Item titulo={ITENS.carta.titulo} custo={ITENS.carta.custo} icone={<IconePergaminho size={26} />} descricao={ITENS.carta.descricao}
+      <Item titulo={ITENS.carta.titulo} custo={ITENS.carta.custo} cena="carta" descricao={ITENS.carta.descricao}
             detalhe={proxima ? tx.proximaCarta(proxima.titlePt, proxima.unlockAt) : tx.todasAbertas}
             pode={!!proxima && livre >= ITENS.carta.custo}
             porQueNao={!proxima ? MOTIVO['sem-alvo'] : MOTIVO.saldo}
@@ -93,7 +93,7 @@ export function LojaClient() {
       {!MEU_NOME_EM_HEBRAICO ? null : temNomeDecorado(s) && s.nomeHebraico ? (
         <NomeDecorado nomeHe={s.nomeHebraico.texto} nomePt={s.onboarding?.name ?? ''} />
       ) : (
-        <Item titulo={nomeItem.titulo} custo={nomeItem.custo} icone={<IconeBrilho size={26} />}
+        <Item titulo={nomeItem.titulo} custo={nomeItem.custo} cena="nome"
               descricao={nomeItem.descricao}
               detalhe={s.nomeHebraico
                 ? tx.seuNome(<He size="word">{s.nomeHebraico.texto}</He>)
@@ -180,8 +180,9 @@ function LeiturasBonus({ livre, mastered, semDominio, totalLetras, minhas, onTro
             : tx.paraLerSozinho(l.after, faltam);
           return (
             <li key={l.id}>
-              <Card className="p-4 grid gap-2">
+              <div className="hf-topico grid gap-2">
                 <div className="flex flex-wrap items-center gap-3">
+                  <PergaminhoBonus versiculo={item === 'bencao'} />
                   <div className="grid gap-0.5 min-w-[10rem] flex-1">
                     <span className="font-display text-[16.5px] font-semibold text-ink">{l.tituloPt}</span>
                     <span className="font-ui text-[13px] text-ink-muted">{l.fontePt}</span>
@@ -195,7 +196,7 @@ function LeiturasBonus({ livre, mastered, semDominio, totalLetras, minhas, onTro
                   )}
                 </div>
                 {nota && <p className="font-ui text-[12.5px] text-ink-muted m-0">{nota}</p>}
-              </Card>
+              </div>
             </li>
           );
         })}
@@ -204,26 +205,27 @@ function LeiturasBonus({ livre, mastered, semDominio, totalLetras, minhas, onTro
   );
 }
 
-function Item({ titulo, custo, icone, descricao, detalhe, pode, porQueNao, onTrocar, depois }: {
-  titulo: string; custo: number; icone: React.ReactNode; descricao: string; detalhe: React.ReactNode;
+/* Cartão ilustrado, parte 4 (05/11/2026): a cena da recompensa em cima. */
+function Item({ titulo, custo, cena, descricao, detalhe, pode, porQueNao, onTrocar, depois }: {
+  titulo: string; custo: number; cena: Recompensa; descricao: string; detalhe: React.ReactNode;
   pode: boolean; porQueNao: string; onTrocar: () => void; depois?: React.ReactNode;
 }) {
   return (
-    <Card className="p-5 grid gap-3">
-      <div className="flex items-start gap-3">
-        <span aria-hidden className="text-[var(--accent)] leading-none mt-0.5">{icone}</span>
-        <div className="grid gap-1 min-w-0 flex-1">
+    <div className="hf-cartao hf-cartao-estatico">
+      <CenaDaRecompensa tipo={cena} />
+      <div className="p-5 pt-4 grid gap-3">
+        <div className="grid gap-1 min-w-0">
           <h2 className="font-display text-[18px] font-semibold m-0">{titulo}</h2>
           <p className="font-ui text-[14px] leading-relaxed text-ink-body m-0">{descricao}</p>
           <p className="font-ui text-[13.5px] text-ink-muted m-0">{detalhe}</p>
         </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button onClick={onTrocar} disabled={!pode} size="md">{tx.trocarPor(custo)}</Button>
+          {!pode && <span className="font-ui text-[13px] text-ink-muted">{porQueNao}</span>}
+          {depois}
+        </div>
       </div>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button onClick={onTrocar} disabled={!pode} size="md">{tx.trocarPor(custo)}</Button>
-        {!pode && <span className="font-ui text-[13px] text-ink-muted">{porQueNao}</span>}
-        {depois}
-      </div>
-    </Card>
+    </div>
   );
 }
 

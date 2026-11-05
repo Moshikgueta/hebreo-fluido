@@ -37,6 +37,8 @@ import { useSearchParams } from 'next/navigation';
 import { PARES_DE_SOM } from '@/lib/engine/pares-de-som';
 import { Card, Badge } from '@/components/ui/Card';
 import { Button, LinkButton } from '@/components/ui/Button';
+import { CenaDoJogo, simboloComLetrasDoAluno } from '@/components/ilustra/CenaDoJogo';
+import { LivroDaLeitura } from '@/components/ilustra/LivroDaLeitura';
 import { He } from '@/components/hebrew/He';
 import { Milestone } from '@/components/game/Game';
 import { ExercisePlayer, type PlayerResult } from '@/components/learn/ExercisePlayer';
@@ -180,6 +182,8 @@ export function AcademiaClient() {
   );
 
   /* O desafio do dia, montado uma vez por dia (lib/engine/desafio.ts). */
+  /* As letras dos desenhos dos cartões: só as que o aluno já tem. */
+  const letrasDaCena = useMemo(() => unlocked.map(l => l.letter), [unlocked]);
   const desafio = useMemo(() => desafioDoDia(unlocked, p.weak, p.day, audioAvailable()),
     [unlocked.length, p.day]);
   const desafioFeito = desafioFeitoHoje(p.state, p.day);
@@ -835,18 +839,23 @@ export function AcademiaClient() {
             <ul className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
               {textosDoCurso.map(t => (
                 <li key={t.id} className="min-w-0">
+                  {/* Cartão ilustrado, parte 3: o livrinho do texto do módulo. */}
                   {t.aberta ? (
-                    <Link href={t.href}
-                          className="h-full grid content-start gap-1 rounded-[16px] border border-line bg-[var(--card)] p-4 min-h-[76px]
-                                     transition-[box-shadow,border-color] duration-200 hover:shadow-[var(--sh)] hover:border-[var(--teal)]">
-                      <span className="font-ui text-[12px] font-semibold uppercase tracking-[.06em] text-[var(--teal-ink)]">✓ {tx.moduloN(t.modulo)}</span>
-                      <span className="font-display text-[15.5px] font-semibold leading-snug text-ink">{t.titulo}</span>
+                    <Link href={t.href} className="hf-topico h-full flex items-center gap-3.5 min-h-[76px]">
+                      <LivroDaLeitura tipo="texto" />
+                      <span className="grid gap-1 min-w-0">
+                        <span className="font-ui text-[12px] font-semibold uppercase tracking-[.06em] text-[var(--teal-ink)]">✓ {tx.moduloN(t.modulo)}</span>
+                        <span className="font-display text-[15.5px] font-semibold leading-snug text-ink">{t.titulo}</span>
+                      </span>
                     </Link>
                   ) : (
-                    <div className="h-full grid content-start gap-1 rounded-[16px] border border-dashed border-line bg-[var(--paper)] p-4 min-h-[76px]">
-                      <span className="font-ui text-[12px] font-semibold uppercase tracking-[.06em] text-ink-muted">{tx.moduloN(t.modulo)}</span>
-                      <span className="font-display text-[15.5px] font-semibold leading-snug text-ink-muted">{t.titulo}</span>
-                      <span className="font-ui text-[12.5px] leading-snug text-ink-muted">{t.porque}</span>
+                    <div className="hf-topico hf-topico-fechado h-full flex items-center gap-3.5 min-h-[76px] border-dashed">
+                      <LivroDaLeitura tipo="texto" trancado />
+                      <span className="grid gap-1 min-w-0">
+                        <span className="font-ui text-[12px] font-semibold uppercase tracking-[.06em] text-ink-muted">{tx.moduloN(t.modulo)}</span>
+                        <span className="font-display text-[15.5px] font-semibold leading-snug text-ink-muted">{t.titulo}</span>
+                        <span className="font-ui text-[12.5px] leading-snug text-ink-muted">{t.porque}</span>
+                      </span>
                     </div>
                   )}
                 </li>
@@ -896,33 +905,31 @@ export function AcademiaClient() {
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
               {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste'] as const).map(jogo => (
                 <li key={jogo}>
+                  {/* Cartão ilustrado (05/11/2026, aprovado pelo dono): a cena do
+                      jogo em cima, com as letras que o aluno já aprendeu. */}
                   <button
                     type="button"
                     disabled={!!fechados[jogo]}
                     onClick={() => setScreen({ kind: 'jogo', jogo, rodada: 0 })}
-                    className={`w-full h-full text-left rounded-[18px] border border-line bg-[var(--card)]
-                               p-5 grid gap-1.5 content-start transition-[box-shadow,border-color]
-                               duration-[250ms]
-                               ${fechados[jogo] ? 'cursor-default bg-surface-2' : 'hover:shadow-[var(--sh)] hover:border-[var(--teal)]'}`}
+                    className={`hf-cartao w-full h-full text-left ${fechados[jogo] ? 'hf-cartao-fechado' : ''}`}
                   >
-                    <span aria-hidden className="w-10 h-10 rounded-[12px] bg-[var(--teal-soft)]
-                                                 grid place-items-center mb-1">
-                      <IconeJogo jogo={jogo} />
+                    <CenaDoJogo jogo={jogo} letras={letrasDaCena} />
+                    <span className="grid gap-1.5 content-start p-4 pt-3.5">
+                      <span className="font-display text-[18px] font-semibold tracking-[-0.018em] text-ink">
+                        {JOGOS[jogo].titlePt}
+                      </span>
+                      <span className="font-ui text-[12.5px] font-semibold text-[var(--teal-ink)]">
+                        {tx.treina(JOGOS[jogo].treinaPt.toLowerCase())}
+                      </span>
+                      <span className="font-ui text-[13.5px] leading-[1.5] text-ink-muted">
+                        {JOGOS[jogo].descPt}
+                      </span>
+                      {fechados[jogo]
+                        ? <span className="font-ui text-[13px] font-semibold text-ink-body">
+                            <IconeCadeado size={14} className="inline -mt-0.5 mr-1" />{fechados[jogo]}
+                          </span>
+                        : <GymBest modeId={jogo} />}
                     </span>
-                    <span className="font-display text-[18px] font-semibold tracking-[-0.018em] text-ink">
-                      {JOGOS[jogo].titlePt}
-                    </span>
-                    <span className="font-ui text-[12.5px] font-semibold text-[var(--teal-ink)]">
-                      {tx.treina(JOGOS[jogo].treinaPt.toLowerCase())}
-                    </span>
-                    <span className="font-ui text-[13.5px] leading-[1.5] text-ink-muted">
-                      {JOGOS[jogo].descPt}
-                    </span>
-                    {fechados[jogo]
-                      ? <span className="font-ui text-[13px] font-semibold text-ink-body">
-                          <IconeCadeado size={14} className="inline -mt-0.5 mr-1" />{fechados[jogo]}
-                        </span>
-                      : <GymBest modeId={jogo} />}
                   </button>
                 </li>
               ))}
@@ -935,28 +942,25 @@ export function AcademiaClient() {
           <ul className="grid gap-3 sm:grid-cols-2">
             {modes.map(({ mode, ready, whyNot }) => (
               <li key={mode.id}>
+                {/* Cartão ilustrado, parte 2 (05/11/2026): o símbolo do assunto
+                    numa medalha colorida, a cor fixa por assunto (COR_DO_ASSUNTO). */}
                 <button
                   type="button"
                   disabled={!ready}
                   onClick={() => start(mode)}
-                  className={`w-full h-full text-left rounded-[var(--r-lg)] border p-4 grid gap-1.5
-                    transition-colors
-                    ${ready
-                      ? 'border-line bg-surface hover:border-[var(--accent-soft)] hover:bg-[var(--accent-wash)]'
-                      : 'border-line-soft bg-surface-2 opacity-70 cursor-default'}`}
+                  className={`hf-topico w-full h-full text-left grid gap-1.5 ${ready ? '' : 'hf-topico-fechado'}`}
                 >
-                  <span className="flex items-center gap-2.5">
-                    <span aria-hidden className="w-9 h-9 rounded-[var(--r-md)] bg-surface-2
-                                                 grid place-items-center text-[16px] text-ink">
+                  <span className="flex items-center gap-3.5">
+                    <span aria-hidden className={`hf-medalha ${COR_DO_ASSUNTO[mode.id] ?? 'hf-medalha-teal'}`}>
                       {/[֐-׿]/.test(mode.icon)
                         /* A bare vowel mark has nothing to sit on and renders
                            as a stray dot in the corner of the tile; onCarrier
                            puts it on U+25CC, which is Unicode's own way of
                            showing a combining mark on its own. */
-                        ? <He size="inline">{onCarrier(mode.icon)}</He>
+                        ? <He size="inline" className="!text-current">{onCarrier(simboloComLetrasDoAluno(mode.icon, letrasDaCena))}</He>
                         : mode.icon}
                     </span>
-                    <span className="font-display text-[16px] font-bold text-ink">{mode.titlePt}</span>
+                    <span className="font-display text-[16.5px] font-semibold tracking-[-0.01em] text-ink">{mode.titlePt}</span>
                     {mode.timed && (
                       <span className="ml-auto font-ui text-[11px] uppercase tracking-[.07em]
                                        text-[var(--accent)]">{tx.tempoMarca}</span>
@@ -981,16 +985,19 @@ export function AcademiaClient() {
             <ReferenceCard
               title={tx.sonsESinais}
               desc={tx.refSonsDesc}
+              simbolo="♫" cor="hf-medalha-mar"
               onClick={() => setScreen({ kind: 'lab' })}
             />
             <ReferenceCard
               title={tx.escrita}
               desc={tx.refEscritaDesc}
+              simbolo="✎" cor="hf-medalha-oliva"
               onClick={() => setScreen({ kind: 'escrita' })}
             />
             <ReferenceCard
               title={tx.palavrasAMao}
               desc={tx.refPalavrasDesc}
+              simbolo="✍" cor="hf-medalha-flor"
               onClick={() => setScreen({ kind: 'palavras-a-mao' })}
             />
           </div>
@@ -1046,56 +1053,6 @@ function montarNovo(
   return { batalha: { ...batalha, rodadas: [...batalha.rodadas, ...somRodadas] } };
 }
 
-/* Seis desenhos de traço, no peso do resto do sistema. Traço e não emoji: o
-   emoji muda de desenho em cada sistema operacional, e dois deles aqui
-   ficariam coloridos no meio de uma paleta que tem três cores. */
-function IconeJogo({ jogo }: { jogo: Jogo }) {
-  const comum = {
-    width: 20, height: 20, viewBox: '0 0 20 20', fill: 'none',
-    stroke: 'var(--teal)', strokeWidth: 1.5,
-    strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const,
-    'aria-hidden': true
-  };
-  if (jogo === 'match') return (
-    <svg {...comum}>
-      <rect x="2.4" y="4" width="6.6" height="12" rx="2" />
-      <rect x="11" y="4" width="6.6" height="12" rx="2" />
-      <path d="M9 10h2" />
-    </svg>
-  );
-  if (jogo === 'blast') return (
-    <svg {...comum}><path d="M11.2 2.4 4.6 11h4.6l-.8 6.6L15.4 9h-4.6l.4-6.6Z" /></svg>
-  );
-  /* Caça: a lupa sobre a grade. */
-  if (jogo === 'caca') return (
-    <svg {...comum}>
-      <circle cx="8.6" cy="8.6" r="5.2" />
-      <path d="m12.6 12.6 4.2 4.2" />
-    </svg>
-  );
-  /* Batalha: duas formas quase iguais, encostadas, e o traço que as separa. */
-  if (jogo === 'batalha') return (
-    <svg {...comum}>
-      <path d="M7.6 3.6v9a2.6 2.6 0 0 1-2.6 2.6H3.4" />
-      <path d="M16.6 3.6v9a2.6 2.6 0 0 1-2.6 2.6h-1.6" />
-      <path d="M10.1 2.6v14.8" strokeDasharray="2 2.4" />
-    </svg>
-  );
-  /* Impressa × cursiva: o quadrado do tipo e a curva da mão. */
-  if (jogo === 'cursiva') return (
-    <svg {...comum}>
-      <rect x="2.6" y="5" width="6.4" height="10" rx="1.2" />
-      <path d="M12 14.6c2.6-.6 4.4-2.6 4.4-5.2 0-2-1.2-3.4-2.6-3.4-1.2 0-2 1-2 2.4 0 3 3.4 4.2 5.2 4.2" />
-    </svg>
-  );
-  return (
-    <svg {...comum}>
-      <rect x="4" y="2.8" width="12" height="14.4" rx="2.4" />
-      <path d="M7.4 8.2h5.2M7.4 11.8h3.4" />
-    </svg>
-  );
-}
-
 function GymBest({ modeId }: { modeId: string }) {
   const p = useProgress();
   const rec = p.state.gym?.[modeId];
@@ -1115,20 +1072,26 @@ function GymBest({ modeId }: { modeId: string }) {
 }
 
 function ReferenceCard({
-  title, desc, onClick
-}: { title: string; desc: string; onClick: () => void }) {
+  title, desc, simbolo, cor, onClick
+}: { title: string; desc: string; simbolo: string; cor: string; onClick: () => void }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="text-left rounded-[var(--r-lg)] border border-dashed border-line bg-surface
-                 p-4 grid gap-1 hover:bg-surface-2 transition-colors min-h-[88px]"
-    >
-      <span className="font-display text-[15.5px] font-bold text-ink">{title}</span>
-      <span className="font-ui text-[13px] leading-relaxed text-ink-muted">{desc}</span>
+    <button type="button" onClick={onClick} className="hf-topico hf-topico-ref text-left flex items-center gap-3.5 min-h-[88px]">
+      <span aria-hidden className={`hf-medalha ${cor}`}>{simbolo}</span>
+      <span className="grid gap-1 min-w-0">
+        <span className="font-display text-[15.5px] font-semibold text-ink">{title}</span>
+        <span className="font-ui text-[13px] leading-relaxed text-ink-muted">{desc}</span>
+      </span>
     </button>
   );
 }
+
+/* A cor da medalha de cada assunto (cartões ilustrados, parte 2). Fixa por
+   assunto, e não pela posição na lista: o aluno reconhece "Vogais" pela cor. */
+const COR_DO_ASSUNTO: Record<string, string> = {
+  revisao: 'hf-medalha-ouro', letras: 'hf-medalha-teal', vogais: 'hf-medalha-ouro', silabas: 'hf-medalha-mar',
+  palavras: 'hf-medalha-flor', fotos: 'hf-medalha-oliva', ouvir: 'hf-medalha-mar', parecidas: 'hf-medalha-terra',
+  construir: 'hf-medalha-teal', 'palavras-cursiva': 'hf-medalha-flor', digitar: 'hf-medalha-oliva', relogio: 'hf-medalha-terra'
+};
 
 /* O cronômetro do modo «contra o relógio».
  * ─────────────────────────────────────────────────────────────────────────
