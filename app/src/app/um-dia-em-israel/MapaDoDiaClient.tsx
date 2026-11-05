@@ -13,6 +13,7 @@ import { PARADAS, jogoAberto, placasLegiveis, type IdDaParada } from '@/lib/engi
 import { cartoesAbertos, cartoesLegiveis } from '@/lib/engine/cartoes';
 import { coposAbertos, nomesLegiveis } from '@/lib/engine/copos';
 import { cidadesLegiveis, tremAberto } from '@/lib/engine/trem';
+import { produtosLegiveis, superAberto } from '@/lib/engine/supermercado';
 import { alphabetComplete } from '@/lib/state/rules';
 import { useProgress } from '@/lib/state/store';
 import { textoDaParada, tx } from '@/i18n/telas/academia-um-dia';
@@ -27,6 +28,7 @@ export function MapaDoDiaClient() {
   const { prontos: cartoesProntos } = cartoesLegiveis(umDiaEmIsrael().cartoes ?? [], concluidas);
   const { prontos: nomesProntos } = nomesLegiveis(umDiaEmIsrael().copos ?? [], concluidas);
   const { prontas: cidadesProntas } = cidadesLegiveis(umDiaEmIsrael().trem ?? [], concluidas);
+  const { prontos: produtosProntos } = produtosLegiveis(umDiaEmIsrael().super ?? [], concluidas);
   const tem22 = p.ready && alphabetComplete(p.state, todas.map(l => l.id));
 
   const estado = (id: IdDaParada, rota: string | null): Estado => {
@@ -35,6 +37,7 @@ export function MapaDoDiaClient() {
     if (id === 'trem') return (umDiaEmIsrael().trem ?? []).length === 0 ? 'em-breve' : tremAberto(cidadesProntas) ? 'aberta' : 'letras';
     if (id === 'copo') return (umDiaEmIsrael().copos ?? []).length === 0 ? 'em-breve' : coposAbertos(nomesProntos) ? 'aberta' : 'letras';
     if (id === 'cartoes') return (umDiaEmIsrael().cartoes ?? []).length === 0 ? 'em-breve' : cartoesAbertos(cartoesProntos) ? 'aberta' : 'letras';
+    if (id === 'super') return (umDiaEmIsrael().super ?? []).length === 0 ? 'em-breve' : superAberto(produtosProntos) ? 'aberta' : 'letras';
     if (id === 'shuk') return (umDiaEmIsrael().shuk ?? []).length === 0 ? 'em-breve' : tem22 ? 'aberta' : 'vinte-e-duas';
     if (id === 'cafe') return cardapiosDoCurso().length === 0 ? 'em-breve' : tem22 ? 'aberta' : 'vinte-e-duas';
     return 'aberta';

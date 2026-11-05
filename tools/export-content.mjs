@@ -941,6 +941,30 @@ function main() {
     bancasDoShuk.push({ ...publico, he: NFC(b.he) });
   }
 
+  /* ── Um dia em Israel: o supermercado (05/11/2026) ───────────────────
+     A parada das 15h (lib/engine/supermercado.ts): as embalagens da
+     prateleira. A forma e o desenho têm de existir em
+     components/ilustra/DesenhoDoProduto.tsx; as mesmas regras de nikud. */
+  const FORMAS_DE_PRODUTO = ['caixa_alta', 'saco', 'bloco', 'pote', 'bandeja', 'vidro', 'barra', 'garrafa', 'saleiro'];
+  const produtosDoSuper = [];
+  const idsDosProdutos = new Set();
+  for (const p of readJson('data/supermercado.json').produtos) {
+    if (p.revisado !== true) continue;
+    for (const campo of ['id', 'forma', 'cor', 'he', 'translit', 'pt']) {
+      if (!p[campo]) throw new Error(`supermercado.json: o produto ${p.id ?? '?'} não tem ${campo}`);
+    }
+    if (idsDosProdutos.has(p.id)) throw new Error(`supermercado.json: id repetido ${p.id}`);
+    idsDosProdutos.add(p.id);
+    if (!FORMAS_DE_PRODUTO.includes(p.forma)) throw new Error(`supermercado.json: forma desconhecida em ${p.id}: ${p.forma}`);
+    if (!/^#[0-9A-Fa-f]{6}$/.test(p.cor)) throw new Error(`supermercado.json: cor inválida em ${p.id}: ${p.cor}`);
+    const comPonto = [...NFC(p.he).matchAll(/([\u05D0-\u05EA])[\u05B0-\u05BB\u05C1\u05C2\u05C7]*\u05BC/gu)].map(m => m[1]);
+    if (comPonto.some(l => !'בכךפףו'.includes(l))) throw new Error(`supermercado.json: daguesh fora de בּ/כּ/פּ em ${p.id}: ${p.he}`);
+    if (/[\u05B1-\u05B3]/u.test(p.he)) throw new Error(`supermercado.json: chataf em ${p.id}: ${p.he} (use a vogal simples)`);
+    const { revisado, ...publico } = p;
+    void revisado;
+    produtosDoSuper.push({ ...publico, he: NFC(p.he) });
+  }
+
   /* ── os mini-textos de leitura corrida ─────────────────────────────
      Um texto curto por módulo, do 3 ao 7. São as únicas frases do curso
      escritas para ele, e por isso cada um nasce com `revisado: false`: o
@@ -1056,7 +1080,7 @@ function main() {
     })),
     rua: placasDaRua,
     cardapios,
-    umDia: { placas: placasDoDia, cartoes: cartoesDoDia, copos: nomesNoCopo, trem: cidadesDoTrem, shuk: bancasDoShuk }
+    umDia: { placas: placasDoDia, cartoes: cartoesDoDia, copos: nomesNoCopo, trem: cidadesDoTrem, shuk: bancasDoShuk, super: produtosDoSuper }
   }, null, 2) + '\n');
 
   /* ── o curso Hebraico A1 (06/10/2026) ────────────────────────────────
