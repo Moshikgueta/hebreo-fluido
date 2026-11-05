@@ -44,3 +44,16 @@ depois da escolha. Para buscar de novo: Actions, "Fotos das missões", rodar à 
 Dizer quais das sete entram (ou "as sete"). Aí as imagens entram em
 `app/public/media/rua/`, cada uma passa a `aprovada: true`, e o cartão
 "Hebraico na rua" aparece em Leituras.
+
+## Segunda rodada (05/11/2026): duas novas para o dono aprovar
+
+Duas buscas novas no Wikimedia Commons, voltadas para palavras do curso,
+trouxeram 56 candidatas. Ficaram de fora memoriais, placas ligadas a guerra,
+avisos de minas, rótulos de marca e textos pequenos demais para o celular.
+
+| id | Palavra procurada | Outras palavras do curso na placa | O que é | Autor e licença |
+|---|---|---|---|---|
+| rua-yam | יָם (mar) | nenhuma | Placas de estrada para o mar Morto (ים המלח) e Jerusalém | Un E pour Encyclopédieur, CC0 |
+| rua-gan | גַן (jardim) | יָפֶה e, no texto pequeno, גַג, עֵץ, שֵׁם, עַל, זֶה, אֶחָד, שָׁנָה, יֶלֶד, גָדוֹל, קָטָן | Placa do antigo jardim de infância Gan Yafa (גן יפה), Givatayim | אורי מ., CC BY-SA 4.0 |
+
+Aprovadas pelo dono em 05/11/2026.

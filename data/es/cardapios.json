@@ -1,0 +1,110 @@
+{
+  "cardapios/israel/nomePt": {
+    "pt": "Comida de Israel",
+    "es": "Comida de Israel"
+  },
+  "cardapios/israel/tipoPt": {
+    "pt": "Pratos famosos de Israel",
+    "es": "Platos famosos de Israel"
+  },
+  "cardapios/israel/itens/#0/pt": {
+    "pt": "falafel",
+    "es": "falafel"
+  },
+  "cardapios/israel/itens/#1/pt": {
+    "pt": "homus",
+    "es": "hummus"
+  },
+  "cardapios/israel/itens/#2/pt": {
+    "pt": "shakshuka (ovos no molho de tomate)",
+    "es": "shakshuka (huevos en salsa de tomate)"
+  },
+  "cardapios/israel/itens/#3/pt": {
+    "pt": "sabich (pita com berinjela e ovo)",
+    "es": "sabij (pita con berenjena y huevo)"
+  },
+  "cardapios/israel/itens/#4/pt": {
+    "pt": "burekas (salgado folhado)",
+    "es": "burekas (hojaldre salado)"
+  },
+  "cardapios/israel/itens/#5/pt": {
+    "pt": "malabi (creme de leite com água de rosas)",
+    "es": "malabi (crema de leche con agua de rosas)"
+  },
+  "cardapios/bebidas/nomePt": {
+    "pt": "Bebidas",
+    "es": "Bebidas"
+  },
+  "cardapios/bebidas/tipoPt": {
+    "pt": "Bebidas que se pedem em Israel",
+    "es": "Bebidas que se piden en Israel"
+  },
+  "cardapios/bebidas/itens/#0/pt": {
+    "pt": "café com leite",
+    "es": "café con leche"
+  },
+  "cardapios/bebidas/itens/#1/pt": {
+    "pt": "café preto",
+    "es": "café negro"
+  },
+  "cardapios/bebidas/itens/#2/pt": {
+    "pt": "cappuccino",
+    "es": "capuchino"
+  },
+  "cardapios/bebidas/itens/#3/pt": {
+    "pt": "café americano",
+    "es": "café americano"
+  },
+  "cardapios/bebidas/itens/#4/pt": {
+    "pt": "chá de hortelã",
+    "es": "té de menta"
+  },
+  "cardapios/bebidas/itens/#5/pt": {
+    "pt": "sachlav (bebida quente de leite)",
+    "es": "sajlab (bebida caliente de leche)"
+  },
+  "cardapios/bebidas/itens/#6/pt": {
+    "pt": "suco de romã",
+    "es": "jugo de granada"
+  },
+  "cardapios/bebidas/itens/#7/pt": {
+    "pt": "limonada",
+    "es": "limonada"
+  },
+  "cardapios/bebidas/itens/#8/pt": {
+    "pt": "água",
+    "es": "agua"
+  },
+  "cardapios/internacional/nomePt": {
+    "pt": "Nomes internacionais",
+    "es": "Nombres internacionales"
+  },
+  "cardapios/internacional/tipoPt": {
+    "pt": "Comidas com nome internacional",
+    "es": "Comidas con nombre internacional"
+  },
+  "cardapios/internacional/itens/#0/pt": {
+    "pt": "pizza",
+    "es": "pizza"
+  },
+  "cardapios/internacional/itens/#1/pt": {
+    "pt": "hambúrguer",
+    "es": "hamburguesa"
+  },
+  "cardapios/internacional/itens/#2/pt": {
+    "pt": "sushi",
+    "es": "sushi"
+  },
+  "cardapios/internacional/itens/#3/pt": {
+    "pt": "schnitzel (bife à milanesa)",
+    "es": "schnitzel (milanesa)"
+  },
+  "cardapios/internacional/itens/#4/pt": {
+    "pt": "macarrão",
+    "es": "pasta"
+  },
+  "cardapios/internacional/itens/#5/pt": {
+    "pt": "refrigerante de cola",
+    "es": "refresco de cola"
+  }
+}
