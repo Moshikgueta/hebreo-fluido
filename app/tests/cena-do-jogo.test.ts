@@ -6,7 +6,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { CenaDoJogo, simboloComLetrasDoAluno, type JogoIlustrado } from '@/components/ilustra/CenaDoJogo';
 
-const JOGOS: JogoIlustrado[] = ['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste'];
+const JOGOS: JogoIlustrado[] = ['caca', 'batalha', 'cursiva', 'pomar', 'match', 'blast', 'teste'];
 const cena = (jogo: JogoIlustrado, letras: string[]) => renderToStaticMarkup(createElement(CenaDoJogo, { jogo, letras }));
 const letrasHebraicas = (html: string) => new Set([...html].filter(c => /[א-ת]/u.test(c)));
 

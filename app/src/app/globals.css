@@ -680,3 +680,29 @@ a.hf-topico:hover .hf-livro { transform: rotate(-4deg); }
 /* Cartões ilustrados, parte 4: o cartão da loja não é um botão (o botão é o
    "Trocar" dentro dele), então não sobe no toque. */
 .hf-cartao-estatico:hover, .hf-cartao-estatico:active { transform: none !important; box-shadow: var(--sh) !important; }
+
+/* ── o Pomar das palavras (05/11/2026), components/game/Pomar.tsx ───────────
+   Um pomar ao entardecer, navy nos dois temas. As frutas somem girando e as
+   novas caem; com "menos movimento", a regra geral acima zera tudo. */
+.hf-pomar { color: #FBF9F5; background: radial-gradient(120% 70% at 50% 0%, #2A4A50, #0E3B43 55%, #0A2E34); border-radius: 24px; padding: 16px clamp(12px, 3vw, 20px) 18px; }
+.hf-pomar-jogadas { position: relative; display: grid; place-items: center; width: 68px; height: 68px; border-radius: 50%; background: var(--il-sol); color: #0E3B43; font: 700 26px var(--font-display); box-shadow: 0 0 0 6px rgba(231, 182, 90, .18); }
+.hf-pomar-jogadas small { position: absolute; bottom: -19px; font: 600 11px var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: #BFD3CF; white-space: nowrap; }
+.hf-pomar-pula { animation: hf-pomar-pula .5s; }
+@keyframes hf-pomar-pula { 40% { transform: scale(1.18); } }
+.hf-pomar-palavra { display: block; text-align: center; font-size: clamp(36px, 10vw, 48px); line-height: 1.2; font-weight: 600; animation: hf-pop .35s var(--ease-out) both; }
+.hf-pomar-op { font: 600 15.5px var(--font-ui); color: #FBF9F5; background: rgba(251, 249, 245, .06); border: 2px solid rgba(251, 249, 245, .25); border-radius: 14px; min-height: 52px; padding: 8px; }
+.hf-pomar-op:hover { border-color: var(--teal-lite); }
+.hf-pomar-ok { border-color: #8FD6C8; background: rgba(143, 214, 200, .18); }
+.hf-pomar-no { border-color: #F2A08A; background: rgba(242, 160, 138, .12); animation: hf-tremor .35s; }
+.hf-pomar-tab { position: relative; background: linear-gradient(#155059, #0E3B43); border-radius: 20px; padding: 8px; box-shadow: inset 0 0 0 1px rgba(251, 249, 245, .12); }
+.hf-pomar-travado .hf-pomar-casa { filter: saturate(.55) brightness(.8); }
+.hf-pomar-aviso { position: absolute; inset: auto 0 10px 0; margin: 0; text-align: center; font: 600 13.5px var(--font-ui); pointer-events: none; }
+.hf-pomar-aviso span { background: rgba(14, 59, 67, .88); border-radius: 999px; padding: 6px 12px; }
+.hf-pomar-casa { aspect-ratio: 1; display: grid; place-items: center; border-radius: 12px; background: rgba(251, 249, 245, .05); }
+.hf-pomar-casa svg { width: 82%; height: 82%; transition: transform .25s var(--ease-out); }
+.hf-pomar-sel { background: rgba(231, 182, 90, .28); box-shadow: inset 0 0 0 2px var(--il-sol); }
+.hf-pomar-sel svg { transform: scale(1.12); }
+.hf-pomar-some svg { animation: hf-pomar-some .32s forwards; }
+@keyframes hf-pomar-some { to { transform: scale(0) rotate(40deg); opacity: 0; } }
+.hf-pomar-cai svg { animation: hf-pomar-cai .35s var(--ease-out); }
+@keyframes hf-pomar-cai { from { transform: translateY(-60%); opacity: 0; } }
