@@ -49,6 +49,8 @@ export const XP = {
   checkpoint: 50,
   review: 15,
   dailyGoal: 5,
+  /** O jarro do meio do módulo, no mapa (05/11/2026, decisão do dono). Uma vez por módulo. */
+  jarro: 20,
   /** Cada acerto praticando letras (lição, revisão, academia, traçado). */
   acerto: 2
 } as const;
@@ -565,6 +567,16 @@ export function markFirst(state: LearnerState, id: string): LearnerState {
 }
 
 export const hasFirst = (state: LearnerState, id: string): boolean => !!state.firsts[id];
+
+/* O jarro do meio de cada módulo, no mapa (05/11/2026, decisão do dono): abre
+   uma vez e paga XP.jarro. Mora em `firsts` (a mesma fusão entre aparelhos:
+   a data mais cedo vale), e o XP total funde pelo maior, então abrir em dois
+   aparelhos antes de sincronizar não paga duas vezes. */
+export const idDoJarro = (moduloId: string) => `jarro:${moduloId}`;
+export function abrirJarro(state: LearnerState, moduloId: string, day: string): LearnerState {
+  if (state.firsts[idDoJarro(moduloId)]) return state;
+  return awardXp(markFirst(state, idDoJarro(moduloId)), day, XP.jarro);
+}
 
 /**
  * Uma resposta de autoavaliação de leitura (12/10/2026). Grava só em

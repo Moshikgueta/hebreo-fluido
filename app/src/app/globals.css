@@ -706,3 +706,62 @@ a.hf-topico:hover .hf-livro { transform: rotate(-4deg); }
 @keyframes hf-pomar-some { to { transform: scale(0) rotate(40deg); opacity: 0; } }
 .hf-pomar-cai svg { animation: hf-pomar-cai .35s var(--ease-out); }
 @keyframes hf-pomar-cai { from { transform: translateY(-60%); opacity: 0; } }
+
+/* ── a estrada do módulo atual no mapa (05/11/2026) ──────────────────────
+   components/aventura/EstradaDoModulo.tsx. Arcos de janela de Jerusalém,
+   planos (sem o botão redondo em 3D), sobre uma estrada de pedra. A estrada
+   se desenha, as árvores balançam e a viajante anda; com "menos movimento" a
+   regra geral acima zera tudo e a estrada aparece pronta. */
+.hf-estrada { position: relative; padding: 14px 0 6px; }
+.hf-estrada-svg { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.hf-via { stroke-dasharray: 4000; stroke-dashoffset: 4000; animation: hf-estrada-desenha 1.6s cubic-bezier(.4, .1, .2, 1) forwards; }
+@keyframes hf-estrada-desenha { to { stroke-dashoffset: 0; } }
+.hf-via-det { animation: hf-estrada-aparece .5s 1.3s both; }
+@keyframes hf-estrada-aparece { from { opacity: 0; } }
+.hf-arvore { transform-box: fill-box; transform-origin: 50% 100%; animation: hf-arvore 4s ease-in-out infinite; }
+@keyframes hf-arvore { 50% { transform: rotate(3deg); } }
+.hf-estrada-lista { position: relative; display: grid; gap: 20px; }
+.hf-estrada-parada { position: relative; display: flex; align-items: center; gap: 14px; width: min(320px, 88%); }
+.hf-centro { justify-self: center; }
+.hf-esq { justify-self: start; }
+.hf-dir { justify-self: end; flex-direction: row-reverse; text-align: right; }
+.hf-arco { position: relative; display: grid; place-items: center; width: 60px; height: 72px; border-radius: 30px 30px 10px 10px;
+  background: var(--card); color: var(--teal-ink); box-shadow: 0 1px 2px rgba(27, 33, 31, .06), 0 10px 22px -14px rgba(14, 59, 67, .45), inset 0 0 0 1.5px var(--line);
+  transition: transform .25s var(--ease); }
+a:hover > .hf-arco { transform: translateY(-2px); }
+.hf-arco-feita { background: var(--teal-soft); box-shadow: inset 0 0 0 1.5px var(--edge-teal), 0 10px 22px -14px rgba(14, 59, 67, .45); }
+.hf-arco-agora { background: linear-gradient(#F3D58F, #E7B65A); color: #0E3B43; box-shadow: 0 0 0 5px rgba(231, 182, 90, .22), 0 14px 28px -12px rgba(184, 134, 47, .7); }
+.hf-arco-agora::after { content: ""; position: absolute; inset: -14px; z-index: -1; border-radius: 44px 44px 16px 16px; background: radial-gradient(closest-side, rgba(231, 182, 90, .35), transparent); animation: hf-arco-luz 2.6s ease-in-out infinite; }
+@keyframes hf-arco-luz { 50% { opacity: .4; } }
+.hf-arco-trancada { background: var(--sand); color: var(--locked); }
+.hf-arco-feito { position: absolute; bottom: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%; background: var(--teal); color: #fff; display: grid; place-items: center; font: 700 12px var(--font-ui); border: 2px solid var(--card); }
+.hf-estrada-txt { display: grid; gap: 2px; min-width: 0; border-radius: 12px; padding: 6px 10px; background: color-mix(in srgb, var(--card) 86%, transparent); }
+.hf-estrada-txt b { font: 600 15.5px/1.2 var(--font-display); color: var(--ink); }
+.hf-estrada-txt > span:not(.hf-estrada-agora):not(.hf-carimbos) { font: 400 12.5px var(--font-ui); color: var(--ink-muted); }
+.hf-estrada-agora { justify-self: start; font: 600 11px var(--font-ui); letter-spacing: .08em; text-transform: uppercase; background: var(--navy); color: #fff; border-radius: 999px; padding: 3px 8px; }
+.hf-dir .hf-estrada-agora { justify-self: end; }
+.hf-jarro { display: block; width: 66px; height: 80px; overflow: visible; }
+.hf-jarro-tampa { transition: transform .45s var(--ease-out); transform-origin: 35px 18px; }
+.hf-jarro-moedas { opacity: 0; transition: opacity .3s .15s; }
+.hf-jarro-aberto .hf-jarro-tampa { transform: translate(10px, -14px) rotate(24deg); }
+.hf-jarro-aberto .hf-jarro-moedas { opacity: 1; }
+.hf-jarro-fechado { filter: grayscale(.85); opacity: .7; }
+.hf-jarro-pronto { animation: hf-jarro-treme 2.2s ease-in-out infinite; cursor: pointer; }
+@keyframes hf-jarro-treme { 0%, 70%, 100% { transform: rotate(0); } 75% { transform: rotate(-7deg); } 82% { transform: rotate(6deg); } 89% { transform: rotate(-4deg); } }
+.hf-jarro-ganho { position: absolute; left: 50%; top: -6px; font: 700 18px var(--font-display); color: var(--gold); white-space: nowrap; pointer-events: none; animation: hf-jarro-sobe 1.6s ease-out forwards; }
+@keyframes hf-jarro-sobe { 0% { opacity: 0; transform: translate(-50%, 10px); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -44px); } }
+.hf-portao { display: block; width: 80px; height: 74px; }
+.hf-carimbos { display: flex; gap: 5px; margin-top: 3px; }
+.hf-dir .hf-carimbos { justify-content: flex-end; }
+.hf-carimbo { width: 22px; height: 22px; border-radius: 50%; border: 2px dashed var(--locked); display: grid; place-items: center; font: 700 10px var(--font-ui); color: var(--locked); transform: rotate(-12deg); }
+.hf-carimbo-ok { border-style: solid; border-color: #C9443A; color: #C9443A; animation: hf-carimba .35s var(--ease-out) both; }
+.hf-carimbo-ok:nth-child(2) { animation-delay: .35s; } .hf-carimbo-ok:nth-child(3) { animation-delay: .7s; }
+@keyframes hf-carimba { from { transform: scale(2.2) rotate(-30deg); opacity: 0; } to { transform: scale(1) rotate(-12deg); opacity: 1; } }
+.hf-viajante { position: absolute; left: 0; top: 0; z-index: 2; width: 38px; height: 48px; pointer-events: none; }
+.hf-viajante svg { width: 100%; height: 100%; overflow: visible; }
+.hf-perna1, .hf-perna2 { transform-box: fill-box; transform-origin: 50% 0; }
+.hf-andando .hf-perna1 { animation: hf-passo .32s ease-in-out infinite alternate; }
+.hf-andando .hf-perna2 { animation: hf-passo .32s ease-in-out infinite alternate-reverse; }
+@keyframes hf-passo { from { transform: rotate(18deg); } to { transform: rotate(-18deg); } }
+.hf-estrada-voltar { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 140px); z-index: 60;
+  width: 52px; height: 52px; border-radius: 16px; border: 2px solid var(--line); background: var(--card); color: var(--navy); display: grid; place-items: center; box-shadow: var(--sh-mock); }
