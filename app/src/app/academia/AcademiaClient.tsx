@@ -65,6 +65,10 @@ import { rng } from '@/lib/engine/rng';
 import { Match, type ResultadoJogo } from '@/components/game/Match';
 import { Blast } from '@/components/game/Blast';
 import { CacaLetra } from '@/components/game/CacaLetra';
+import { Pomar } from '@/components/game/Pomar';
+import { HebraicoNaVidaReal } from '@/components/learn/HebraicoNaVidaReal';
+import { perguntasDoPomar } from '@/lib/engine/pomar';
+import { alfabetoDe, palavrasLegiveis, vocabularioDoCurso } from '@/lib/engine/palavras';
 import { Batalha } from '@/components/game/Batalha';
 import { ImpressaCursiva } from '@/components/game/ImpressaCursiva';
 import { TestRun, RelatorioTeste, type ResultadoTeste } from '@/components/game/TestRun';
@@ -82,7 +86,7 @@ import { tx } from '@/i18n/telas/academia-academia-client';
    descobrir isso num `undefined` em produção. */
 type DadosDeJogo = ReturnType<typeof montarNovo>;
 type JogoDeBaralho = 'match' | 'blast' | 'teste';
-type JogoNovo = 'caca' | 'batalha' | 'cursiva';
+type JogoNovo = 'caca' | 'batalha' | 'cursiva' | 'pomar';
 type Jogo = JogoDeBaralho | JogoNovo;
 const DE_BARALHO = (j: Jogo): j is JogoDeBaralho =>
   j === 'match' || j === 'blast' || j === 'teste';
@@ -158,6 +162,14 @@ export const JOGOS: Record<Jogo, { titlePt: string; descPt: string; treinaPt: st
     descPt: tx.jogoCursivaDesc,
     treinaPt: tx.jogoCursivaTreina,
     minimo: 3
+  },
+  /* O Pomar das palavras (05/11/2026, aprovado pelo dono): ler palavras para
+     ganhar jogadas num tabuleiro de frutas (lib/engine/pomar.ts). */
+  pomar: {
+    titlePt: tx.jogoPomarTitulo,
+    descPt: tx.jogoPomarDesc,
+    treinaPt: tx.jogoPomarTreina,
+    minimo: 3
   }
 };
 
@@ -230,6 +242,9 @@ export function AcademiaClient() {
      "Match" no painel seja um toque e não três. */
   const busca = useSearchParams();
   const pedido = busca?.get('jogo');
+  /* As duas abas de Praticar (05/11/2026, pedido do dono): as práticas e o
+     Hebraico na vida real. `?aba=vida-real` abre direto a segunda. */
+  const [aba, setAba] = useState<'praticas' | 'vida-real'>(busca?.get('aba') === 'vida-real' ? 'vida-real' : 'praticas');
   useEffect(() => {
     if (pedido && pedido in JOGOS) {
       setScreen({ kind: 'jogo', jogo: pedido as Jogo, rodada: 0 });
@@ -289,7 +304,8 @@ export function AcademiaClient() {
         falta = jogo === 'match' ? baralho.length < info.minimo : perguntas.length < info.minimo;
       } else {
         const d = fazerNovo(jogo, 0);
-        falta = jogo === 'caca' ? !d.cacada?.length : jogo === 'cursiva' ? !d.cursiva?.length : !d.batalha;
+        falta = jogo === 'caca' ? !d.cacada?.length : jogo === 'cursiva' ? !d.cursiva?.length
+          : jogo === 'pomar' ? !d.pomar?.length : !d.batalha;
       }
       if (!falta) continue;
       out[jogo] = unlocked.length < info.minimo
@@ -336,6 +352,7 @@ export function AcademiaClient() {
 
     const vazio = jogo === 'caca' ? !dados.cacada?.length
       : jogo === 'cursiva' ? !dados.cursiva?.length
+      : jogo === 'pomar' ? !dados.pomar?.length
       : !dados.batalha;
 
     if (vazio || unlocked.length < info.minimo) {
@@ -369,6 +386,9 @@ export function AcademiaClient() {
         {jogo === 'batalha' && dados.batalha && (
           <Batalha key={`ba-${screen.rodada}`} dados={dados.batalha}
                    onResposta={registrar} onFim={fim} />
+        )}
+        {jogo === 'pomar' && dados.pomar && (
+          <Pomar key={`po-${screen.rodada}`} perguntas={dados.pomar} onFim={fim} />
         )}
         {jogo === 'cursiva' && dados.cursiva && (
           <ImpressaCursiva key={`cu-${screen.rodada}`} rodadas={dados.cursiva}
@@ -770,6 +790,21 @@ export function AcademiaClient() {
         </Card>
       ) : (
         <>
+          <div role="tablist" aria-label={tx.abas} className="inline-flex justify-self-start rounded-full border-2 border-line bg-[var(--card)] p-1 gap-1">
+            {(['praticas', 'vida-real'] as const).map(a => (
+              <button key={a} type="button" role="tab" aria-selected={aba === a} onClick={() => setAba(a)}
+                      className={`min-h-[44px] px-4 rounded-full font-ui text-[14.5px] font-semibold transition-colors
+                        ${aba === a ? 'bg-[var(--navy)] text-white' : 'text-ink hover:bg-[var(--sand)]'}`}>
+                {a === 'praticas' ? tx.abaPraticas : tx.abaVidaReal}
+              </button>
+            ))}
+          </div>
+
+          {aba === 'vida-real' ? (
+            <HebraicoNaVidaReal state={p.state} unlocked={unlocked} letrasDaCena={letrasDaCena}
+                                pomarFechado={fechados.pomar}
+                                onPomar={() => setScreen({ kind: 'jogo', jogo: 'pomar', rodada: 0 })} />
+          ) : (<>
           {/* Os jogos primeiro, e em cartões maiores: são eles que alguém
               abre quando tem cinco minutos e nenhuma paciência para escolher
               um modo. Os treinos por assunto continuam logo abaixo, para quem
@@ -779,6 +814,46 @@ export function AcademiaClient() {
               existe "jogo de baralho" e "jogo de reconhecimento" - existe o
               que ele quer jogar agora. A divisão é do código, e o código não
               é assunto dele. */}
+          {/* Os jogos em primeiro lugar e em destaque (05/11/2026, pedido do dono):
+              antes vinham depois da lista dos textos e dos flashcards, longe do topo. */}
+          <section aria-labelledby="jogos" className="grid gap-3">
+            <h2 id="jogos" className="font-display text-[23px] sm:text-[26px] font-bold tracking-[-0.02em] text-ink">
+              {tx.jogosDePratica}
+            </h2>
+            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
+              {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste'] as const).map(jogo => (
+                <li key={jogo}>
+                  {/* Cartão ilustrado (05/11/2026, aprovado pelo dono): a cena do
+                      jogo em cima, com as letras que o aluno já aprendeu. */}
+                  <button
+                    type="button"
+                    disabled={!!fechados[jogo]}
+                    onClick={() => setScreen({ kind: 'jogo', jogo, rodada: 0 })}
+                    className={`hf-cartao w-full h-full text-left ${fechados[jogo] ? 'hf-cartao-fechado' : ''}`}
+                  >
+                    <CenaDoJogo jogo={jogo} letras={letrasDaCena} />
+                    <span className="grid gap-1.5 content-start p-4 pt-3.5">
+                      <span className="font-display text-[18px] font-semibold tracking-[-0.018em] text-ink">
+                        {JOGOS[jogo].titlePt}
+                      </span>
+                      <span className="font-ui text-[12.5px] font-semibold text-[var(--teal-ink)]">
+                        {tx.treina(JOGOS[jogo].treinaPt.toLowerCase())}
+                      </span>
+                      <span className="font-ui text-[13.5px] leading-[1.5] text-ink-muted">
+                        {JOGOS[jogo].descPt}
+                      </span>
+                      {fechados[jogo]
+                        ? <span className="font-ui text-[13px] font-semibold text-ink-body">
+                            <IconeCadeado size={14} className="inline -mt-0.5 mr-1" />{fechados[jogo]}
+                          </span>
+                        : <GymBest modeId={jogo} />}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+
           {/* As três portas que vieram da barra (28/10/2026, navegação em quatro
               portas): a revisão, a leitura e as palavras moram aqui agora. A
               revisão vem primeiro e diz quantos itens esperam. */}
@@ -898,43 +973,6 @@ export function AcademiaClient() {
             </ul>
           </section>
 
-          <section aria-labelledby="jogos" className="grid gap-3">
-            <h2 id="jogos" className="font-display text-[18px] font-semibold tracking-[-0.018em] text-ink">
-              {tx.jogosDePratica}
-            </h2>
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
-              {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste'] as const).map(jogo => (
-                <li key={jogo}>
-                  {/* Cartão ilustrado (05/11/2026, aprovado pelo dono): a cena do
-                      jogo em cima, com as letras que o aluno já aprendeu. */}
-                  <button
-                    type="button"
-                    disabled={!!fechados[jogo]}
-                    onClick={() => setScreen({ kind: 'jogo', jogo, rodada: 0 })}
-                    className={`hf-cartao w-full h-full text-left ${fechados[jogo] ? 'hf-cartao-fechado' : ''}`}
-                  >
-                    <CenaDoJogo jogo={jogo} letras={letrasDaCena} />
-                    <span className="grid gap-1.5 content-start p-4 pt-3.5">
-                      <span className="font-display text-[18px] font-semibold tracking-[-0.018em] text-ink">
-                        {JOGOS[jogo].titlePt}
-                      </span>
-                      <span className="font-ui text-[12.5px] font-semibold text-[var(--teal-ink)]">
-                        {tx.treina(JOGOS[jogo].treinaPt.toLowerCase())}
-                      </span>
-                      <span className="font-ui text-[13.5px] leading-[1.5] text-ink-muted">
-                        {JOGOS[jogo].descPt}
-                      </span>
-                      {fechados[jogo]
-                        ? <span className="font-ui text-[13px] font-semibold text-ink-body">
-                            <IconeCadeado size={14} className="inline -mt-0.5 mr-1" />{fechados[jogo]}
-                          </span>
-                        : <GymBest modeId={jogo} />}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </section>
 
           <h2 className="font-display text-[18px] font-semibold tracking-[-0.018em] text-ink mt-2">
             {tx.treinarPorAssunto}
@@ -1001,6 +1039,7 @@ export function AcademiaClient() {
               onClick={() => setScreen({ kind: 'palavras-a-mao' })}
             />
           </div>
+          </>)}
         </>
       )}
     </div>
@@ -1029,6 +1068,8 @@ function montarNovo(
      praticava sempre a mesma letra - o sorteio já era por peso. */
   if (jogo === 'caca') return { cacada: montarCacada(state, unlocked, rand, nivel) };
   if (jogo === 'cursiva') return { cursiva: montarCursiva(state, unlocked, rand, nivel) };
+  /* As palavras do curso que o aluno já lê, como no resto da Academia. */
+  if (jogo === 'pomar') return { pomar: perguntasDoPomar(palavrasLegiveis(vocabularioDoCurso(allLetters()), alfabetoDe(unlocked)), rand) };
   /* Vários pares por partida, e não um. `paresParaTreinar` põe primeiro o que
      ELE trocou de verdade e depois o que o conteúdo prevê. */
   /* O giro sai da mesma semente da rodada: cada partida nova traz outros

@@ -8,7 +8,7 @@
 
 import type { ReactNode } from 'react';
 
-export type JogoIlustrado = 'caca' | 'batalha' | 'cursiva' | 'match' | 'blast' | 'teste';
+export type JogoIlustrado = 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'match' | 'blast' | 'teste';
 
 const HE = 'var(--font-he)';
 const CURSIVA = 'var(--font-he-cursive)';
@@ -87,6 +87,17 @@ export function CenaDoJogo({ jogo, letras }: { jogo: JogoIlustrado; letras: read
           <rect x="106" y="10" width="28" height="12" rx="4" fill="#0E3B43" />
           <path d="M96 42l5 5 9-10M96 64l5 5 9-10M96 86l5 5 9-10" stroke="#1F8A7D" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
           <path d="M118 44h26M118 66h26M118 88h18" stroke="#B7A27C" strokeWidth="3" strokeLinecap="round" /></g>
+      </>);
+    case 'pomar':
+      return cena('linear-gradient(var(--il-tarde), var(--il-tarde-2))', { cor: 'var(--il-colina-2)', y: 98 }, <>
+        <path d="M40 98V64M200 98V60" stroke="var(--il-tronco)" strokeWidth="6" strokeLinecap="round" />
+        <circle cx="40" cy="54" r="22" fill="var(--il-oliva)" /><circle cx="200" cy="50" r="24" fill="var(--il-oliva-2)" />
+        <circle cx="32" cy="50" r="4" fill="#C9443A" /><circle cx="48" cy="60" r="4" fill="#E07B39" /><circle cx="194" cy="44" r="4" fill="#C9443A" /><circle cx="208" cy="56" r="4" fill="#E07B39" />
+        <g className="hf-flutua">
+          <circle cx="98" cy="62" r="13" fill="#C9443A" /><path d="M94 49l4-4 4 4z" fill="#9E2B1E" />
+          <ellipse cx="122" cy="62" rx="9" ry="12" fill="#6D8A4E" />
+          <circle cx="144" cy="62" r="12" fill="#E07B39" />
+        </g>
       </>);
     default:
       return cena(ceu, { cor: 'var(--il-colina-2)', y: 100 }, null);
