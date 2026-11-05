@@ -1,0 +1,115 @@
+{
+  "_nota": "Cartões de festa (05/11/2026): a última parada de Um dia em Israel (lib/engine/cartoes.ts). Sem chataf e com daguesh só em בּ/כּ/פּ. Só sai o que tem revisado: true.",
+  "cartoes": [
+    {
+      "id": "shana",
+      "he": "שָׁנָה טוֹבָה",
+      "translit": "shaná tová",
+      "pt": "Feliz Ano Novo (Rosh Hashaná)",
+      "situacaoPt": "É Rosh Hashaná, o Ano Novo judaico. Que cartão você manda para a família?",
+      "desenho": "maca",
+      "cor": "#C9443A",
+      "revisado": true
+    },
+    {
+      "id": "chag",
+      "he": "חַג שָׂמֵחַ",
+      "translit": "chag saméach",
+      "pt": "Boas festas",
+      "situacaoPt": "Chegou uma festa judaica e você quer desejar uma boa festa a todos. Que cartão você manda?",
+      "desenho": "festa",
+      "cor": "#1F8A7D",
+      "revisado": true
+    },
+    {
+      "id": "mazal",
+      "he": "מַזָל טוֹב",
+      "translit": "mazál tov",
+      "pt": "Parabéns",
+      "situacaoPt": "Seu amigo se casou ontem. Que cartão você manda?",
+      "desenho": "taca",
+      "cor": "#C9773F",
+      "revisado": true
+    },
+    {
+      "id": "yomhuledet",
+      "he": "יוֹם הוּלֶדֶת שָׂמֵחַ",
+      "translit": "yom hulédet saméach",
+      "pt": "Feliz aniversário",
+      "situacaoPt": "Sua amiga faz aniversário hoje. Que cartão você manda?",
+      "desenho": "bolo",
+      "cor": "#C9577E",
+      "revisado": true
+    },
+    {
+      "id": "shabat",
+      "he": "שַׁבָּת שָׁלוֹם",
+      "translit": "shabát shalóm",
+      "pt": "Shabat shalom",
+      "situacaoPt": "É sexta à tarde e as velas vão ser acesas. Que cartão você manda?",
+      "desenho": "shabat",
+      "cor": "#B8862F",
+      "revisado": true
+    },
+    {
+      "id": "pessach",
+      "he": "חַג פֶּסַח שָׂמֵחַ",
+      "translit": "chag Pésach saméach",
+      "pt": "Feliz Pessach",
+      "situacaoPt": "Vai começar o Pessach, a festa da matsá. Que cartão você manda?",
+      "desenho": "pessach",
+      "cor": "#9E2B1E",
+      "revisado": true
+    },
+    {
+      "id": "chanuca",
+      "he": "חַג חַנוּכָּה שָׂמֵחַ",
+      "translit": "chag Chanuká saméach",
+      "pt": "Feliz Chanucá",
+      "situacaoPt": "É a festa das luzes, com oito velas. Que cartão você manda?",
+      "desenho": "chanuca",
+      "cor": "#3F9A9C",
+      "revisado": true
+    },
+    {
+      "id": "purim",
+      "he": "פּוּרִים שָׂמֵחַ",
+      "translit": "Purím saméach",
+      "pt": "Feliz Purim",
+      "situacaoPt": "Todo mundo está fantasiado e de máscara. Que cartão você manda?",
+      "desenho": "purim",
+      "cor": "#C9577E",
+      "revisado": true
+    },
+    {
+      "id": "refua",
+      "he": "רְפוּאָה שְׁלֵמָה",
+      "translit": "refuá shlemá",
+      "pt": "Melhoras",
+      "situacaoPt": "Um colega está doente em casa. Que cartão você manda?",
+      "desenho": "saude",
+      "cor": "#C9443A",
+      "revisado": true
+    },
+    {
+      "id": "hatslacha",
+      "he": "בְּהַצְלָחָה",
+      "translit": "behatslachá",
+      "pt": "Boa sorte",
+      "situacaoPt": "Sua prima tem uma prova importante amanhã. Que cartão você manda?",
+      "desenho": "sorte",
+      "cor": "#E7B65A",
+      "revisado": true
+    },
+    {
+      "id": "baruch",
+      "he": "בָּרוּךְ הַבָּא",
+      "translit": "barúch habá",
+      "pt": "Bem-vindo",
+      "situacaoPt": "Um amigo acabou de chegar para morar no seu prédio. Que cartão você manda?",
+      "desenho": "bemvindo",
+      "cor": "#1F8A7D",
+      "revisado": true
+    }
+  ]
+}

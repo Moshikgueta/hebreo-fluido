@@ -79,6 +79,8 @@ export const NAO_LISTADAS = [
   '/minha-biblioteca',
   /* O desafio com um amigo (28/10/2026): cada link é de uma pessoa. */
   '/desafio-amigo',
+  /* Os cartões de festa (05/11/2026): cada link é de uma pessoa, com nomes. */
+  '/cartao-de-festa',
   /* As cópias fixas de cada versão das políticas (app/versoes.mjs, LEGAL-104).
      Existem para quem aceitou aquela versão; na busca, só a de hoje. */
   '/termos/v', '/reembolso/v', '/privacidade/v',

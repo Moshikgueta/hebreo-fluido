@@ -1,0 +1,90 @@
+{
+  "cartoes/shana/pt": {
+    "pt": "Feliz Ano Novo (Rosh Hashaná)",
+    "es": "Feliz Año Nuevo (Rosh Hashaná)"
+  },
+  "cartoes/shana/situacaoPt": {
+    "pt": "É Rosh Hashaná, o Ano Novo judaico. Que cartão você manda para a família?",
+    "es": "Es Rosh Hashaná, el Año Nuevo judío. ¿Qué tarjeta le mandas a la familia?"
+  },
+  "cartoes/chag/pt": {
+    "pt": "Boas festas",
+    "es": "Felices fiestas"
+  },
+  "cartoes/chag/situacaoPt": {
+    "pt": "Chegou uma festa judaica e você quer desejar uma boa festa a todos. Que cartão você manda?",
+    "es": "Llegó una fiesta judía y quieres desearles a todos una buena fiesta. ¿Qué tarjeta mandas?"
+  },
+  "cartoes/mazal/pt": {
+    "pt": "Parabéns",
+    "es": "Felicidades"
+  },
+  "cartoes/mazal/situacaoPt": {
+    "pt": "Seu amigo se casou ontem. Que cartão você manda?",
+    "es": "Tu amigo se casó ayer. ¿Qué tarjeta mandas?"
+  },
+  "cartoes/yomhuledet/pt": {
+    "pt": "Feliz aniversário",
+    "es": "Feliz cumpleaños"
+  },
+  "cartoes/yomhuledet/situacaoPt": {
+    "pt": "Sua amiga faz aniversário hoje. Que cartão você manda?",
+    "es": "Tu amiga cumple años hoy. ¿Qué tarjeta mandas?"
+  },
+  "cartoes/shabat/pt": {
+    "pt": "Shabat shalom",
+    "es": "Shabat shalom"
+  },
+  "cartoes/shabat/situacaoPt": {
+    "pt": "É sexta à tarde e as velas vão ser acesas. Que cartão você manda?",
+    "es": "Es viernes por la tarde y van a encender las velas. ¿Qué tarjeta mandas?"
+  },
+  "cartoes/pessach/pt": {
+    "pt": "Feliz Pessach",
+    "es": "Feliz Pésaj"
+  },
+  "cartoes/pessach/situacaoPt": {
+    "pt": "Vai começar o Pessach, a festa da matsá. Que cartão você manda?",
+    "es": "Va a empezar Pésaj, la fiesta de la matzá. ¿Qué tarjeta mandas?"
+  },
+  "cartoes/chanuca/pt": {
+    "pt": "Feliz Chanucá",
+    "es": "Feliz Janucá"
+  },
+  "cartoes/chanuca/situacaoPt": {
+    "pt": "É a festa das luzes, com oito velas. Que cartão você manda?",
+    "es": "Es la fiesta de las luces, con ocho velas. ¿Qué tarjeta mandas?"
+  },
+  "cartoes/purim/pt": {
+    "pt": "Feliz Purim",
+    "es": "Feliz Purim"
+  },
+  "cartoes/purim/situacaoPt": {
+    "pt": "Todo mundo está fantasiado e de máscara. Que cartão você manda?",
+    "es": "Todos están disfrazados y con máscara. ¿Qué tarjeta mandas?"
+  },
+  "cartoes/refua/pt": {
+    "pt": "Melhoras",
+    "es": "Que te mejores"
+  },
+  "cartoes/refua/situacaoPt": {
+    "pt": "Um colega está doente em casa. Que cartão você manda?",
+    "es": "Un compañero está enfermo en casa. ¿Qué tarjeta mandas?"
+  },
+  "cartoes/hatslacha/pt": {
+    "pt": "Boa sorte",
+    "es": "Buena suerte"
+  },
+  "cartoes/hatslacha/situacaoPt": {
+    "pt": "Sua prima tem uma prova importante amanhã. Que cartão você manda?",
+    "es": "Tu prima tiene un examen importante mañana. ¿Qué tarjeta mandas?"
+  },
+  "cartoes/baruch/pt": {
+    "pt": "Bem-vindo",
+    "es": "Bienvenido"
+  },
+  "cartoes/baruch/situacaoPt": {
+    "pt": "Um amigo acabou de chegar para morar no seu prédio. Que cartão você manda?",
+    "es": "Un amigo acaba de mudarse a tu edificio. ¿Qué tarjeta mandas?"
+  }
+}

@@ -89,7 +89,9 @@ export const ROTAS_LEVES = [
   /* A porta do link da bio do Instagram (24/10/2026): quem chega é de celular. */
   '/comece-aqui',
   /* O desafio com um amigo (28/10/2026): quem abre não tem conta. */
-  '/desafio-amigo'
+  '/desafio-amigo',
+  /* O cartão de festa de um amigo (05/11/2026): quem abre não tem conta. */
+  '/cartao-de-festa'
 ] as const;
 
 export function rotaLeve(pathname: string | null): boolean {

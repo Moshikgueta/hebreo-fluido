@@ -53,6 +53,7 @@ import * as estornosAdmin from './api/estornos-admin.js';
 import * as vendasAdmin from './api/vendas-admin.js';
 import * as segundaLetra from './api/segunda-letra.js';
 import * as desafio from './api/desafio.js';
+import * as cartao from './api/cartao.js';
 import * as interessados from './api/interessados.js';
 
 /* A página de venda do curso de alfabetização. Foi a capa até 23/10/2026. */
@@ -180,6 +181,11 @@ const ROUTES = {
      api/desafio.js. */
   'POST /api/desafio': desafio.criar,
   'GET /api/desafio': desafio.abrir,
+  /* Os cartões de festa (05/11/2026): o aluno assina um cartão e dois nomes,
+     e a página pública confere a assinatura. Nada é gravado. Ver
+     api/cartao.js. */
+  'POST /api/cartao': cartao.criar,
+  'GET /api/cartao': cartao.abrir,
   /* A lista de interessados (23/10/2026): entrar, confirmar e sair. Ver api/interessados.js. */
   'POST /api/interessados': interessados.entrar,
   'POST /api/interessados/confirmar': interessados.confirmar,

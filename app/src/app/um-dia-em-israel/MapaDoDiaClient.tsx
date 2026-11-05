@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import { allLetters, cardapiosDoCurso, umDiaEmIsrael } from '@/lib/content';
 import { letrasConcluidas } from '@/lib/vocabulario';
 import { PARADAS, jogoAberto, placasLegiveis, type IdDaParada } from '@/lib/engine/um-dia';
+import { cartoesAbertos, cartoesLegiveis } from '@/lib/engine/cartoes';
 import { alphabetComplete } from '@/lib/state/rules';
 import { useProgress } from '@/lib/state/store';
 import { textoDaParada, tx } from '@/i18n/telas/academia-um-dia';
@@ -21,11 +22,13 @@ export function MapaDoDiaClient() {
   const todas = allLetters();
   const concluidas = useMemo(() => letrasConcluidas(p.state, todas), [p.state, todas]);
   const { prontas } = placasLegiveis(umDiaEmIsrael().placas, concluidas);
+  const { prontos: cartoesProntos } = cartoesLegiveis(umDiaEmIsrael().cartoes ?? [], concluidas);
   const tem22 = p.ready && alphabetComplete(p.state, todas.map(l => l.id));
 
   const estado = (id: IdDaParada, rota: string | null): Estado => {
     if (!rota) return 'em-breve';
     if (id === 'placas') return jogoAberto(prontas) ? 'aberta' : 'letras';
+    if (id === 'cartoes') return (umDiaEmIsrael().cartoes ?? []).length === 0 ? 'em-breve' : cartoesAbertos(cartoesProntos) ? 'aberta' : 'letras';
     if (id === 'cafe') return cardapiosDoCurso().length === 0 ? 'em-breve' : tem22 ? 'aberta' : 'vinte-e-duas';
     return 'aberta';
   };

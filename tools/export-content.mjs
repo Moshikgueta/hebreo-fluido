@@ -854,6 +854,31 @@ function main() {
     placasDoDia.push({ ...publico, he: NFC(p.he) });
   }
 
+  /* ── Um dia em Israel: os cartões de festa (05/11/2026) ──────────────
+     A última parada (lib/engine/cartoes.ts). As mesmas regras de nikud; o
+     desenho tem de existir em components/ilustra/DesenhoDoCartao.tsx. O
+     Worker lê daqui o cartão de um link (worker/src/api/cartao.js). */
+  const DESENHOS_DE_CARTAO = ['maca', 'festa', 'taca', 'bolo', 'shabat', 'pessach', 'chanuca', 'purim', 'saude', 'sorte', 'bemvindo'];
+  const cartoesDoDia = [];
+  const idsDosCartoes = new Set();
+  for (const c of readJson('data/cartoes-de-festa.json').cartoes) {
+    if (c.revisado !== true) continue;
+    for (const campo of ['id', 'he', 'translit', 'pt', 'situacaoPt', 'desenho', 'cor']) {
+      if (!c[campo]) throw new Error(`cartoes-de-festa.json: o cartão ${c.id ?? '?'} não tem ${campo}`);
+    }
+    if (!/^[a-z]+$/.test(c.id)) throw new Error(`cartoes-de-festa.json: id fora do padrão: ${c.id}`);
+    if (idsDosCartoes.has(c.id)) throw new Error(`cartoes-de-festa.json: id repetido ${c.id}`);
+    idsDosCartoes.add(c.id);
+    if (!DESENHOS_DE_CARTAO.includes(c.desenho)) throw new Error(`cartoes-de-festa.json: desenho desconhecido em ${c.id}: ${c.desenho}`);
+    if (!/^#[0-9A-Fa-f]{6}$/.test(c.cor)) throw new Error(`cartoes-de-festa.json: cor inválida em ${c.id}: ${c.cor}`);
+    const comPonto = [...NFC(c.he).matchAll(/([\u05D0-\u05EA])[\u05B0-\u05BB\u05C1\u05C2\u05C7]*\u05BC/gu)].map(m => m[1]);
+    if (comPonto.some(l => !'בכךפףו'.includes(l))) throw new Error(`cartoes-de-festa.json: daguesh fora de בּ/כּ/פּ em ${c.id}: ${c.he}`);
+    if (/[\u05B1-\u05B3]/u.test(c.he)) throw new Error(`cartoes-de-festa.json: chataf em ${c.id}: ${c.he} (use a vogal simples)`);
+    const { revisado, ...publico } = c;
+    void revisado;
+    cartoesDoDia.push({ ...publico, he: NFC(c.he) });
+  }
+
   /* ── os mini-textos de leitura corrida ─────────────────────────────
      Um texto curto por módulo, do 3 ao 7. São as únicas frases do curso
      escritas para ele, e por isso cada um nasce com `revisado: false`: o
@@ -969,7 +994,7 @@ function main() {
     })),
     rua: placasDaRua,
     cardapios,
-    umDia: { placas: placasDoDia }
+    umDia: { placas: placasDoDia, cartoes: cartoesDoDia }
   }, null, 2) + '\n');
 
   /* ── o curso Hebraico A1 (06/10/2026) ────────────────────────────────
