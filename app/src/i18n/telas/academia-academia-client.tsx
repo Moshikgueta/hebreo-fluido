@@ -42,6 +42,9 @@ const pt = {
   vrRuaDesc: 'Fotos de placas de verdade de Israel, com palavras que você já lê.',
   vrCardapioTitulo: 'Ler cardápios',
   vrCardapioDesc: 'O quadro de um café em Israel: pratos, bebidas e nomes internacionais.',
+  vrCorridaTitulo: 'Corrida das palavras',
+  vrCorridaDesc: 'As palavras de Um dia em Israel que você já lê, contra o relógio.',
+  vrCorridaConta: (n: number) => `${n} palavras na pista`,
 
   abreCom: 'Abre com {n} letras',
   abreParecidas: 'Abre quando houver duas letras parecidas',
@@ -207,6 +210,9 @@ const en: Traducao<typeof pt> = {
   vrRuaDesc: 'Photos of real signs from Israel, with words you can already read.',
   vrCardapioTitulo: 'Reading menus',
   vrCardapioDesc: 'The board of a coffee shop in Israel: dishes, drinks and international names.',
+  vrCorridaTitulo: 'Word race',
+  vrCorridaDesc: 'The words from A day in Israel that you can already read, against the clock.',
+  vrCorridaConta: (n: number) => `${n} words on the track`,
 
   abreCom: 'Opens with {n} letters',
   abreParecidas: 'Opens when there are two look-alike letters',
@@ -372,6 +378,9 @@ const es: Traducao<typeof pt> = {
   vrRuaDesc: 'Fotos de carteles de verdad de Israel, con palabras que ya lees.',
   vrCardapioTitulo: 'Leer menús',
   vrCardapioDesc: 'La pizarra de un café en Israel: platos, bebidas y nombres internacionales.',
+  vrCorridaTitulo: 'Carrera de palabras',
+  vrCorridaDesc: 'Las palabras de Un día en Israel que ya lees, contra el reloj.',
+  vrCorridaConta: (n: number) => `${n} palabras en la pista`,
 
   abreCom: 'Se abre con {n} letras',
   abreParecidas: 'Se abre cuando haya dos letras parecidas',

@@ -4,7 +4,7 @@
 
 import type { ReactNode } from 'react';
 
-export type CenaReal = 'dia' | 'rua' | 'cardapio';
+export type CenaReal = 'dia' | 'rua' | 'cardapio' | 'corrida';
 
 function cena(fundo: string, chao: string, y: number, conteudo: ReactNode) {
   return (
@@ -30,6 +30,13 @@ export function CenaDaVidaReal({ tipo }: { tipo: CenaReal }) {
     <g className="hf-flutua"><rect x="84" y="28" width="72" height="26" rx="5" fill="#1F5FA8" stroke="#fff" strokeWidth="2.5" />
       <path d="M96 41h40" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
       <rect x="92" y="60" width="56" height="22" rx="5" fill="#1F7A4D" stroke="#fff" strokeWidth="2.5" /><path d="M102 71h26M130 66l6 5-6 5" stroke="#fff" strokeWidth="2.5" fill="none" strokeLinecap="round" /></g>
+  </>);
+  if (tipo === 'corrida') return cena('linear-gradient(#155059, #0E3B43)', '#0A2E34', 100, <>
+    <path d="M-600 106h1440" stroke="#FBF9F5" strokeWidth="2" strokeDasharray="14 10" opacity=".5" />
+    <g className="hf-flutua"><circle cx="120" cy="56" r="32" fill="none" stroke="rgba(251,249,245,.2)" strokeWidth="6" />
+      <path d="M120 24a32 32 0 0128 47" fill="none" stroke="#E7B65A" strokeWidth="6" strokeLinecap="round" />
+      <path d="M112 18h16M120 18v6M120 56l12-14" stroke="#FBF9F5" strokeWidth="3" strokeLinecap="round" /></g>
+    <path d="M40 80h30M30 90h40M170 80h30M178 90h32" stroke="#8FD6C8" strokeWidth="3" strokeLinecap="round" opacity=".7" />
   </>);
   return cena('linear-gradient(#155059, #0E3B43)', '#0A2E34', 100, <>
     <g className="hf-flutua"><rect x="70" y="16" width="100" height="80" rx="6" fill="#8A5A36" /><rect x="76" y="22" width="88" height="68" rx="3" fill="#1D2925" />
