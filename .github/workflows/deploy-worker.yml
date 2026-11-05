@@ -271,6 +271,8 @@ jobs:
         env:
           MP_ACCESS_TOKEN: ${{ secrets.MP_ACCESS_TOKEN }}
           PADDLE_API_KEY: ${{ secrets.PADDLE_API_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
         run: node scripts/pagamento-ativo.mjs
 
       # Rebaixada para PIX direto, a publicação continua verde: o site vende
@@ -517,6 +519,9 @@ jobs:
           # O Paddle do site em espanhol, pela mesma porta (worker/src/lib/paddle.js).
           PADDLE_API_KEY: ${{ secrets.PADDLE_API_KEY }}
           PADDLE_WEBHOOK_SECRET: ${{ secrets.PADDLE_WEBHOOK_SECRET }}
+          # O Stripe dos sites de fora (worker/src/lib/stripe.js), pela mesma porta.
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
           # A chave da Resend, pela mesma porta. Vazia, o site sobe inteiro e
           # "esqueci minha senha" não entrega o link - os detalhes de
           # /api/health reportam "email": false (a conferência os lê com o
