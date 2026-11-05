@@ -22,6 +22,7 @@ import { LinhasDeLeitura } from '@/components/learn/LinhasDeLeitura';
 import { revisaoDoModulo, segundoTextoDoModulo, textoDoModulo, type CourseModule } from '@/lib/content';
 import { useProgress } from '@/lib/state/store';
 import { palavrasDoTexto, textoLidoId } from '@/lib/engine/textos';
+import { exerciciosDoTexto } from '@/lib/engine/exercicios-do-texto';
 
 /* `revisao` (05/10/2026): a mesma página serve à leitura de revisão do
    módulo, que só usa palavras que o aluno já acumulou (/modulo/N/revisao). */
@@ -91,7 +92,9 @@ export function TextoClient({ module: mod, revisao = false, segundo = false }: {
         id={revisao ? `revisao-texto-${mod.n}` : segundo ? `texto-${mod.n}-2` : `texto-${mod.n}`}
         titulo={tx.entendeu}
         intro={tx.responda}
-        perguntas={texto.perguntas}
+        /* As perguntas escritas à mão e, depois, as que saem das frases do
+           próprio texto (05/11/2026, lib/engine/exercicios-do-texto.ts). */
+        perguntas={[...texto.perguntas, ...exerciciosDoTexto(texto, lidoId)]}
         fecho={{
           bom: tx.fechoBom,
           parcial: tx.fechoParcial
