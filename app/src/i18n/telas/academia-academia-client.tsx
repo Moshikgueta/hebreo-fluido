@@ -143,7 +143,10 @@ const pt = {
   voltarAcademiaSeta: '← Academia',
   semMaterialTitulo: 'Ainda não há material suficiente',
   voltar: 'Voltar',
-  linkAcademia: 'Quer praticar mais? Academia de Leitura'
+  linkAcademia: 'Quer praticar mais? Academia de Leitura',
+  textosDoCurso: 'Textos do curso',
+  textosDesc: (abertos: number, total: number) => `${abertos} de ${total} abertos. Cada texto abre aqui depois que você o lê no lugar dele no curso.`,
+  moduloN: (n: number) => `Módulo ${n}`
 } as const;
 
 const en: Traducao<typeof pt> = {
@@ -287,7 +290,10 @@ const en: Traducao<typeof pt> = {
   voltarAcademiaSeta: '← Academy',
   semMaterialTitulo: 'Not enough material yet',
   voltar: 'Back',
-  linkAcademia: 'Want more practice? Reading Academy'
+  linkAcademia: 'Want more practice? Reading Academy',
+  textosDoCurso: 'Course texts',
+  textosDesc: (abertos: number, total: number) => `${abertos} of ${total} open. Each text opens here after you read it at its place in the course.`,
+  moduloN: (n: number) => `Module ${n}`
 };
 
 const es: Traducao<typeof pt> = {
@@ -431,7 +437,10 @@ const es: Traducao<typeof pt> = {
   voltarAcademiaSeta: '← Academia',
   semMaterialTitulo: 'Todavía no hay material suficiente',
   voltar: 'Volver',
-  linkAcademia: '¿Quieres practicar más? Academia de Lectura'
+  linkAcademia: '¿Quieres practicar más? Academia de Lectura',
+  textosDoCurso: 'Textos del curso',
+  textosDesc: (abertos: number, total: number) => `${abertos} de ${total} abiertos. Cada texto se abre aquí después de que lo lees en su lugar del curso.`,
+  moduloN: (n: number) => `Módulo ${n}`
 };
 
 export const DICIONARIO = { pt, en, es };
