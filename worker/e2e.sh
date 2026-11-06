@@ -9,7 +9,7 @@
 #
 # Rodar:
 #   npm run build:platform
-#   npx wrangler d1 execute fluent-hebrew --file=worker/schema.sql --local
+#   npx wrangler d1 execute hebreo-fluido --file=worker/schema.sql --local
 #   npx wrangler dev --local --port 8787 &
 #   bash worker/e2e.sh
 #
@@ -567,7 +567,7 @@ if [ "$B" != "http://127.0.0.1:8787" ]; then
 Esta passagem criou a conta de teste $MAIL.
 Para apagá-la do banco de produção:
 
-  npx wrangler d1 execute fluent-hebrew --remote --command \\
+  npx wrangler d1 execute hebreo-fluido --remote --command \\
     "DELETE FROM arrependimentos     WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
      DELETE FROM novidades           WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
      DELETE FROM lembretes_estudo    WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
