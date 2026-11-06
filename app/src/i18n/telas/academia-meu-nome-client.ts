@@ -76,7 +76,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Mi nombre en hebreo - Hebraico Fluente',
+  metaTitulo: 'Mi nombre en hebreo - Hebreo Fluido',
   metaDescricao: 'Escribe tu nombre en hebreo, en letra de imprenta y a mano.',
 
   bonus: 'Extra',

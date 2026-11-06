@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { tx as geral } from '@/i18n/telas/geral';
 import { meta } from '@/lib/seo';
 import { notFound } from 'next/navigation';
 import { allProducts, getCourse, tipoDe } from '@/lib/catalog';
@@ -20,7 +21,7 @@ export async function generateMetadata(
   if (!c) return { title: tx.naoEncontrado };
   return meta({
     rota: `/cursos/${c.slug}`,
-    title: `${c.titlePt} - Hebraico Fluente`,
+    title: `${c.titlePt} - ${geral.marca}`,
     description: resumoDaBusca(`${c.taglinePt} ${c.summaryPt}`)
   });
 }

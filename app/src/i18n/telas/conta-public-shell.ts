@@ -113,7 +113,7 @@ const es: Traducao<typeof pt> = {
   linkMetodo: 'El método',
   linkSobre: 'Sobre',
   linkDuvidas: 'Preguntas',
-  paginaInicial: 'Hebraico Fluente, página de inicio',
+  paginaInicial: 'Hebreo Fluido, página de inicio',
   navegacao: 'Navegación del sitio',
   meuHebraico: 'Mi Hebreo',
   minhaConta: 'Mi cuenta',

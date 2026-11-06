@@ -79,7 +79,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'El método - Hebraico Fluente',
+  metaTitulo: 'El método - Hebreo Fluido',
   metaDescricao:
     'Una letra a la vez, en el orden que más rinde; ninguna palabra con letras aún ' +
     'no vistas; repaso en el día justo; y la transliteración se va a propósito.',

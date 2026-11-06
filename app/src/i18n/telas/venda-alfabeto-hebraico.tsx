@@ -116,7 +116,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Alfabeto hebreo: las 22 letras, su sonido y cómo leer - Hebraico Fluente',
+  metaTitulo: 'Alfabeto hebreo: las 22 letras, su sonido y cómo leer - Hebreo Fluido',
   metaDescricao:
     'Las 22 letras del alfabeto hebreo con su nombre y su sonido, las cinco formas finales y ' +
     'cómo funcionan las vocales. Prueba gratis de la primera letra.',
@@ -145,7 +145,7 @@ const es: Traducao<typeof pt> = {
   ctaLinha: 'Empieza con la prueba gratis del Álef, en la página del curso: 6 ejercicios cortos, sin registro.',
 
   letraMetaTitulo: (nome: string, letra: string) =>
-    `${nome} (${letra}): la letra del alfabeto hebreo y cómo se lee - Hebraico Fluente`,
+    `${nome} (${letra}): la letra del alfabeto hebreo y cómo se lee - Hebreo Fluido`,
   // etapa 3: pronúncia, rever (o erro descrito hoje é o de quem fala português)
   letraMetaDescricao: (nome: string, ordem: number, som: string) =>
     `${nome}, la letra ${ordem} en el orden del curso: el sonido (${som}), una palabra con la ` +

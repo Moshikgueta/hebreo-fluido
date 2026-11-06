@@ -48,7 +48,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Cursos de hebreo - Hebraico Fluente',
+  metaTitulo: 'Cursos de hebreo - Hebreo Fluido',
   metaDescricao:
     'Aprende a leer hebreo desde cero: las 22 letras, los signos de vocal y ' +
     'palabras reales, a tu ritmo. Disponible hoy.',

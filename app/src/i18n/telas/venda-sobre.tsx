@@ -72,10 +72,10 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Sobre Moshik - Hebraico Fluente',
+  metaTitulo: 'Sobre Moshik - Hebreo Fluido',
   metaDescricao:
     'Moshik Gueta, israelí, profesor de hebreo y de idiomas: el recorrido por ' +
-    'Israel y Buenos Aires detrás de Hebraico Fluente.',
+    'Israel y Buenos Aires detrás de Hebreo Fluido.',
   trilha: 'Sobre',
 
   porqueEyebrow: 'Cómo se pensó el curso',

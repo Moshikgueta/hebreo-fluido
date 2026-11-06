@@ -110,7 +110,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Soporte - Hebraico Fluente',
+  metaTitulo: 'Soporte - Hebreo Fluido',
   metaDescricao:
     'Cómo hablar con quienes hacen el curso: correo de atención, horario, plazo de ' +
     'respuesta y los atajos para los problemas más comunes.',

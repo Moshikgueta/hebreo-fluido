@@ -108,7 +108,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Un día en Israel - Hebraico Fluente',
+  metaTitulo: 'Un día en Israel - Hebreo Fluido',
   metaDescricao: 'Un día entero en Israel, parada por parada: carteles, tren, café, mercado y más, para leer sin los puntos.',
   voltar: 'Lecturas',
   titulo: 'Un día en Israel',

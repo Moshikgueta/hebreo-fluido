@@ -29,13 +29,13 @@ export function TermsEs() {
       documento="termos"
       titulo="Términos de Uso"
       resumo={
-        'Estos términos rigen entre tú y Hebraico Fluente. Describen qué compras, ' +
+        'Estos términos rigen entre tú y Hebreo Fluido. Describen qué compras, ' +
         'cómo funciona el acceso y qué pasa si quieres desistir.'
       }
     >
       <Artigo n={1} titulo="Qué compras">
         <p>
-          Hebraico Fluente{empresa.razaoSocial ? `, operado por ${empresa.razaoSocial} (Brasil),` : ''} ofrece{' '}
+          Hebreo Fluido{empresa.razaoSocial ? `, operado por ${empresa.razaoSocial} (Brasil),` : ''} ofrece{' '}
           <strong>cursos de hebreo en línea</strong>. Lo que compras es <strong>el acceso a un curso</strong> por
           el período indicado, que se estudia en la plataforma desde tu navegador. El curso es autodirigido:
           estudias a tu propio ritmo, y la plataforma corrige cada ejercicio al instante.
@@ -179,7 +179,7 @@ export function TermsEs() {
 
       <Artigo n={8} titulo="Si la plataforma cierra">
         <p>
-          Si Hebraico Fluente deja de operar antes de que termine tu período de acceso, te avisamos por correo
+          Si Hebreo Fluido deja de operar antes de que termine tu período de acceso, te avisamos por correo
           con al menos <strong>30 días</strong> de anticipación, y el acceso sigue con normalidad hasta entonces.
           Después del cierre, reembolsamos el monto proporcional al tiempo de acceso que te quedaba, por el mismo
           medio de pago original.

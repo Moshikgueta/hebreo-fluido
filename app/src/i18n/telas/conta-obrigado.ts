@@ -121,7 +121,7 @@ const en: Traducao<typeof pt> = {
 
 /* etapa 5/6: Brasil, rever - cartão, PIX e Mercado Pago. */
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Confirmando tu pago - Hebraico Fluente',
+  metaTitulo: 'Confirmando tu pago - Hebreo Fluido',
   confirmando: 'Confirmando tu pago…',
   naoFeche: 'Esto suele tardar unos segundos. No cierres esta página.',
   pagamentoConfirmado: 'Pago confirmado',

@@ -11,7 +11,7 @@ import { confirmacaoDaDesistencia, empresa, INICIO_DO_ACESSO, temCartao, temPix 
 export const metadata: Metadata = meta({
   rota: '/reembolso',
   title: process.env.NEXT_PUBLIC_LOCALE === 'en' ? 'Refund and Cancellation Policy - Hebraico Fluente'
-    : process.env.NEXT_PUBLIC_LOCALE === 'es' ? 'Reembolso y Cancelación - Hebraico Fluente' : 'Reembolso e Cancelamento - Hebraico Fluente',
+    : process.env.NEXT_PUBLIC_LOCALE === 'es' ? 'Reembolso y Cancelación - Hebreo Fluido' : 'Reembolso e Cancelamento - Hebraico Fluente',
   description: process.env.NEXT_PUBLIC_LOCALE === 'en'
     ? `${empresa.politicas.arrependimentoDias} days to cancel, no reason needed, with your money back. How to ask, when the money comes back, and what happens to your access.`
     : process.env.NEXT_PUBLIC_LOCALE === 'es'

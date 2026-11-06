@@ -35,7 +35,7 @@ import {
   mensagemDeAlerta, reaisBR, sendMail
 } from '../lib/mail.js';
 import { mensagens } from '../lib/mensagens.js';
-import { MARCA, idiomaDaConta, tituloDoCurso } from '../lib/idioma.js';
+import { idiomaDaConta, marcaDoEmail, tituloDoCurso } from '../lib/idioma.js';
 import {
   cancelPayment, createCardPreference, createPix, getPayment, mapStatus, paymentsFor, paymentsOfChargeback,
   paymentsOfMerchantOrder, refundPayment, verifyWebhookSignature
@@ -720,7 +720,7 @@ async function avisarDesistencia(env, order, account, pedidoEm, estado, motivo =
     const valor = reaisBR(order.amount_cents, order.currency);
     const quando = dataHoraBR(pedidoEm);
     const prazoUteis = Number(empresa.politicas?.prazoReembolsoUteis) || 10;
-    const marca = idiomaDaConta(account) === 'en' ? MARCA.en : (empresa.nomeFantasia || MARCA.pt);
+    const marca = marcaDoEmail(idiomaDaConta(account), empresa);
 
     const r = await sendMail(env, {
       to: account.email,
@@ -1254,7 +1254,7 @@ export async function avisarEstorno(env, order, { contestacao = false, restaAte 
         nome: account.name || '', curso, valor: reaisBR(order.amount_cents, order.currency),
         pedido: order.id, cartao: order.method === 'card', contestacao,
         restaAte: restaAte ? m.data(restaAte) : '',
-        marca: idioma === 'en' ? MARCA.en : (empresa.nomeFantasia || MARCA.pt),
+        marca: marcaDoEmail(idioma, empresa),
         suporte: empresa.contato?.emailSuporte || ''
       })
     });
@@ -1336,7 +1336,7 @@ async function confirmarPorEmail(env, order, primeiraCompra) {
       tipo,
       ebook: tipo === 'pacote' ? `${site}/israel/` : null,
       aula0: `${site}/inicio/`,
-      marca: idioma === 'en' ? MARCA.en : (empresa.nomeFantasia || MARCA.pt),
+      marca: marcaDoEmail(idioma, empresa),
       suporte: empresa.contato?.emailSuporte || '',
       arrependimentoDias: diasDoPedido(order),
       /* Uma renovação não diz "seu acesso está liberado" a quem já estava

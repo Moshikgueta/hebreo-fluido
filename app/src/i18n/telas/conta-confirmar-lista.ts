@@ -44,7 +44,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Confirmar suscripción - Hebraico Fluente',
+  metaTitulo: 'Confirmar suscripción - Hebreo Fluido',
   metaDescricao: 'Confirma que quieres recibir los correos que pediste.',
   oQueCurso: 'las próximas letras del alfabeto y las novedades del curso',
   oQueIsrael: 'el aviso de cuando abra Israel Alem do Obvio',
@@ -58,7 +58,7 @@ const es: Traducao<typeof pt> = {
   site: 'sitio',
   toqueNoBotao:
     'Toca el botón para confirmar que quieres recibir los correos que pediste en el sitio de ' +
-    'Hebraico Fluente. Puedes salir de la lista cuando quieras, con el enlace de cualquiera de ellos.',
+    'Hebreo Fluido. Puedes salir de la lista cuando quieras, con el enlace de cualquiera de ellos.',
   erro: 'No pude hacerlo ahora. Vuelve a intentarlo en un momento.',
   confirmando: 'Confirmando…',
   confirmar: 'Confirmar'

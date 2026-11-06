@@ -383,6 +383,10 @@ function main() {
       /* 7 dias com o Stripe (decisão do dono, 05/11/2026), 14 com o Paddle: o
          mesmo número de worker/src/lib/desistencia.js (DIAS_STRIPE, DIAS_PADDLE). */
       empresa.politicas = { ...politicas, arrependimentoDias: deFora === 'stripe' ? 7 : 14, atualizadoEm: data || politicas.atualizadoEm };
+      /* O site em espanhol se chama Hebreo Fluido (decisão do dono, 06/11/2026): o
+         nome que o rodapé, as políticas e o JSON-LD leem de `nomeFantasia`. O
+         Worker usa o mesmo nome (MARCA.es em worker/src/lib/idioma.js). */
+      if (LOCALE === 'es') empresa.nomeFantasia = 'Hebreo Fluido';
       const { horarioEn, horarioEs, ...atendimento } = empresa.atendimento || {};
       const horario = LOCALE === 'es' ? horarioEs : horarioEn;
       if (horario) empresa.atendimento = { ...atendimento, horarioPt: horario };

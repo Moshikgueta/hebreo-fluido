@@ -132,7 +132,7 @@ const es: Traducao<typeof pt> = {
   toqueMicrofone: (palavra: ReactNode): ReactNode => (
     <>Toca el micrófono y di {palavra}. El curso escucha y te dice si coincidió.</>
   ),
-  notaFala: 'Para corregirte, tu voz va al servicio de voz del navegador (Google o Apple). Hebraico Fluente no guarda nada.'
+  notaFala: 'Para corregirte, tu voz va al servicio de voz del navegador (Google o Apple). Hebreo Fluido no guarda nada.'
 };
 
 export const DICIONARIO = { pt, en, es };

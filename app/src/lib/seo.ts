@@ -27,6 +27,7 @@
  *    bloqueada é uma URL em que nenhum rastreador chega a ler o `noindex`.
  */
 
+import { tx as geral } from '@/i18n/telas/geral';
 import type { Metadata } from 'next';
 import { tx } from '@/i18n/telas/motor-seo';
 import { LOCALE, OG_LOCALE } from '@/i18n';
@@ -166,7 +167,7 @@ export function ogDaRota(rota: string): { src: string; alt: string } {
   /* O site em inglês tem um cartão só, em inglês (tools/og.mjs), em toda rota:
      ele só vende o curso. */
   if (LOCALE === 'en') return { src: '/media/og-curso-en.jpg', alt: tx.ogCurso };
-  if (LOCALE === 'es') return { src: '/media/og-curso-es.jpg', alt: tx.ogCurso };
+  if (LOCALE === 'es') return { src: '/media/og-hebreo-fluido.jpg', alt: tx.ogCurso };
   const r = ('/' + rota).replace(/\/{2,}/g, '/').replace(/\/+$/, '') || '/';
   const porta = OG_POR_PORTA.find(p => p.prefixos.some(x => r === x || r.startsWith(x + '/')));
   /* Desde 27/10/2026 o site é só o curso de alfabetização (decisão do dono):
@@ -205,7 +206,7 @@ export function meta({
     openGraph: {
       type: tipo,
       url: canonical,
-      siteName: 'Hebraico Fluente',
+      siteName: geral.marca,
       locale: OG_LOCALE,
       title,
       description,

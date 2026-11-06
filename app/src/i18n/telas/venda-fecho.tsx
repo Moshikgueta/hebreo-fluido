@@ -205,14 +205,14 @@ const es: Traducao<typeof pt> = {
   resumo2: 'Profesor de hebreo para principiantes',
   resumo3: 'Gerente Pedagógico en Tel Aviv',
   resumo4: 'Formación CELTA y estudios en Letras',
-  rubricaProfessor: 'Quién está detrás de Hebraico Fluente',
+  rubricaProfessor: 'Quién está detrás de Hebreo Fluido',
   tituloProfessor: 'Un profesor israelí que sabe dónde se traba quien empieza.',
-  apresentacao: 'Soy Moshik Gueta. Enseñando hebreo a principiantes entendí dónde se traba quien empieza de cero. Hebraico Fluente convierte lo que funcionaba en mis clases en una metodología que sigues a tu ritmo.',
+  apresentacao: 'Soy Moshik Gueta. Enseñando hebreo a principiantes entendí dónde se traba quien empieza de cero. Hebreo Fluido convierte lo que funcionaba en mis clases en una metodología que sigues a tu ritmo.',
   historia: 'Conoce mi historia',
   linkedin: 'Ver mi perfil de LinkedIn',
   abreAba: ' (se abre en otra pestaña)',
   instagram: 'Instagram',
-  instagramSr: ' de Hebraico Fluente (se abre en otra pestaña)',
+  instagramSr: ' de Hebreo Fluido (se abre en otra pestaña)',
   metodo: (autor: ReactNode, obra: ReactNode, translit: string, adaptacoes: string): ReactNode => (
     <>El método parte del trabajo de {autor}, autor de{' '}{obra}{' '}({translit}). El contenido de su libro es la base de lo que enseña esta plataforma. {adaptacoes}</>
   ),

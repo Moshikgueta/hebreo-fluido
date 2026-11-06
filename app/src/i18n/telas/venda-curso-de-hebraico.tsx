@@ -30,7 +30,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Aprende a leer hebreo desde cero - Hebraico Fluente',
+  metaTitulo: 'Aprende a leer hebreo desde cero - Hebreo Fluido',
   metaDescricao:
     'Aprende a leer hebreo desde cero con un profesor israelí: las 22 letras, las vocales y ' +
     'palabras reales, con corrección al instante. Primera letra gratis.',

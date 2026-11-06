@@ -340,7 +340,7 @@ const es: Traducao<typeof pt> = {
   passo3Titulo: 'Módulo 1: {titulo}',
   passo3Reserva: 'La primera letra',
   passo3Texto: 'Una letra por lección, con sonido, escritura a mano y las primeras palabras.',
-  bemVindo: 'Bienvenido a Hebraico Fluente',
+  bemVindo: 'Bienvenido a Hebreo Fluido',
   liberado: 'Tu curso está desbloqueado.',
   boasVindasTexto: 'Son {letras} letras, en {modulos} módulos. Antes de la primera, cuatro preguntas rápidas para que el curso se ajuste a ti.',
   comecar: 'Empezar',

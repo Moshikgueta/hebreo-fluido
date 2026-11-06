@@ -98,7 +98,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Mi Biblioteca - Hebraico Fluente',
+  metaTitulo: 'Mi Biblioteca - Hebreo Fluido',
   metaDescricao: 'Los cursos y las experiencias de tu cuenta, en un solo lugar.',
 
   resumoCurso: 'Leer y escribir hebreo desde cero, letra por letra.',
@@ -132,7 +132,7 @@ const es: Traducao<typeof pt> = {
   naoPagueDeNovo: 'No pagues de nuevo.',
   pagoSemAcesso: ' El acceso todavía no apareció en esta cuenta: escríbenos y lo liberamos.',
   comecarCurso: 'Empezar el curso de hebreo',
-  verTudo: 'Ver todo lo que ofrece Hebraico Fluente',
+  verTudo: 'Ver todo lo que ofrece Hebreo Fluido',
   outroEmail: '¿Compraste con otro correo? El curso queda en la cuenta del correo que pagó.',
   entrarComOutro: 'Entrar con otro correo',
   jaPagou: '¿Ya pagaste y el curso no aparece? ',

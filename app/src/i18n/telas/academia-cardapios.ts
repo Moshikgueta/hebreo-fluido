@@ -77,7 +77,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Leer menús - Hebraico Fluente',
+  metaTitulo: 'Leer menús - Hebreo Fluido',
   metaDescricao: 'La pizarra de un café en Israel, sin nikud: platos famosos de Israel, bebidas y comidas de nombre internacional, para leer y pedir.',
   voltar: 'Lecturas',
   titulo: 'Leer menús',

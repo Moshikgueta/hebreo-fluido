@@ -14,7 +14,7 @@ const en: Traducao<typeof pt> = {
 
 const es: Traducao<typeof pt> = {
   // a imagem do cartão ainda é a do site em português (tools/og.mjs)
-  ogCurso: 'Hebraico Fluente: aprende a leer hebreo desde cero',
+  ogCurso: 'Hebreo Fluido: aprende a leer hebreo desde cero',
   ogLivro: 'Israel Alem do Obvio, de Moshik Gueta: próximamente'
 };
 

@@ -108,7 +108,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Declaración de Accesibilidad - Hebraico Fluente',
+  metaTitulo: 'Declaración de Accesibilidad - Hebreo Fluido',
   metaDescricao:
     'Lo que hace la plataforma para que todas las personas puedan usarla, lo que todavía no hace, ' +
     'cómo se probó y cómo avisar de una barrera.',

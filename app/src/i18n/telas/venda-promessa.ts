@@ -39,7 +39,7 @@ const es: Traducao<typeof pt> = {
   aprendePalavras: 'palabras reales, paso a paso',
   nadaTabela: 'Nada de memorizar una tabla entera el primer día.',
   nadaTransliteracao: 'Nada de depender para siempre de la transliteración.',
-  titulo: 'Lo que aprendes en Hebraico Fluente',
+  titulo: 'Lo que aprendes en Hebreo Fluido',
   exercicios: 'Con ejercicios interactivos y corrección inmediata en cada etapa, en español.',
   numeros: (letras: number, licoes: number, meses: number) =>
     `${letras} letras en ${licoes} lecciones · progreso guardado en tu cuenta · acceso por ${meses} meses`,

@@ -118,7 +118,7 @@ const es: Traducao<typeof pt> = {
   cidade: 'Ciudad (opcional)',
   comoApareceria: 'Cómo aparecería',
 
-  autorizo: 'Autorizo a Hebraico Fluente a publicar este testimonio, tal como está en la vista previa de arriba, en el sitio y en materiales de divulgación del curso, sin pago. Puedo retirar la autorización cuando quiera, en esta misma página.',
+  autorizo: 'Autorizo a Hebreo Fluido a publicar este testimonio, tal como está en la vista previa de arriba, en el sitio y en materiales de divulgación del curso, sin pago. Puedo retirar la autorización cuando quiera, en esta misma página.',
   aceitoEmail: 'Acepto recibir un correo del autor del curso sobre este testimonio.',
   regras: (link: Link) => <>Sin la autorización, el texto queda solo para que lo lea el autor del curso. Publicamos el texto como lo escribiste, sin cambiar ninguna palabra; si hay que acortarlo, el corte aparece marcado con [...]. Si retiras la autorización, el testimonio se quita de donde esté publicado en un plazo de 7 días. Más detalles en la {link('Política de Privacidad')}.</>,
 

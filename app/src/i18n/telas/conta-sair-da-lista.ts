@@ -50,7 +50,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Salir de la lista - Hebraico Fluente',
+  metaTitulo: 'Salir de la lista - Hebreo Fluido',
   metaDescricao: 'Deja de recibir el aviso del próximo curso.',
   titulo: 'Salir de la lista',
   saiuInteressado: 'Listo: saliste de la lista y no vas a recibir ningún otro correo de ella.',
