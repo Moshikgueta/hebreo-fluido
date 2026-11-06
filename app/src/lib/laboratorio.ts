@@ -8,12 +8,12 @@
  * laboratório sem ter passado pela validação do curso (V1: só letras já
  * ensinadas; V3: transliteração).
  *
- * ── sem nikud, só onde é seguro ───────────────────────────────────────────
- * A forma sem pontos (`semNikud`) existe só para as palavras da lista do
- * módulo 6 (data/extras.json → unpointed), que o dono do curso escolheu
- * como legíveis sem os pontos, e só para quem já fez aquela etapa. Tirar o
- * nikud de qualquer palavra seria fácil e errado: sem os pontos, שֵׁם e שָׁם
- * são o mesmo desenho, e a palavra vira adivinhação.
+ * ── sem nikud ────────────────────────────────────────────────────────────
+ * No nível "Sem ajuda" a palavra aparece sem os pontos (06/11/2026, pedido
+ * do dono). `semNikud` guarda a forma da lista do módulo 6 (data/extras.json
+ * → unpointed) quando a palavra está lá; as outras perdem os pontos na tela.
+ * Sem os pontos, שֵׁם e שָׁם são o mesmo desenho: por isso a forma com os
+ * pontos volta na hora de conferir.
  *
  * ── a decomposição só aparece quando é confiável ──────────────────────────
  * Dizer "este sinal é um A" parece simples e não é: o kamats às vezes soa O,
