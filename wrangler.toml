@@ -6,8 +6,10 @@
 # é esta configuração (LOCALE = "es", o export app/out-es, o banco, o domínio).
 #
 # AINDA NÃO SE PUBLICA. Faltam, nesta ordem:
-#   1. o domínio em espanhol (decisão do dono): entram as `routes`, o
-#      SITE_ORIGIN e o EMAIL_FROM;
+#   1. (FEITO em 06/11/2026: o domínio hebreofluido.com, ligado pelo dono na
+#      Cloudflare; entraram as `routes` e o SITE_ORIGIN. O EMAIL_FROM ainda
+#      sai do domínio brasileiro até o hebreofluido.com ser verificado no
+#      Resend);
 #   2. (FEITO em 04/11/2026: o banco hebreo-fluido existe, com o schema, pela
 #      Action "Criar o banco"; o id está abaixo);
 #   3. a variável de repositório HEBREO_PUBLICAR = true (Settings > Secrets and
@@ -22,9 +24,19 @@ name = "hebreo-fluido"
 main = "worker/src/worker.js"
 compatibility_date = "2026-09-01"
 
-# Sem domínio ainda: só o workers.dev, para conferência. Quando o domínio
-# entrar, as `routes` vêm para cá (como no wrangler.toml do site brasileiro) e
-# esta linha volta para false.
+# O domínio em espanhol (06/11/2026), como no wrangler.toml do site
+# brasileiro: `custom_domain = true` faz o wrangler criar o registro DNS e o
+# certificado (a zona está na mesma conta Cloudflare). O www entra para ser
+# REDIRECIONADO ao endereço sem www (worker/src/worker.js), não para servir
+# o site.
+routes = [
+  { pattern = "hebreofluido.com", custom_domain = true },
+  { pattern = "www.hebreofluido.com", custom_domain = true }
+]
+
+# O workers.dev fica ligado por enquanto, como rede de segurança enquanto o
+# domínio novo é conferido. Depois de confirmado, volta para false (como no
+# site brasileiro): as regras de proteção da Cloudflare só valem no domínio.
 workers_dev = true
 
 [assets]
@@ -54,16 +66,14 @@ crons = ["*/5 * * * *"]
 # O idioma do site: o Worker escreve e-mails e páginas de erro em espanhol, e
 # cobra pelo Paddle (worker/src/lib/idioma.js, api/pay.js).
 LOCALE = "es"
-# O endereço do site: enquanto não há domínio em espanhol, o workers.dev da
-# conta (como o site em inglês faz). Quando o domínio entrar, trocar aqui e
-# acrescentar as `routes`. A build em espanhol lê esta linha (app/next.config.ts)
-# para o endereço canônico, o sitemap e o cartão do link.
-SITE_ORIGIN = "https://hebreo-fluido.moshikg10.workers.dev"
-# Enquanto não há domínio em espanhol, o remetente é o endereço do domínio
-# brasileiro, já verificado no Resend, com o nome do site em espanhol (como o
+# O endereço do site (06/11/2026). A build em espanhol lê esta linha
+# (app/next.config.ts) para o endereço canônico, o sitemap e o cartão do link.
+SITE_ORIGIN = "https://hebreofluido.com"
+# Até o hebreofluido.com ser verificado no Resend, o remetente é o endereço do
+# domínio brasileiro, já verificado lá, com o nome do site em espanhol (como o
 # site em inglês faz). Sem ele o Worker não manda e-mail nenhum, e o painel
-# de /admin não abre: o código de seis dígitos vai por e-mail. Quando o
-# domínio em espanhol entrar e for verificado no Resend, trocar aqui.
+# de /admin não abre: o código de seis dígitos vai por e-mail. Depois de
+# verificar o hebreofluido.com no Resend, trocar aqui.
 EMAIL_FROM = "Hebreo Fluido <contato@hebraicofluente.com.br>"
 SUPPORT_EMAIL = "languageswithmoshik@gmail.com"
 CONTATO_DESTINO = "languageswithmoshik@gmail.com"
