@@ -9,7 +9,7 @@
 #
 # Rodar:
 #   npm run build:platform
-#   npx wrangler d1 execute fluent-hebrew --file=worker/schema.sql --local
+#   npx wrangler d1 execute hebreo-fluido --file=worker/schema.sql --local
 #   npx wrangler dev --local --port 8787 &
 #   bash worker/e2e.sh
 #
@@ -416,6 +416,11 @@ esac
 # Desde 05/11/2026 o site de fora pode cobrar pelo Stripe (o campo
 # `cobranca` da saúde diz qual): o meio é `stripe`, e o aviso é outro.
 COBRANCA="$(grep -o '"cobranca":"[a-z-]*"' <<<"$HEALTH" | cut -d'"' -f4)"
+# Sem os detalhes da saúde (sem o ADMIN_TOKEN) o campo vem vazio: aí vale o
+# que data/empresa.json pede, o mesmo arquivo que o Worker lê (api/pay.js).
+if [ -z "$COBRANCA" ] && [ "$EM_INGLES" = 1 ]; then
+  COBRANCA="$(node -e 'const e=require(process.argv[1]); console.log((e.pagamento&&e.pagamento.exterior)==="stripe"?"stripe":"paddle")' "$RAIZ/data/empresa.json" 2>/dev/null)"
+fi
 MEIO=pix
 [ "$EM_INGLES" = 1 ] && MEIO=paddle
 [ "$EM_INGLES" = 1 ] && [ "$COBRANCA" = stripe ] && MEIO=stripe
@@ -562,7 +567,7 @@ if [ "$B" != "http://127.0.0.1:8787" ]; then
 Esta passagem criou a conta de teste $MAIL.
 Para apagá-la do banco de produção:
 
-  npx wrangler d1 execute fluent-hebrew --remote --command \\
+  npx wrangler d1 execute hebreo-fluido --remote --command \\
     "DELETE FROM arrependimentos     WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
      DELETE FROM novidades           WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
      DELETE FROM lembretes_estudo    WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
