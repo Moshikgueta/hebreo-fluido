@@ -464,7 +464,14 @@ espera "pedido de outra pessoa não é lido" 404 "$(code -b "$JAR" "$B/api/pay/v
 
 echo "Webhook"
 espera "sem assinatura, recusa" 401 "$(code -X POST "$B/api/pay/webhook?type=payment&data.id=1")"
-if [ "$MEIO" = stripe ]; then
+if [ "$EM_INGLES" = 1 ] && [ -z "$COBRANCA" ]; then
+  # Sem HF_ADMIN_TOKEN a saúde não diz como o site cobra, nem se a cobrança
+  # está ligada; desligada, o aviso responde 200 de propósito (não há o que
+  # processar). Adivinhar o meio derrubou a publicação do site em espanhol,
+  # sem chaves de pagamento ainda (06/11/2026). Fica de fora, como o resto
+  # da cobrança nesta passagem.
+  echo "  · sem HF_ADMIN_TOKEN: o aviso do meio de pagamento fica de fora desta passagem."
+elif [ "$MEIO" = stripe ]; then
   espera "aviso do Stripe sem assinatura, recusa" 401 \
     "$(code -X POST "$B/api/pay/stripe" -H 'content-type: application/json' -d '{"type":"checkout.session.completed","data":{"object":{}}}')"
 elif [ "$EM_INGLES" = 1 ]; then
