@@ -1057,3 +1057,19 @@ a:hover > .hf-arco { transform: translateY(-2px); }
 .hf-montar-ergue .hf-montar-lugar { animation: hf-montar-ergue .5s cubic-bezier(.3, .8, .3, 1) both; }
 @keyframes hf-montar-ergue { 0% { transform: translateY(12px); } 60% { transform: translateY(-6px); } 100% { transform: none; } }
 .hf-montar-texto { font-family: var(--font-he); font-weight: 700; font-size: 28px; line-height: 1; direction: rtl; unicode-bidi: isolate; }
+/* Ouça e encontre (06/11/2026): o alto-falante grande e as quatro opções. */
+.hf-ouvir-botao { display: grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--navy); color: #fff; box-shadow: 0 10px 24px -12px rgba(14, 59, 67, .7); transition: transform .15s var(--ease); }
+.hf-ouvir-botao:hover { transform: scale(1.04); }
+.hf-ouvir-botao:focus-visible { outline: 3px solid var(--teal); outline-offset: 4px; }
+.hf-ouvir-tocando .hf-ouvir-onda { animation: hf-ouvir-onda .9s ease-out 2; }
+.hf-ouvir-tocando .hf-ouvir-onda2 { animation-delay: .15s; }
+@keyframes hf-ouvir-onda { 0% { opacity: .2; } 50% { opacity: 1; } 100% { opacity: .6; } }
+.hf-ouvir-opcao { display: grid; place-items: center; min-height: 84px; padding: 10px; border-radius: 16px; border: 2px solid var(--line);
+  background: var(--card); color: var(--ink); cursor: pointer; transition: transform .15s var(--ease), border-color .15s; }
+.hf-ouvir-opcao:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--teal); }
+.hf-ouvir-opcao:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+.hf-ouvir-errada { background: #FBE7E3; border-color: #C9443A; animation: hf-sacode .4s; }
+.hf-ouvir-certa { background: #E4F1EE; border-color: #1F8A7D; animation: hf-montar-ergue .5s cubic-bezier(.3, .8, .3, 1) both; }
+.hf-ouvir-apagada { opacity: .45; }
+.hf-ouvir-texto { font-family: var(--font-he); font-weight: 700; font-size: 34px; line-height: 1.2; direction: rtl; unicode-bidi: isolate; }

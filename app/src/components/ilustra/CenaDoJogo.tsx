@@ -8,7 +8,7 @@
 
 import type { ReactNode } from 'react';
 
-export type JogoIlustrado = 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'montar' | 'match' | 'blast' | 'teste';
+export type JogoIlustrado = 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'montar' | 'ouvir' | 'match' | 'blast' | 'teste';
 
 const HE = 'var(--font-he)';
 const CURSIVA = 'var(--font-he-cursive)';
@@ -118,6 +118,27 @@ export function CenaDoJogo({ jogo, letras }: { jogo: JogoIlustrado; letras: read
         <g className="hf-flutua"><rect x="122" y="18" width="38" height="24" rx="3" fill="#FBF9F5" stroke="#E7B65A" strokeWidth="2.5" />
           <text x="141" y="36" fontFamily={HE} fontSize="18" fill="#12665C" textAnchor="middle">{b}</text></g>
         <path d="M141 44v4" stroke="#E7B65A" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 3" />
+      </>);
+    case 'ouvir':
+      /* Ouça e encontre (06/11/2026): um rádio antigo na janela, as ondas do
+         som saindo, e uma letra do aluno escolhida entre as outras. */
+      return cena('linear-gradient(var(--il-tarde), var(--il-tarde-2))', { cor: 'var(--il-colina-2)', y: 100 }, <>
+        <rect x="26" y="54" width="62" height="44" rx="10" fill="#C98B49" />
+        <circle cx="46" cy="76" r="12" fill="#8E5A3B" /><circle cx="46" cy="76" r="5" fill="#E8D5AB" />
+        <rect x="64" y="66" width="16" height="4" rx="2" fill="#E8D5AB" /><rect x="64" y="76" width="16" height="4" rx="2" fill="#E8D5AB" />
+        <path d="M70 54l10-14" stroke="#8E5A3B" strokeWidth="3" strokeLinecap="round" />
+        <g className="hf-flutua" stroke="#FBF9F5" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity=".9">
+          <path d="M98 64a12 12 0 010 20" /><path d="M108 56a24 24 0 010 36" />
+        </g>
+        <g fontFamily={HE} fontSize="22" textAnchor="middle">
+          <rect x="132" y="32" width="40" height="34" rx="9" fill="#FBF9F5" opacity=".7" /><text x="152" y="57" fill="#0E3B43" opacity=".55">{b}</text>
+          <rect x="180" y="32" width="40" height="34" rx="9" fill="#FBF9F5" opacity=".7" /><text x="200" y="57" fill="#0E3B43" opacity=".55">{c}</text>
+          <rect x="180" y="70" width="40" height="28" rx="9" fill="#FBF9F5" opacity=".7" /><text x="200" y="91" fill="#0E3B43" opacity=".55">{d}</text>
+        </g>
+        <g className="hf-flutua" style={{ animationDelay: '-1.5s' }}>
+          <rect x="132" y="70" width="40" height="28" rx="9" fill="#E4F1EE" stroke="#1F8A7D" strokeWidth="2.5" />
+          <text x="152" y="91" fontFamily={HE} fontSize="22" fill="#12665C" textAnchor="middle">{a}</text>
+        </g>
       </>);
     default:
       return cena(ceu, { cor: 'var(--il-colina-2)', y: 100 }, null);

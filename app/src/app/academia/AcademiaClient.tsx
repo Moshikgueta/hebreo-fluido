@@ -68,6 +68,8 @@ import { CacaLetra } from '@/components/game/CacaLetra';
 import { PomarComTemas } from '@/components/game/PomarComTemas';
 import { MontarPalavra } from '@/components/game/MontarPalavra';
 import { rodadaDeMontar } from '@/lib/engine/montar';
+import { OuvirEEncontrar } from '@/components/game/OuvirEEncontrar';
+import { rodadaDeOuvir } from '@/lib/engine/ouvir';
 import { HebraicoNaVidaReal } from '@/components/learn/HebraicoNaVidaReal';
 import { perguntasDoPomarPorTema } from '@/lib/engine/pomar';
 import { TEMAS } from '@/lib/engine/temas';
@@ -89,7 +91,7 @@ import { tx } from '@/i18n/telas/academia-academia-client';
    descobrir isso num `undefined` em produção. */
 type DadosDeJogo = ReturnType<typeof montarNovo>;
 type JogoDeBaralho = 'match' | 'blast' | 'teste';
-type JogoNovo = 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'montar';
+type JogoNovo = 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'montar' | 'ouvir';
 type Jogo = JogoDeBaralho | JogoNovo;
 const DE_BARALHO = (j: Jogo): j is JogoDeBaralho =>
   j === 'match' || j === 'blast' || j === 'teste';
@@ -180,6 +182,14 @@ export const JOGOS: Record<Jogo, { titlePt: string; descPt: string; treinaPt: st
     titlePt: tx.jogoMontarTitulo,
     descPt: tx.jogoMontarDesc,
     treinaPt: tx.jogoMontarTreina,
+    minimo: 3
+  },
+  /* Ouça e encontre (06/11/2026, aprovado pelo dono): ouvir a gravação e
+     achar a escrita entre quatro parecidas (lib/engine/ouvir.ts). */
+  ouvir: {
+    titlePt: tx.jogoOuvirTitulo,
+    descPt: tx.jogoOuvirDesc,
+    treinaPt: tx.jogoOuvirTreina,
     minimo: 3
   }
 };
@@ -318,7 +328,8 @@ export function AcademiaClient() {
         const d = fazerNovo(jogo, 0);
         falta = jogo === 'caca' ? !d.cacada?.length : jogo === 'cursiva' ? !d.cursiva?.length
           : jogo === 'pomar' ? !TEMAS.some(t => d.pomar?.[t].length)
-          : jogo === 'montar' ? !(d.montar?.pontos.length || d.montar?.letras.length) : !d.batalha;
+          : jogo === 'montar' ? !(d.montar?.pontos.length || d.montar?.letras.length)
+          : jogo === 'ouvir' ? !(d.ouvir?.pontos.length || d.ouvir?.letras.length) : !d.batalha;
       }
       if (!falta) continue;
       out[jogo] = unlocked.length < info.minimo
@@ -367,6 +378,7 @@ export function AcademiaClient() {
       : jogo === 'cursiva' ? !dados.cursiva?.length
       : jogo === 'pomar' ? !TEMAS.some(t => dados.pomar?.[t].length)
       : jogo === 'montar' ? !(dados.montar?.pontos.length || dados.montar?.letras.length)
+      : jogo === 'ouvir' ? !(dados.ouvir?.pontos.length || dados.ouvir?.letras.length)
       : !dados.batalha;
 
     if (vazio || unlocked.length < info.minimo) {
@@ -406,6 +418,9 @@ export function AcademiaClient() {
         )}
         {jogo === 'montar' && dados.montar && (
           <MontarPalavra key={`mo-${screen.rodada}`} rodadas={dados.montar} onFim={fim} />
+        )}
+        {jogo === 'ouvir' && dados.ouvir && (
+          <OuvirEEncontrar key={`ou-${screen.rodada}`} rodadas={dados.ouvir} onFim={fim} />
         )}
         {jogo === 'cursiva' && dados.cursiva && (
           <ImpressaCursiva key={`cu-${screen.rodada}`} rodadas={dados.cursiva}
@@ -838,7 +853,7 @@ export function AcademiaClient() {
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
               {/* O Pomar das palavras (05/11/2026, pedido do dono): só aqui, na lista
                   principal, e não em primeiro; antes ficava na aba Hebraico na vida real. */}
-              {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste', 'montar', 'pomar'] as const).map(jogo => (
+              {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste', 'montar', 'ouvir', 'pomar'] as const).map(jogo => (
                 <li key={jogo}>
                   {/* Cartão ilustrado (05/11/2026, aprovado pelo dono): a cena do
                       jogo em cima, com as letras que o aluno já aprendeu. */}
@@ -1093,6 +1108,11 @@ function montarNovo(
   if (jogo === 'montar') {
     const legiveis = palavrasLegiveis(vocabularioDoCurso(allLetters()), alfabetoDe(unlocked));
     return { montar: { pontos: rodadaDeMontar(legiveis, 'pontos', rand), letras: rodadaDeMontar(legiveis, 'letras', rand) } };
+  }
+  /* Ouça e encontre (06/11/2026): as palavras que ele já lê e que têm gravação. */
+  if (jogo === 'ouvir') {
+    const legiveis = palavrasLegiveis(vocabularioDoCurso(allLetters()), alfabetoDe(unlocked));
+    return { ouvir: { pontos: rodadaDeOuvir(legiveis, 'pontos', hasAudio, rand), letras: rodadaDeOuvir(legiveis, 'letras', hasAudio, rand) } };
   }
   /* Vários pares por partida, e não um. `paresParaTreinar` põe primeiro o que
      ELE trocou de verdade e depois o que o conteúdo prevê. */
