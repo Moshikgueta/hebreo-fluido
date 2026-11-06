@@ -34,7 +34,7 @@ export function UmDiaNaCapa() {
 
   return (
     <section id="um-dia" aria-labelledby="um-dia-titulo" className="mt-20 sm:mt-28 bg-[var(--navy)] text-white hf-um-dia-capa">
-      <Container className="py-16 sm:py-24 grid gap-10 lg:gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-center">
+      <Container className="py-16 sm:py-24 grid grid-cols-[minmax(0,1fr)] gap-10 lg:gap-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-center">
         <div className="min-w-0">
           <Rubrica tom="lite" className="mb-5">{tx.rubrica}</Rubrica>
           <h2 id="um-dia-titulo"
@@ -73,7 +73,7 @@ export function UmDiaNaCapa() {
           </p>
         </div>
 
-        <figure className="m-0 justify-self-center w-[min(300px,78vw)] lg:w-full">
+        <figure className="m-0 justify-self-center w-full max-w-[300px] lg:max-w-none">
           <div className="relative rounded-[30px] p-[7px] bg-[#082A30]
                           shadow-[0_0_0_1px_rgba(255,255,255,.10)_inset,0_40px_80px_-30px_rgba(0,0,0,.55)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
