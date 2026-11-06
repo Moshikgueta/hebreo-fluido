@@ -26,7 +26,8 @@ const APRENDE = [
   tx.aprendeSons,
   tx.aprendeNikud,
   tx.aprendeCursiva,
-  tx.aprendePalavras
+  tx.aprendePalavras,
+  tx.aprendeSemPontos
 ];
 
 const NADA_DE = [

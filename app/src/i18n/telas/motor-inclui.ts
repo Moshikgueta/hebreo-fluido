@@ -9,7 +9,9 @@ const pt = {
   semAudio: 'Explicação de som para cada letra',
   jogos: 'Jogos de prática na Academia de Leitura',
   exame: 'Exame final e certificado de conclusão (não oficial)',
-  progresso: 'Progresso salvo, no celular e no computador'
+  progresso: 'Progresso salvo, no celular e no computador',
+  umDia: 'Um dia em Israel: oito situações de leitura, do trem à festa',
+  duvidas: 'Dúvidas direto com o professor, dentro do curso'
 } as const;
 
 const en: Traducao<typeof pt> = {
@@ -20,7 +22,9 @@ const en: Traducao<typeof pt> = {
   semAudio: 'An explanation of the sound of each letter',
   jogos: 'Practice games in the Reading Academy',
   exame: 'Final exam and certificate of completion (not official)',
-  progresso: 'Progress saved, on your phone and on your computer'
+  progresso: 'Progress saved, on your phone and on your computer',
+  umDia: 'A day in Israel: eight reading moments, from the train to the party',
+  duvidas: 'Questions straight to the teacher, inside the course'
 };
 
 const es: Traducao<typeof pt> = {
@@ -31,7 +35,9 @@ const es: Traducao<typeof pt> = {
   semAudio: 'Explicación del sonido de cada letra',
   jogos: 'Juegos de práctica en la Academia de Lectura',
   exame: 'Examen final y certificado de finalización (no oficial)',
-  progresso: 'Progreso guardado, en el celular y en la computadora'
+  progresso: 'Progreso guardado, en el celular y en la computadora',
+  umDia: 'Un día en Israel: ocho momentos de lectura, del tren a la fiesta',
+  duvidas: 'Dudas directo con el profesor, dentro del curso'
 };
 
 export const DICIONARIO = { pt, en, es };

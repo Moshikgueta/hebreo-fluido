@@ -21,7 +21,9 @@ export function oQueOCursoInclui(): string[] {
     audioAvailable() ? tx.audio : tx.semAudio,
     tx.jogos,
     tx.exame,
-    tx.progresso
+    tx.progresso,
+    tx.umDia,
+    tx.duvidas
   ];
 }
 

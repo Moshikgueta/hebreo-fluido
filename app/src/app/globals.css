@@ -1091,3 +1091,9 @@ html[data-foco] .hf-aviso-direitos { display: none; }
 @media (min-width: 640px) { .hf-cartao-dia { grid-template-rows: none; grid-template-columns: 260px 1fr; } .hf-cartao-dia > .hf-cena { height: 100%; } }
 .hf-cartao-dia-ir { justify-self: start; display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; min-height: 46px; padding: 0 18px;
   border-radius: 14px; background: var(--accent-bg); color: #fff; font: 600 15.5px var(--font-ui); }
+
+/* Um dia em Israel na página de venda (06/11/2026): a tela do celular troca
+   quando a pessoa toca numa hora; um fade curto, nada com "menos movimento". */
+.hf-um-dia-tela { animation: hf-um-dia-entra .28s ease-out both; }
+@keyframes hf-um-dia-entra { from { opacity: .35; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .hf-um-dia-tela { animation: none; } }
