@@ -41,7 +41,7 @@ const en: Traducao<typeof pt> = {
 // rever: o blog é em português; a build em espanhol sai sem artigos
 const es: Traducao<typeof pt> = {
   blog: 'Blog',
-  metaTitulo: 'Blog de Hebraico Fluente: aprende a leer hebreo',
+  metaTitulo: 'Blog de Hebreo Fluido: aprende a leer hebreo',
   metaDescricao: 'Artículos para quien quiere leer hebreo: el alfabeto, las vocales, la dirección de lectura y palabras para el viaje a Israel.',
   titulo: 'Aprende a leer hebreo',
   lead: 'Artículos cortos para quien está empezando: el alfabeto, las vocales, la dirección de lectura y las primeras palabras.',

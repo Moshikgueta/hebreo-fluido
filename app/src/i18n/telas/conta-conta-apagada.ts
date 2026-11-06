@@ -50,7 +50,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Cuenta eliminada - Hebraico Fluente',
+  metaTitulo: 'Cuenta eliminada - Hebreo Fluido',
   metaDescricao: 'La confirmación de que la cuenta y los datos personales se eliminaron.',
   titulo: 'Cuenta eliminada',
   feito: 'Está hecho, y no hace falta hacer nada más.',

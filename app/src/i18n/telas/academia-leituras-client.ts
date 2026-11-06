@@ -64,7 +64,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Lecturas - Hebraico Fluente',
+  metaTitulo: 'Lecturas - Hebreo Fluido',
   metaDescricao: 'Los ejercicios de lectura del curso en un solo lugar: el laboratorio, la Primera Lectura, los textos breves y las lecturas de repaso.',
 
   titulo: 'Lecturas',

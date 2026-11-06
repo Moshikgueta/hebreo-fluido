@@ -90,7 +90,7 @@ export function confirmacaoTexto(recebidaEm, idioma = 'pt', contato = `contato@$
       '',
       'Si prefieres, puedes cancelar en el propio sitio: entra en tu cuenta, abre Tu cuenta y, en Compras, usa "Cancelar la compra". La solicitud queda registrada al instante.',
       '',
-      'Hebraico Fluente',
+      MARCA.es,
       contato
     ].join('\n');
   }

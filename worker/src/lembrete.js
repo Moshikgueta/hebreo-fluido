@@ -21,7 +21,7 @@
 import { hasEntitlement, normalizeEmail } from './lib/db.js';
 import { mailReady, sendMail } from './lib/mail.js';
 import { mensagens } from './lib/mensagens.js';
-import { idiomaDaConta, origemDoIdioma } from './lib/idioma.js';
+import { idiomaDaConta, marcaDoEmail, origemDoIdioma } from './lib/idioma.js';
 import { lembreteLigado, linkDeSaida } from './api/lembrete.js';
 import empresa from '../../data/empresa.json';
 
@@ -102,7 +102,7 @@ export async function runLembretes(env, at = Date.now(), { limite = 50 } = {}) {
           painel: `${site}/meu-hebraico/`,
           praticar: `${site}/academia/`,
           sair,
-          marca: empresa.nomeFantasia || 'Hebraico Fluente'
+          marca: marcaDoEmail(idioma, empresa)
         }),
         headers: { 'List-Unsubscribe': `<${sair}>` }
       });

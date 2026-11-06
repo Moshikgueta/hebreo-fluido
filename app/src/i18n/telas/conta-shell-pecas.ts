@@ -57,7 +57,7 @@ const es: Traducao<typeof pt> = {
   termosArtigo5: 'Términos de Uso, artículo 5',
 
   instagram: 'Instagram',
-  instagramSr: ' de Hebraico Fluente (se abre en otra pestaña)',
+  instagramSr: ' de Hebreo Fluido (se abre en otra pestaña)',
   linkedin: 'LinkedIn',
   linkedinSr: ' del profesor (se abre en otra pestaña)',
 
@@ -66,7 +66,7 @@ const es: Traducao<typeof pt> = {
     'Esta versión no tiene servidor: las cuentas y los pagos quedan solo en este navegador, no se ' +
     'cobra nada y el acceso no funciona en otro dispositivo.',
 
-  marca: 'Hebraico Fluente'
+  marca: 'Hebreo Fluido'
 };
 
 export const DICIONARIO = { pt, en, es };

@@ -42,7 +42,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Contraseña nueva - Hebraico Fluente',
+  metaTitulo: 'Contraseña nueva - Hebreo Fluido',
   metaDescricao: 'Elige una contraseña nueva y vuelve al curso.',
   senhasDiferentes: 'Las dos contraseñas no son iguales.',
   titulo: 'Elegir una contraseña nueva',

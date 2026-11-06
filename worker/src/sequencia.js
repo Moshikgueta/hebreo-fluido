@@ -19,7 +19,7 @@ import { activeEntitlements, findAccountByEmail, pegarTrava } from './lib/db.js'
 import { getCourse } from './lib/catalog.js';
 import { mailReady, sendMail } from './lib/mail.js';
 import { mensagens } from './lib/mensagens.js';
-import { idiomaDoWorker } from './lib/idioma.js';
+import { idiomaDoWorker, marcaDoEmail } from './lib/idioma.js';
 import { DIAS_DA_SEQUENCIA, SEQUENCIA_FEITA, linkDeSaida } from './api/interessados.js';
 import { diasDeFora } from './lib/desistencia.js';
 import empresa from '../../data/empresa.json';
@@ -80,7 +80,7 @@ export async function runSequencia(env, at = Date.now()) {
         to: l.email,
         ...mensagens(idioma).sequencia({
           passo: l.passo, site, sair, preco,
-          suporte: empresa.contato?.emailSuporte || '', marca: empresa.nomeFantasia || 'Hebraico Fluente'
+          suporte: empresa.contato?.emailSuporte || '', marca: marcaDoEmail(idioma, empresa)
         }),
         headers: { 'List-Unsubscribe': `<${sair}>` }
       });

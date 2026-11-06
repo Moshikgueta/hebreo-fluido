@@ -38,7 +38,7 @@ const es: Traducao<typeof pt> = {
   conferindo: 'Verificando…',
   conferir: 'Verificar',
   valido: '✓ Certificado válido',
-  concluiu: 'Completó el curso {curso} de Hebraico Fluente, con aprobación en el examen final el {data}.',
+  concluiu: 'Completó el curso {curso} de Hebreo Fluido, con aprobación en el examen final el {data}.',
   codigoNota: 'Código {id}. No es una certificación oficial de nivel.',
   naoAchou: 'No encontramos un certificado público con este código. Revisa el código, o pídele a la persona que active la verificación pública.',
   erro: 'No se pudo verificar ahora. Inténtalo de nuevo en unos instantes.'

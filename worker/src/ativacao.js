@@ -25,7 +25,7 @@ import { ativacoesParaAvisar, normalizeEmail, pegarTrava, reservarAtivacao, solt
 import { emailsDeAdmin } from './lib/admin.js';
 import { mailReady, sendMail } from './lib/mail.js';
 import { mensagens } from './lib/mensagens.js';
-import { idiomaDaConta, origemDoIdioma, tituloDoCurso } from './lib/idioma.js';
+import { idiomaDaConta, marcaDoEmail, origemDoIdioma, tituloDoCurso } from './lib/idioma.js';
 import empresa from '../../data/empresa.json';
 
 /** Compras pagas a partir daqui recebem os lembretes (o dia seguinte à publicação). */
@@ -74,7 +74,7 @@ export async function runAtivacao(env, at = Date.now()) {
           inicio: `${site}/inicio/`,
           primeira: `${site}/licao/alef/`,
           painel: `${site}/meu-hebraico/`,
-          marca: empresa.nomeFantasia || 'Hebraico Fluente',
+          marca: marcaDoEmail(idioma, empresa),
           suporte: empresa.contato?.emailSuporte || ''
         })
       });

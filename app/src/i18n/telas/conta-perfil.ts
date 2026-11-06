@@ -357,7 +357,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Tu cuenta - Hebraico Fluente',
+  metaTitulo: 'Tu cuenta - Hebreo Fluido',
   metaDescricao: 'Tus datos, tus cursos, tu progreso y tus compras.',
   fraseDeVencido: (data: string) => `Tu acceso terminó el ${data}.`,
 

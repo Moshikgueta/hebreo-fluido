@@ -44,7 +44,7 @@ const contato = suporte => (suporte ? `¿Tienes alguna duda? Responde a este cor
 
 export function mensagemDeRecuperacao({ nome, link, minutos, marca, suporte }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
 
   const text = [
     ola,
@@ -83,7 +83,7 @@ export function mensagemDeRecuperacao({ nome, link, minutos, marca, suporte }) {
    dona do endereço mesmo quando não foi ela quem criou a conta. */
 export function mensagemDeConfirmacao({ nome, link, dias, esqueci, marca, suporte }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
 
   const text = [
     ola,
@@ -127,7 +127,7 @@ export function mensagemDeEstorno({
   nome, curso, valor, pedido, cartao, contestacao = false, restaAte = '', marca, suporte
 }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
   const abertura = contestacao
     ? `Tu compra del curso ${curso} fue impugnada ante tu banco o el emisor de tu tarjeta, y el monto fue devuelto.`
     : `El reembolso de tu compra del curso ${curso} está completo.`;
@@ -184,7 +184,7 @@ export function mensagemDeVencimento({
   nome, curso, quando, dias, marco, meses, renovar, marca, suporte
 }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
   const fim = marco === 'fim';
   const faltam = Number(dias) === 1 ? 'mañana' : `en ${dias} días`;
   const abertura = fim
@@ -232,7 +232,7 @@ export function mensagemDeVencimento({
 /* Os três lembretes dos primeiros dias depois da compra (ver ativacao.js). */
 export function mensagemDeAtivacao({ nome, curso, marco, concluidas, inicio, primeira, painel, marca, suporte }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
   const feitas = Number(concluidas) || 0;
   const fecho = 'Son solo tres recordatorios como este, en los primeros días después de tu compra.';
   const ajuda = suporte
@@ -289,7 +289,7 @@ export function mensagemDeCompra({
   termos, reembolso, versao, desistir
 }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
   const abertura = renovacao
     ? `Tu acceso al curso ${curso} fue renovado.`
     : `Tu acceso al curso ${curso} ya está abierto.`;
@@ -386,7 +386,7 @@ export function mensagemDeArrependimento({
   nome, curso, valor, pedido, pedidoEm, marca, suporte, estornoPedido = false
 }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
   const devolucao = (estornoPedido ? `El reembolso ya se le pidió a ${PELO_STRIPE ? 'Stripe' : 'Paddle'}. ` : '') +
     'Vuelve por el medio de pago que usaste, según los plazos de tu banco o del emisor de tu tarjeta.';
   const fim = 'Tu acceso al curso termina cuando se procesa el reembolso; tu progreso de estudio ' +
@@ -452,7 +452,7 @@ export const SEGUNDA_LETRA = {
 
 export function mensagemDaSegundaLetra({ site, suporte, marca, confirmar }) {
   const L = SEGUNDA_LETRA;
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
   const rodapeTexto = confirmar
     ? ['También pediste recibir las próximas letras y novedades por correo. Para confirmar, abre este enlace y toca "Confirmar":',
        confirmar,
@@ -528,7 +528,7 @@ export const INTERESSE_ES = {
 };
 
 export function mensagemDeConfirmacaoDaLista({ interesses, confirmar, suporte, marca }) {
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
   const oQue = (interesses || []).map(i => INTERESSE_ES[i]).filter(Boolean).join('; ') || 'nuestras novedades';
   const text = [
     'Hola:',
@@ -573,7 +573,7 @@ export const ASSUNTOS_DA_SEQUENCIA = [
 ];
 
 export function mensagemDaSequencia({ passo, site, sair, preco, suporte, marca }) {
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
   const curso = `${site}/curso-de-hebraico/`;
   const T = TERCEIRA_LETRA;
   const he = t => `<span dir="rtl" lang="he" style="font-size:1.25em">${escapar(t)}</span>`;
@@ -648,7 +648,7 @@ export function mensagemDaSequencia({ passo, site, sair, preco, suporte, marca }
 /** O lembrete para estudar (worker/src/lembrete.js); ver a versão em português. */
 export function mensagemDeLembrete({ nome, painel, praticar, sair, marca }) {
   const ola = saudacao(nome);
-  const assinatura = marca || 'Hebraico Fluente';
+  const assinatura = marca || 'Hebreo Fluido';
   const subject = '¿Diez minutos de hebreo hoy?';
   const corpo = [
     'Hoy todavía no hubo hebreo. Una letra toma unos diez minutos, y el curso guarda dónde te quedaste.',

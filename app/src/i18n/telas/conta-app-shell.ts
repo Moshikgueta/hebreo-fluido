@@ -84,7 +84,7 @@ const es: Traducao<typeof pt> = {
     'Lo que acabas de hacer está guardado en este dispositivo, pero todavía no llegó a tu cuenta. ' +
     'En cuanto vuelva la conexión, se sube solo. Si vas a cambiar de dispositivo ahora, abre el curso ' +
     'una vez con internet antes.',
-  marca: 'Hebraico Fluente',
+  marca: 'Hebreo Fluido',
   xpAbrirRecompensas: (xp: number) => `${xp} XP. Abrir las recompensas`,
   ajudaEInformacoes: 'Ayuda e información',
   precisaDeAjuda: '¿Necesitas ayuda?',

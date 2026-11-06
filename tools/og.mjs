@@ -79,7 +79,7 @@ const BASE = `
   .palavra .pt { font-family:U; font-size:19px; color:var(--ink-muted); display:block }
 `;
 
-const marca = (cor = '') => `<div class="marca"><span class="selo"><span>ע</span></span><b${cor ? ` style="color:${cor}"` : ''}>Hebraico Fluente</b></div>`;
+const marca = (cor = '', nome = 'Hebraico Fluente') => `<div class="marca"><span class="selo"><span>ע</span></span><b${cor ? ` style="color:${cor}"` : ''}>${nome}</b></div>`;
 const shalom = `<div class="palavra"><span class="he" lang="he" dir="rtl">שָׁלוֹם</span><span class="tr">shalóm</span><span class="pt">olá · paz</span></div>`;
 /* O mesmo quadro no cartão em inglês: a transliteração do site de fora (sem
    acento) e o sentido em inglês. */
@@ -158,9 +158,11 @@ const CARTOES = [
         </div>
       </div>`
   },
-  /* O do site em espanhol (PLANO-ESPANHOL.md, 04/11/2026): o mesmo desenho, o texto em espanhol. */
+  /* O do site em espanhol (PLANO-ESPANHOL.md, 04/11/2026): o mesmo desenho, o texto em espanhol.
+     Com a marca Hebreo Fluido desde 06/11/2026 (decisão do dono), num arquivo de nome novo:
+     /media sai com cache de um ano. */
   {
-    arquivo: 'og-curso-es.jpg',
+    arquivo: 'og-hebreo-fluido.jpg',
     lang: 'es',
     css: `${foto}
       h1 { font-family:D; font-weight:700; font-size:74px; line-height:1.03; letter-spacing:-.035em; color:var(--navy); max-width:15ch }
@@ -169,7 +171,7 @@ const CARTOES = [
       .fatos i { width:4px; height:4px; border-radius:50%; background:var(--line); display:block }`,
     corpo: `<div class="foto"></div><div class="veu"></div>
       <div class="card">
-        ${marca()}
+        ${marca('', 'Hebreo Fluido')}
         <h1>Aprende a leer hebreo desde cero.</h1>
         <div class="pe">
           <div class="fatos"><span>${licoes} lecciones</span><i></i><span>${curso.letters.length} letras</span><i></i><span>a tu ritmo</span></div>

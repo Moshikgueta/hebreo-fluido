@@ -158,7 +158,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  naoEncontrado: 'Curso no encontrado - Hebraico Fluente',
+  naoEncontrado: 'Curso no encontrado - Hebreo Fluido',
 
   voceEstaEm: 'Estás en',
   cursos: 'Cursos',

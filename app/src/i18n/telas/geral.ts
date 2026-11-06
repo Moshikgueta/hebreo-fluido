@@ -20,8 +20,8 @@ const en: Traducao<typeof pt> = {
 
 const es: Traducao<typeof pt> = {
   /* El nombre de la marca no se traduce. */
-  marca: 'Hebraico Fluente',
-  titulo: 'Hebraico Fluente - aprende a leer hebreo desde cero',
+  marca: 'Hebreo Fluido',
+  titulo: 'Hebreo Fluido - aprende a leer hebreo desde cero',
   descricao:
     'Aprende a leer y escribir hebreo, empezando por el alfabeto: lecciones interactivas, ' +
     'corrección al instante y un progreso que sigue donde lo dejaste.'

@@ -37,11 +37,17 @@ export function origemDoIdioma(env, idioma) {
 }
 
 /* O nome da marca em cada site (04/11/2026, decisão do dono): o site em
-   inglês se chama Hebrew Unlocked; o brasileiro continua Hebraico Fluente. */
-export const MARCA = Object.freeze({ pt: 'Hebraico Fluente', en: 'Hebrew Unlocked' });
+   inglês se chama Hebrew Unlocked; o brasileiro continua Hebraico Fluente; o
+   em espanhol se chama Hebreo Fluido (decisão do dono, 06/11/2026). */
+export const MARCA = Object.freeze({ pt: 'Hebraico Fluente', en: 'Hebrew Unlocked', es: 'Hebreo Fluido' });
+
+/** A marca que assina um e-mail no idioma dado: a do site de fora, ou o nome
+ *  fantasia de data/empresa.json no brasileiro. */
+export const marcaDoEmail = (idioma, empresa) =>
+  (exterior(idioma) ? marcaDoIdioma(idioma) : ((empresa && empresa.nomeFantasia) || MARCA.pt));
 
 /** A marca no idioma dado. */
-export const marcaDoIdioma = idioma => (idioma === 'en' ? MARCA.en : MARCA.pt);
+export const marcaDoIdioma = idioma => (idioma === 'en' ? MARCA.en : idioma === 'es' ? MARCA.es : MARCA.pt);
 
 /** O nome do curso no idioma: `titleEn` (ou `titleEs`) do catálogo, quando existe. */
 export const tituloDoCurso = (curso, idioma, reserva = '') =>

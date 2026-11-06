@@ -342,8 +342,8 @@ const en: Traducao<typeof pt> = {
 /* etapa 5/6: Brasil, rever - quase tudo aqui é a cobrança brasileira (PIX,
    parcelamento, Mercado Pago, prazo de desistência do CDC). */
 const es: Traducao<typeof pt> = {
-  metaTitulo: (titulo: string) => `Comprar ${titulo} - Hebraico Fluente`,
-  metaTituloPadrao: 'Pago - Hebraico Fluente',
+  metaTitulo: (titulo: string) => `Comprar ${titulo} - Hebreo Fluido`,
+  metaTituloPadrao: 'Pago - Hebreo Fluido',
   oLivro: 'Israel Alem do Obvio',
   oCombo: 'El combo',
   oCurso: 'El curso',

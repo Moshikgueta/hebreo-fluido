@@ -42,7 +42,7 @@ const es: Traducao<typeof pt> = {
   nome: 'Moshik Gueta',
   credenciais: 'Israelí · Profesor de hebreo · Cientos de alumnos',
   fotoAlt: 'Moshik Gueta, profesor israelí de hebreo',
-  mockupAlt: 'Pantalla de la plataforma interactiva Hebraico Fluente en el celular',
+  mockupAlt: 'Pantalla de la plataforma interactiva Hebreo Fluido en el celular',
 };
 
 export const DICIONARIO = { pt, en, es };

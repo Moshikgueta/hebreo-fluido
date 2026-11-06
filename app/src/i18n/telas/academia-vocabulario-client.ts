@@ -64,7 +64,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Mi vocabulario - Hebraico Fluente',
+  metaTitulo: 'Mi vocabulario - Hebreo Fluido',
   metaDescricao: 'Las palabras en hebreo que ya puedes leer con las letras que aprendiste.',
 
   meuVocabulario: 'Mi vocabulario',

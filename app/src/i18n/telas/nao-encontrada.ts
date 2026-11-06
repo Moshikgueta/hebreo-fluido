@@ -15,7 +15,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  tituloDaAba: 'Página no encontrada - Hebraico Fluente',
+  tituloDaAba: 'Página no encontrada - Hebreo Fluido',
   titulo: 'Esta página no existe',
   texto: 'Tal vez el enlace sea antiguo.',
   voltar: 'Volver al inicio'

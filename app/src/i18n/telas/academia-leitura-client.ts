@@ -120,7 +120,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Laboratorio de Lectura - Hebraico Fluente',
+  metaTitulo: 'Laboratorio de Lectura - Hebreo Fluido',
   metaDescricao: 'Lee palabras en hebreo con las letras que ya aprendiste, con más o menos ayuda.',
 
   laboratorio: 'Laboratorio de Lectura',

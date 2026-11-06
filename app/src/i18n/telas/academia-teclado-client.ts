@@ -22,7 +22,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Teclado hebreo - Hebraico Fluente',
+  metaTitulo: 'Teclado hebreo - Hebreo Fluido',
   metaDescricao: 'Cómo agregar el teclado hebreo en iPhone, Android, Windows y Mac.',
   ferramentas: 'Herramientas',
   titulo: 'El teclado hebreo en tu dispositivo',

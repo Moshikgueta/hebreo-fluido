@@ -157,7 +157,7 @@ const es: Traducao<typeof pt> = {
   aprovadoEm: 'Aprobado el {data}',
   seuCertificado: 'Tu certificado',
   geradoAqui: 'La imagen se genera aquí, en tu dispositivo. Elige el formato, revisa el nombre y descárgala o compártela.',
-  imagemAria: 'Certificado de finalización del curso Hebraico Fluente a nombre de {nome}, {data}.',
+  imagemAria: 'Certificado de finalización del curso Hebreo Fluido a nombre de {nome}, {data}.',
   alunoReserva: 'alumno',
   nomeNoCertificado: 'Nombre en el certificado',
   comoAparecer: 'Cómo quieres aparecer',

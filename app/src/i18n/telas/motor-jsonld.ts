@@ -25,7 +25,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  professorDescricao: 'Israelí, profesor de idiomas y educador, creador de Hebraico Fluente.',
+  professorDescricao: 'Israelí, profesor de idiomas y educador, creador de Hebreo Fluido.',
   inicio: 'Inicio',
   nivel: 'Principiante',
   preRequisito: 'Ninguno: el curso empieza desde cero.',

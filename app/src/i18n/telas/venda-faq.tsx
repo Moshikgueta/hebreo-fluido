@@ -205,7 +205,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Preguntas frecuentes - Hebraico Fluente',
+  metaTitulo: 'Preguntas frecuentes - Hebreo Fluido',
   metaDescricao:
     'Pago, acceso, plazo, celular, audio, certificado y reembolso - las preguntas ' +
     'que aparecen antes de comprar, respondidas sin rodeos.',

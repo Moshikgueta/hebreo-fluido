@@ -66,10 +66,10 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaEntrarTitulo: 'Entrar - Hebraico Fluente',
+  metaEntrarTitulo: 'Entrar - Hebreo Fluido',
   metaEntrarDescricao: 'Entra en tu cuenta y sigue desde donde lo dejaste.',
-  metaCriarTitulo: 'Crear cuenta - Hebraico Fluente',
-  metaCriarDescricao: 'Crea tu cuenta en Hebraico Fluente.',
+  metaCriarTitulo: 'Crear cuenta - Hebreo Fluido',
+  metaCriarDescricao: 'Crea tu cuenta en Hebreo Fluido.',
   motivoAparelhos:
     'Entraste en otro dispositivo y esta sesión se cerró. ' +
     'El límite es de 3 dispositivos al mismo tiempo.',

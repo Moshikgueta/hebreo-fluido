@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = meta({
   rota: '/termos',
   title: process.env.NEXT_PUBLIC_LOCALE === 'en' ? 'Terms of Use - Hebraico Fluente'
-    : process.env.NEXT_PUBLIC_LOCALE === 'es' ? 'Términos de Uso - Hebraico Fluente' : 'Termos de Uso - Hebraico Fluente',
+    : process.env.NEXT_PUBLIC_LOCALE === 'es' ? 'Términos de Uso - Hebreo Fluido' : 'Termos de Uso - Hebraico Fluente',
   description: process.env.NEXT_PUBLIC_LOCALE === 'en'
     ? 'What you buy, for how long, how access is granted, what you may and may not do with the content, and how to cancel.'
     : process.env.NEXT_PUBLIC_LOCALE === 'es'

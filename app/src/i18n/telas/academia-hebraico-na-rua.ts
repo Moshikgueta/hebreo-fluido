@@ -42,7 +42,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Hebreo en la calle - Hebraico Fluente',
+  metaTitulo: 'Hebreo en la calle - Hebreo Fluido',
   metaDescricao: 'Carteles reales de Israel con palabras que ya lees.',
   titulo: 'Hebreo en la calle',
   intro: 'Carteles reales, fotografiados en Israel. En cada uno hay una palabra que ya lees. En la calle las palabras vienen sin los puntos: compara las letras.',

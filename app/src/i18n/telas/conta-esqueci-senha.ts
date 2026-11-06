@@ -45,7 +45,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Recuperar la contraseña - Hebraico Fluente',
+  metaTitulo: 'Recuperar la contraseña - Hebreo Fluido',
   metaDescricao: 'Te enviamos un enlace para que elijas una contraseña nueva.',
   titulo: 'Recuperar la contraseña',
   olheCaixa:

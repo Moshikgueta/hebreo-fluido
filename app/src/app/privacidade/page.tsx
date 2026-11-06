@@ -10,7 +10,7 @@ import { empresa, lembreteLigado, soPix } from '@/lib/empresa';
 export const metadata: Metadata = meta({
   rota: '/privacidade',
   title: process.env.NEXT_PUBLIC_LOCALE === 'en' ? 'Privacy Policy - Hebraico Fluente'
-    : process.env.NEXT_PUBLIC_LOCALE === 'es' ? 'Política de Privacidad - Hebraico Fluente' : 'Política de Privacidade - Hebraico Fluente',
+    : process.env.NEXT_PUBLIC_LOCALE === 'es' ? 'Política de Privacidad - Hebreo Fluido' : 'Política de Privacidade - Hebraico Fluente',
   description: process.env.NEXT_PUBLIC_LOCALE === 'en'
     ? 'What data is collected, what for, who it is shared with, how long it is kept, and how to use your data protection rights.'
     : process.env.NEXT_PUBLIC_LOCALE === 'es'

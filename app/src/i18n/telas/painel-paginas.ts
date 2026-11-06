@@ -34,18 +34,18 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  historiaTitulo: 'Viaje por la historia del hebreo - Hebraico Fluente',
+  historiaTitulo: 'Viaje por la historia del hebreo - Hebreo Fluido',
   historiaDescricao: 'De dónde viene el alfabeto, de dónde salieron los puntitos y cómo una lengua volvió a hablarse.',
-  meuHebraicoTitulo: 'Mi hebreo - Hebraico Fluente',
+  meuHebraicoTitulo: 'Mi hebreo - Hebreo Fluido',
   meuHebraicoDescricao: 'Tus cursos, tu progreso y la lección de hoy.',
-  dominioTitulo: 'Mi dominio de las letras - Hebraico Fluente',
+  dominioTitulo: 'Mi dominio de las letras - Hebreo Fluido',
   dominioDescricao: 'Las letras que ya dominas, las que casi dominas y lo que vale la pena practicar ahora.',
-  depoimentoTitulo: 'Tu testimonio - Hebraico Fluente',
+  depoimentoTitulo: 'Tu testimonio - Hebreo Fluido',
   depoimentoDescricao: 'Cuéntanos cómo es aprender a leer hebreo con el curso.',
-  certificadoTitulo: 'Certificado - Hebraico Fluente',
+  certificadoTitulo: 'Certificado - Hebreo Fluido',
   certificadoDescricao: 'El certificado de finalización del curso de lectura en hebreo.',
-  verificarTitulo: 'Verificar un certificado - Hebraico Fluente',
-  verificarDescricao: 'Comprueba si un certificado del curso Hebraico A1 fue emitido por Hebraico Fluente.'
+  verificarTitulo: 'Verificar un certificado - Hebreo Fluido',
+  verificarDescricao: 'Comprueba si un certificado del curso Hebraico A1 fue emitido por Hebreo Fluido.'
 };
 
 export const DICIONARIO = { pt, en, es };

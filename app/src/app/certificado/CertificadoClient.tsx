@@ -23,6 +23,7 @@
  * making them re-run onboarding to fix it would be absurd.
  */
 
+import { tx as geral } from '@/i18n/telas/geral';
 import { EXAM_PARTS } from '@/lib/engine/exam';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Card, Badge } from '@/components/ui/Card';
@@ -155,7 +156,7 @@ export function CertificadoClient() {
     const nav = navigator as Navigator & { canShare?: (d: ShareData) => boolean };
     if (nav.canShare?.({ files: [file] })) {
       try {
-        await nav.share({ files: [file], text: SHARE_TEXT, title: 'Hebraico Fluente' });
+        await nav.share({ files: [file], text: SHARE_TEXT, title: geral.marca });
         track('certificate_shared', { mode: format });
         return;
       } catch {

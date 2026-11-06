@@ -54,7 +54,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: 'Confirmar correo - Hebraico Fluente',
+  metaTitulo: 'Confirmar correo - Hebreo Fluido',
   metaDescricao: 'Confirma el correo de tu cuenta.',
   titulo: 'Confirmar tu correo',
   semTokenAntes:

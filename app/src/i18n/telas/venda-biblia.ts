@@ -100,7 +100,7 @@ const en: Traducao<typeof pt> = {
 };
 
 const es: Traducao<typeof pt> = {
-  metaTitulo: '¿Voy a poder leer la Biblia en hebreo? - Hebraico Fluente',
+  metaTitulo: '¿Voy a poder leer la Biblia en hebreo? - Hebreo Fluido',
   metaDescricao:
     'Sí, vas a leer el texto en voz alta; no, no lo vas a entender sin vocabulario y gramática. ' +
     'Génesis 1:1, palabra por palabra, para que juzgues tú.',

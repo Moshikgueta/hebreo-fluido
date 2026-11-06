@@ -10,6 +10,7 @@
  * marco que o curso de fato registrou - nunca uma promessa.
  */
 
+import { tx as geral } from '@/i18n/telas/geral';
 import { tx } from '@/i18n/telas/motor-compartilhar';
 
 const ENDERECO = (process.env.NEXT_PUBLIC_SITE_ORIGIN || 'https://hebraicofluente.com.br')
@@ -112,7 +113,7 @@ export async function desenharConquista(frase: string, quando: string): Promise<
 
   ctx.fillStyle = COR.creme;
   ctx.font = `600 44px ${display}`;
-  ctx.fillText('Hebraico Fluente', W / 2, 1560);
+  ctx.fillText(geral.marca, W / 2, 1560);
   ctx.fillStyle = COR.menta;
   ctx.font = `500 36px ${ui}`;
   /* O endereço do site desta build: o site em inglês tem o seu (e não fala do

@@ -84,7 +84,7 @@ const es: Traducao<typeof pt> = {
   verResultado: 'Ver el resultado',
   resultado: (n, total) => `Acertaste ${n} de ${total}.`,
   falaFim: 'Con algunas lecciones, lees estas palabras por tu cuenta.',
-  convite: 'Son palabras del curso Hebraico Fluente, escritas solo con letras que se aprenden en él.',
+  convite: 'Son palabras del curso Hebreo Fluido, escritas solo con letras que se aprenden en él.',
   experimentar: 'Probar el curso gratis',
   conhecer: 'Conocer el curso',
   desafiar: 'Desafiar a un amigo',
