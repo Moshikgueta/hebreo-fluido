@@ -19,6 +19,9 @@ const pt = {
   p7: 'E se eu não gostar?',
   r7: (dias: number) => `Você tem ${dias} dias, contados da liberação do acesso, para desistir pelo site e receber 100% de volta, sem precisar justificar. O estorno sai pelo mesmo meio de pagamento.`,
   p8: 'O que acontece depois que termino?',
+  p9: 'E se eu travar em alguma coisa?',
+  r9: (prazo: string) => `Dentro do curso existe o Fale comigo: você escreve a dúvida e eu respondo no e-mail da sua conta ${prazo}.`,
+  r9Zap: 'Antes de comprar, o WhatsApp também está aberto.',
   r8: 'O próximo nível é o Hebraico A1, um curso à parte, ainda em produção e sem data. Se quiser, marque em Sua conta o pedido de receber um e-mail quando ele abrir.'
 } as const;
 
@@ -41,6 +44,9 @@ const en: Traducao<typeof pt> = {
   // etapa 5/6: Brasil, rever (direito de arrependimento do CDC)
   r7: (dias: number) => `You have ${dias} days, counted from when your access is granted, to cancel on the site and get 100% back, no reason needed. The refund goes back through the same payment method.`,
   p8: 'What happens after I finish?',
+  p9: 'What if I get stuck?',
+  r9: (prazo: string) => `Inside the course there is Talk to me: you write your question and I reply to your account e-mail ${prazo}.`,
+  r9Zap: 'Before buying, WhatsApp is open too.',
   r8: 'You keep your access for the full 12 months: to review, play the Reading Academy games and take the final exam whenever you are ready. For now, this is the only course on this site.'
 };
 
@@ -63,6 +69,9 @@ const es: Traducao<typeof pt> = {
   // etapa 5/6: Brasil, rever (direito de arrependimento do CDC)
   r7: (dias: number) => `Tienes ${dias} días, contados desde que se libera tu acceso, para cancelar en el sitio y recibir el 100% de vuelta, sin tener que justificarlo. El reembolso vuelve por el mismo medio de pago.`,
   p8: '¿Qué pasa cuando termino?',
+  p9: '¿Y si me trabo en algo?',
+  r9: (prazo: string) => `Dentro del curso está Habla conmigo: escribes tu duda y te respondo en el correo de tu cuenta ${prazo}.`,
+  r9Zap: 'Antes de comprar, el WhatsApp también está abierto.',
   r8: 'Conservas tu acceso los 12 meses completos: para repasar, jugar los juegos de la Academia de lectura y hacer el examen final cuando estés listo. Por ahora, este es el único curso de este sitio.'
 };
 

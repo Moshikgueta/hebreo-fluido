@@ -165,7 +165,7 @@ function Retrato({ retrato }: { retrato: string | null }) {
 }
 
 /* O balão do WhatsApp, em traço, na cor do texto do botão. */
-function IconeWhatsapp() {
+export function IconeWhatsapp() {
   return (
     <svg aria-hidden viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor"
          strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[var(--teal-ink)]">

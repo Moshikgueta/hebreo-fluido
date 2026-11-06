@@ -43,6 +43,9 @@ import { Decisoes } from '@/components/landing/Decisoes';
 import { Plataforma } from '@/components/landing/Plataforma';
 import { Resultado } from '@/components/landing/Resultado';
 import { BarraFixa } from '@/components/landing/BarraFixa';
+import { UmDiaNaCapa } from '@/components/landing/UmDiaNaCapa';
+import { JogosNaCapa } from '@/components/landing/JogosNaCapa';
+import { ComVoce } from '@/components/landing/ComVoce';
 import {
   Professor, Depoimentos, Preco, Faq, CtaFinal
 } from '@/components/landing/Fecho';
@@ -107,11 +110,17 @@ export function CursoDeHebraicoClient({ midia, retrato }: { midia: HeroMedia; re
           ordem de propósito: elas AFIRMAM o que a demo acabou de FAZER. Na
           ordem inversa seriam três promessas à espera de prova. */}
       <DemoAlef href={comprar} micro={passo.micro} label={passo.label} vende={passo.vende} />
+      {/* 06/11/2026 (página que convence quem chega): depois de provar que
+          consegue com o Álef, a pessoa vê para que serve - as oito paradas de
+          Um dia em Israel, com as telas de verdade. */}
+      <UmDiaNaCapa />
       {/* Logo depois da aula aberta: o Álef não tem som, e esta seção mostra
           o resto - ouvir o professor e ser corrigido falando. */}
       <OuvirEFalar />
       {/* Telas de verdade da plataforma e a Yael (29/10/2026). */}
       <Plataforma />
+      {/* Os jogos da Academia, com os mesmos cartões de lá (06/11/2026). */}
+      <JogosNaCapa />
       <Decisoes />
       {/* A seção do método (as cinco etapas da lição) saiu da capa em 30/10/2026: a
           galeria de telas mostra as mesmas etapas, e /metodo continua com o texto. */}
@@ -119,6 +128,9 @@ export function CursoDeHebraicoClient({ midia, retrato }: { midia: HeroMedia; re
       {/* As placas de verdade que se lê no fim do curso (30/10/2026). */}
       <Resultado />
       <Professor />
+      {/* O que o professor oferece além da plataforma: o Fale comigo e o
+          WhatsApp (06/11/2026). */}
+      <ComVoce />
       <Depoimentos />
       <Preco href={comprar} label={passo.label} owned={account.ready && account.can(FLAGSHIP)} />
       <Faq />
