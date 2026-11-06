@@ -801,9 +801,7 @@ export function AcademiaClient() {
           </div>
 
           {aba === 'vida-real' ? (
-            <HebraicoNaVidaReal state={p.state} unlocked={unlocked} letrasDaCena={letrasDaCena}
-                                pomarFechado={fechados.pomar}
-                                onPomar={() => setScreen({ kind: 'jogo', jogo: 'pomar', rodada: 0 })} />
+            <HebraicoNaVidaReal state={p.state} />
           ) : (<>
           {/* Os jogos primeiro, e em cartões maiores: são eles que alguém
               abre quando tem cinco minutos e nenhuma paciência para escolher
@@ -821,7 +819,9 @@ export function AcademiaClient() {
               {tx.jogosDePratica}
             </h2>
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
-              {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste'] as const).map(jogo => (
+              {/* O Pomar das palavras (05/11/2026, pedido do dono): só aqui, na lista
+                  principal, e não em primeiro; antes ficava na aba Hebraico na vida real. */}
+              {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste', 'pomar'] as const).map(jogo => (
                 <li key={jogo}>
                   {/* Cartão ilustrado (05/11/2026, aprovado pelo dono): a cena do
                       jogo em cima, com as letras que o aluno já aprendeu. */}
