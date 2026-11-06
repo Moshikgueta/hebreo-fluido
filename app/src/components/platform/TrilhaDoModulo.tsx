@@ -4,8 +4,8 @@
  * que direciona o aluno", atraente, interativo e curto).
  * ─────────────────────────────────────────────────────────────────────────
  * Desde 06/11/2026 o painel mostra um pedaço da MESMA estrada de "Meu curso"
- * (components/aventura/estrada-do-modulo.ts): a estação de agora, as duas
- * antes e as duas depois, com a Yael. O caminho inteiro fica no mapa. Vale
+ * (components/aventura/estrada-do-modulo.ts): a estação de agora, uma antes
+ * e uma depois, com a Yael (o painel mais curto, 06/11/2026). O caminho inteiro fica no mapa. Vale
  * em qualquer ponto do curso, inclusive nos módulos 6 e 7 e depois do fim.
  * Só lê o progresso: nada novo no estado.
  */
@@ -32,7 +32,7 @@ export function TrilhaDoModulo() {
           {tx.verOMapa}
         </Link>
       </div>
-      <EstradaDoModulo itens={itens} pronto={p.ready} janela={2} onAbrirJarro={id => p.abrirJarro(id)} />
+      <EstradaDoModulo itens={itens} pronto={p.ready} janela={1} onAbrirJarro={id => p.abrirJarro(id)} />
     </section>
   );
 }

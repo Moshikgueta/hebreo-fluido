@@ -9,7 +9,7 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cookieDe, envDeTeste, pedido, saudeDetalhada } from './ajuda/d1';
+import { cookieDe, envDeTeste, pedido, saudeDetalhada, DADOS_FISCAIS } from './ajuda/d1';
 // @ts-expect-error - módulo JS do Worker, sem tipos
 import * as auth from '../../worker/src/api/auth.js';
 // @ts-expect-error - idem
@@ -120,7 +120,7 @@ async function alunaQueComprou(env: Env, email = 'aluna@exemplo.com.br') {
   const cookie = cookieDe(r);
   const { account } = await r.json() as { account: { id: number } };
   await assentar();
-  const c = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie }), env, ctx });
+  const c = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie }), env, ctx });
   const ordem = await c.json() as { id: string };
   const p = [...pagamentos.values()].at(-1)!;
   p.status = 'approved';

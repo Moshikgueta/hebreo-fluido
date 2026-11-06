@@ -11,7 +11,7 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { comoAdmin, cookieDe, envDeTeste, pedido } from './ajuda/d1';
+import { comoAdmin, cookieDe, envDeTeste, pedido, DADOS_FISCAIS } from './ajuda/d1';
 // @ts-expect-error - módulo JS do Worker, sem tipos
 import worker from '../../worker/src/worker.js';
 // @ts-expect-error - idem
@@ -849,7 +849,7 @@ describe('o pagamento', () => {
     const { cookie } = await comConta(env);
     const status: number[] = [];
     for (let i = 0; i < 8; i++) {
-      const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie, 'CF-Connecting-IP': '203.0.113.5' }), env, ctx });
+      const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie, 'CF-Connecting-IP': '203.0.113.5' }), env, ctx });
       status.push(r.status);
     }
     expect(status.slice(0, 6).every(s => s === 200)).toBe(true);
@@ -1128,7 +1128,7 @@ describe('a tela e o servidor concordam sobre as formas de pagamento', () => {
     const env = envSite({ MP_ACCESS_TOKEN: 'APP_USR-1234567890123456-092019-abcdef0123456789abcdef0123456789-123456789' });
     const { cookie } = await comConta(env);
     const tentar = (method: string) => pay.create({
-      request: pedido(`${SITE}/api/pay/create`, { courseSlug: 'alfabetizacao', method }, { Cookie: cookie }),
+      request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: 'alfabetizacao', method }, { Cookie: cookie }),
       env, ctx
     });
 

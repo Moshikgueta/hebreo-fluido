@@ -239,7 +239,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
               Agora o topo é `pt-*` e o rodapé é `pb-*`: eles não se
               cruzam mais, e `app/toque.mjs` mede a tela de verdade. */}
-          <main id="hf-principal" className="min-w-0 pt-6 sm:pt-8 lg:px-9 lg:pt-[34px]
+          <main id="hf-principal" data-foco={ROTAS_DE_FOCO.test(pathname ?? '') ? '' : undefined}
+                className="min-w-0 pt-6 sm:pt-8 lg:px-9 lg:pt-[34px]
                            pb-[calc(84px+env(safe-area-inset-bottom))] lg:pb-10">
             {avisos}
             {children}
@@ -255,6 +256,24 @@ export function AppShell({ children }: { children: ReactNode }) {
       )}
     </div>
   );
+}
+
+/* ── o modo foco (06/11/2026, pedido do dono: "a melhor experiência") ─────
+   Numa lição, num checkpoint, no desafio final, na revisão e dentro de um
+   jogo, a tela é só daquilo: o rodapé de ajuda e o aviso de direitos somem
+   (styles: `html:has([data-foco])`). A barra de navegação fica, e a ajuda e o
+   aviso continuam em todas as outras telas do curso. A marca d'água fica
+   sempre. Os jogos da Academia, que moram na mesma rota do menu, marcam o
+   foco com `useModoFoco` enquanto estão abertos. */
+const ROTAS_DE_FOCO = /^\/(licao|som|checkpoint|desafio-final|revisao)(\/|$)/;
+
+/** Põe a tela em modo foco enquanto `ativo` for verdade. */
+export function useModoFoco(ativo: boolean) {
+  useEffect(() => {
+    if (!ativo) return;
+    document.documentElement.dataset.foco = '';
+    return () => { delete document.documentElement.dataset.foco; };
+  }, [ativo]);
 }
 
 /* ── a saída de emergência ───────────────────────────────────────────────
@@ -279,7 +298,7 @@ export function AppShell({ children }: { children: ReactNode }) {
    tinta gasta. */
 function RodapeDeAjuda() {
   return (
-    <footer className="print:hidden mt-10 pt-5 border-t border-[color:var(--line-soft)]">
+    <footer className="hf-rodape-ajuda print:hidden mt-10 pt-5 border-t border-[color:var(--line-soft)]">
       <nav aria-label={tx.ajudaEInformacoes}>
         <ul className="flex flex-wrap gap-x-5 gap-y-2 list-none p-0 m-0">
           {[

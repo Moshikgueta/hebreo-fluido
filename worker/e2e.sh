@@ -422,8 +422,11 @@ if [ "$MODO" = "producao" ]; then
        -H 'content-type: application/json' -d "{\"courseSlug\":\"alfabetizacao\",\"method\":\"$MEIO\"}")"
   pay_code=pulado
 else
+  # O nome completo e o CPF da nota fiscal (06/11/2026): o site brasileiro
+  # não cria pedido sem eles (o CPF é um número de teste válido).
   pay_code=$(G -b "$JAR" -o /dev/null -w '%{http_code}' -X POST $B/api/pay/create \
-    -H 'content-type: application/json' -d "{\"courseSlug\":\"alfabetizacao\",\"method\":\"$MEIO\"}")
+    -H 'content-type: application/json' \
+    -d "{\"courseSlug\":\"alfabetizacao\",\"method\":\"$MEIO\",\"nomeCompleto\":\"Maria da Silva\",\"cpf\":\"529.982.247-25\"}")
 fi
 case "$pay_code" in
   pulado) ;;

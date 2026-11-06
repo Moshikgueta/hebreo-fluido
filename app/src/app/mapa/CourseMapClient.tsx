@@ -140,8 +140,10 @@ export function CourseMapClient() {
       )}
 
       {/* O caminho inteiro numa estrada só (06/11/2026, pedido do dono): a
-          Aula 0, cada módulo com a faixa do lugar dele, e o desafio final. */}
-      <EstradaDoModulo itens={estrada} pronto={p.ready} onAbrirJarro={id => p.abrirJarro(id)} seguir novo={novo} />
+          Aula 0, cada módulo com a faixa do lugar dele, e o desafio final.
+          Mais curto no mesmo dia: só o módulo de agora vem aberto; os outros
+          ficam na faixa, que abre com um toque. */}
+      <EstradaDoModulo itens={estrada} pronto={p.ready} onAbrirJarro={id => p.abrirJarro(id)} seguir recolher novo={novo} />
 
       {/* Depois do caminho inteiro, e não antes: a pergunta "por que {{מ}}
           vem antes de {{ב}}?" só existe para quem acabou de VER a ordem.

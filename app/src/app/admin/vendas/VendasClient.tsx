@@ -25,6 +25,7 @@ type Venda = {
   orderId: string; curso: string; valorCentavos: number; liquidoCentavos?: number | null; metodo: string; parcelas: number;
   status: 'paid' | 'refunded'; pagoEm: number; parceria: string | null; origem?: string | null; campanha?: string | null;
   nome: string; email: string | null;
+  nomeCompleto?: string | null; cpf?: string | null;
   estudouEm: number | null; concluidas: string[]; teste?: boolean;
   desistiuEm?: number | null; exameFeito?: boolean;
   diasDeEstudo?: number; minutosEstimados?: number;
@@ -297,6 +298,12 @@ function Cartao({ v }: { v: Venda }) {
         {' · '}{v.metodo === 'pix' ? 'PIX' : v.parcelas > 1 ? `cartão em ${v.parcelas}x` : 'cartão'}
         {' · '}{quando(v.pagoEm)} · pedido {v.orderId}
       </p>
+      {/* Os dados da nota fiscal (06/11/2026): pedidos no checkout desde então. */}
+      {v.cpf && (
+        <p className="font-ui text-[14px] text-ink-body m-0 break-words">
+          Nota fiscal: <strong>{v.nomeCompleto}</strong> · CPF {v.cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4')}
+        </p>
+      )}
       {v.parceria && (
         <p className="font-ui text-[14px] m-0"><strong>Veio pelo link {LINK[v.parceria] ?? v.parceria}</strong></p>
       )}

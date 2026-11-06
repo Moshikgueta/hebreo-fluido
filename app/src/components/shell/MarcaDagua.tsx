@@ -42,7 +42,7 @@ export function MarcaDagua() {
    pelo leitor de tela, e não é marca d'água: é texto da página. */
 export function AvisoDeDireitos() {
   return (
-    <p className="mx-auto max-w-[720px] px-4 pt-8 pb-4 text-center font-ui text-[12px] leading-relaxed text-ink-muted">
+    <p className="hf-aviso-direitos mx-auto max-w-[720px] px-4 pt-8 pb-4 text-center font-ui text-[12px] leading-relaxed text-ink-muted">
       {tx.avisoDeDireitos}{' '}
       <Link href="/termos" className="underline underline-offset-2">{tx.termosArtigo5}</Link>.
     </p>

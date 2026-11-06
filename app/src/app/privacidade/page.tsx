@@ -49,6 +49,12 @@ export default function Page() {
      'enquanto a conta existir, ou até você apagar'],
     ['Dados do pedido', 'registrar a compra, liberar o acesso e cumprir obrigação fiscal',
      'pelo prazo legal de guarda fiscal'],
+    /* 06/11/2026, pedido do dono depois de falar com o contador: o nome
+       completo e o CPF no checkout, para a nota fiscal (worker/src/lib/cpf.js,
+       colunas orders.nome_completo e orders.cpf). */
+    ['Nome completo e CPF, pedidos no checkout',
+     'emitir a nota fiscal da compra e cumprir obrigação fiscal. Não são enviados ao processador de pagamento',
+     'numa compra paga, pelo prazo legal de guarda fiscal, mesmo se você apagar a conta; num pedido que não foi pago, até você apagar a conta'],
     /* O que o provedor nos devolve, e que fica gravado. A lista exata é
        GUARDAR, em worker/src/lib/db.js: tudo que não está nela é descartado
        antes de a linha existir - inclusive e-mail do pagador, CPF e os
@@ -148,11 +154,11 @@ export default function Page() {
           Só o necessário para o curso funcionar e para a compra existir. Não há
           coleta de dado sensível e não há perfilamento para publicidade.{' '}
           {soPix()
-            ? 'Não pedimos CPF nem nenhum outro documento em lugar nenhum.'
-            : <>Não pedimos CPF nem nenhum outro documento em nenhuma tela nossa
-                - a Mercado Pago pode pedir o seu CPF na tela de pagamento dela,
-                por exigência do meio de pagamento, e esse dado fica com ela:
-                não é enviado para nós nem guardado aqui.</>}
+            ? 'No checkout pedimos o seu nome completo e o seu CPF, para a nota fiscal da compra. Não pedimos nenhum outro documento.'
+            : <>No checkout pedimos o seu nome completo e o seu CPF, para a nota
+                fiscal da compra. Não pedimos nenhum outro documento. A Mercado
+                Pago pode pedir o seu CPF de novo na tela de pagamento dela, por
+                exigência do meio de pagamento: esse que ela pede fica com ela.</>}
         </p>
         <Card className="overflow-x-auto p-0">
           <table className="w-full border-collapse font-ui text-[14px]">

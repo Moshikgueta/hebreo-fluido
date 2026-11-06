@@ -949,6 +949,11 @@ a.hf-topico:hover .hf-livro { transform: rotate(-4deg); }
 .hf-faixa-barra { display: block; height: 5px; margin-top: 4px; border-radius: 99px; background: var(--sand); overflow: hidden; }
 .hf-faixa-barra > span { display: block; height: 100%; border-radius: 99px; background: var(--teal); }
 .hf-faixa-selo { position: absolute; right: 8px; top: -9px; border-radius: 99px; background: var(--gold-solid); color: #fff; padding: 2px 10px; font: 700 12px var(--font-ui); box-shadow: var(--sh); }
+.hf-faixa-seta { align-self: center; display: grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--sand); color: var(--ink-muted); transition: transform .25s var(--ease); }
+.hf-faixa-seta-aberta { transform: rotate(180deg); }
+button.hf-faixa-link { cursor: pointer; font: inherit; }
+button.hf-faixa-link:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
 /* O cartão da estação: embaixo, acima da barra de navegação do celular. */
 .hf-cartao-estacao { position: fixed; z-index: 70; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px);
   max-width: 440px; margin: 0 auto; padding: 16px 16px 14px; border-radius: 20px; background: var(--card); border: 1px solid var(--line);
@@ -1073,3 +1078,16 @@ a:hover > .hf-arco { transform: translateY(-2px); }
 .hf-ouvir-certa { background: #E4F1EE; border-color: #1F8A7D; animation: hf-montar-ergue .5s cubic-bezier(.3, .8, .3, 1) both; }
 .hf-ouvir-apagada { opacity: .45; }
 .hf-ouvir-texto { font-family: var(--font-he); font-weight: 700; font-size: 34px; line-height: 1.2; direction: rtl; unicode-bidi: isolate; }
+
+/* O modo foco (06/11/2026): numa lição ou num jogo, a tela é só daquilo.
+   components/shell/AppShell.tsx (ROTAS_DE_FOCO e <ModoFoco />). */
+html:has([data-foco]) .hf-rodape-ajuda,
+html:has([data-foco]) .hf-aviso-direitos,
+html[data-foco] .hf-rodape-ajuda,
+html[data-foco] .hf-aviso-direitos { display: none; }
+
+/* O jogo de hoje, no alto de Praticar (06/11/2026). */
+.hf-cartao-dia { border: 2px solid var(--gold); }
+@media (min-width: 640px) { .hf-cartao-dia { grid-template-rows: none; grid-template-columns: 260px 1fr; } .hf-cartao-dia > .hf-cena { height: 100%; } }
+.hf-cartao-dia-ir { justify-self: start; display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; min-height: 46px; padding: 0 18px;
+  border-radius: 14px; background: var(--accent-bg); color: #fff; font: 600 15.5px var(--font-ui); }

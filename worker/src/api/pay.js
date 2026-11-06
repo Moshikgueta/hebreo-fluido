@@ -17,6 +17,7 @@
  * aviso repetido, e o próprio `settle` não faz nada se o pedido já está pago.
  */
 
+import { cpfValido, nomeCompletoValido } from '../lib/cpf.js';
 import { fail, json, notSignedIn, readJson } from '../lib/http.js';
 import { ip, ipCompleto, requireAccount } from './auth.js';
 import { MOTIVOS_DESISTENCIA, motivoValido } from '../lib/motivos.js';
@@ -204,6 +205,14 @@ export async function create({ request, env }) {
   const pedido = body.method === 'card' ? 'card' : 'pix';
   if (!aceita(pedido)) return fail(pedido === 'card' ? 'card-off' : 'pix-off', 409);
 
+  /* Os dados da nota fiscal (06/11/2026, pedido do dono, depois de falar com
+     o contador): o nome completo e o CPF, conferidos aqui de novo (a tela já
+     conferiu), e guardados no pedido. Só no site brasileiro: os de fora
+     (Paddle, Stripe) já saíram acima. */
+  const nomeCompleto = nomeCompletoValido(body.nomeCompleto);
+  const cpf = cpfValido(body.cpf);
+  if (!nomeCompleto || !cpf) return fail('dados-fiscais', 400);
+
   const method = pedido;
   const installments = method === 'card' ? clampInstallments(course, body.installments) : 1;
 
@@ -223,7 +232,7 @@ export async function create({ request, env }) {
 
   const order = await createOrder(env, {
     accountId: account.id, courseSlug: course.slug, amountCents, method, installments, parceria,
-    origem, campanha
+    origem, campanha, nomeCompleto, cpf
   });
   /* A versão dos Termos que vale para este pedido (LEGAL-104). */
   await gravarTermosDoPedido(env, order.id);
