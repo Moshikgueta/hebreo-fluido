@@ -8,7 +8,7 @@
 
 import type { ReactNode } from 'react';
 
-export type JogoIlustrado = 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'match' | 'blast' | 'teste';
+export type JogoIlustrado = 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'montar' | 'match' | 'blast' | 'teste';
 
 const HE = 'var(--font-he)';
 const CURSIVA = 'var(--font-he-cursive)';
@@ -103,6 +103,21 @@ export function CenaDoJogo({ jogo, letras }: { jogo: JogoIlustrado; letras: read
           <ellipse cx="122" cy="62" rx="9" ry="12" fill="#6D8A4E" />
           <circle cx="144" cy="62" r="12" fill="#E07B39" />
         </g>
+      </>);
+    case 'montar':
+      /* Montar a palavra (06/11/2026): um muro de pedra de Jerusalém, e a
+         última pedra, com uma letra do aluno, descendo para o lugar. */
+      return cena(ceu, { cor: 'var(--il-colina-2)', y: 100 }, <>
+        <g fill="#E8D5AB" stroke="#B78A5A" strokeWidth="2">
+          <rect x="62" y="74" width="38" height="24" rx="3" /><rect x="100" y="74" width="38" height="24" rx="3" /><rect x="138" y="74" width="38" height="24" rx="3" />
+          <rect x="81" y="50" width="38" height="24" rx="3" />
+        </g>
+        <g fontFamily={HE} fontSize="18" fill="#0E3B43" textAnchor="middle">
+          <text x="157" y="92">{a}</text><text x="119" y="92">{b}</text><text x="81" y="92">{c}</text><text x="100" y="68">{d}</text>
+        </g>
+        <g className="hf-flutua"><rect x="122" y="18" width="38" height="24" rx="3" fill="#FBF9F5" stroke="#E7B65A" strokeWidth="2.5" />
+          <text x="141" y="36" fontFamily={HE} fontSize="18" fill="#12665C" textAnchor="middle">{b}</text></g>
+        <path d="M141 44v4" stroke="#E7B65A" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="2 3" />
       </>);
     default:
       return cena(ceu, { cor: 'var(--il-colina-2)', y: 100 }, null);

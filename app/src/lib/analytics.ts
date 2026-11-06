@@ -38,7 +38,7 @@ export type EventName =
 export type EventProps = {
   /** Qual jogo da academia. Os três primeiros saem do baralho; os três de
    *  22/09/2026 saem do motor de reconhecimento (lib/engine/jogos.ts). */
-  jogo?: 'match' | 'blast' | 'teste' | 'caca' | 'batalha' | 'cursiva' | 'pomar';
+  jogo?: 'match' | 'blast' | 'teste' | 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'montar';
   letterId?: string;
   itemId?: string;
   checkpointId?: string;
