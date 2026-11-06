@@ -401,6 +401,14 @@ describe('o freio', () => {
 /* ── o login ────────────────────────────────────────────────────────────── */
 
 describe('o login', () => {
+  /* O freio por e-mail e origem conta numa janela de um minuto que vira no
+     minuto cheio do relógio. Sete tentativas com PBKDF2 levam segundos; se
+     elas cruzassem a virada, a contagem recomeçava no meio e o teste caía sem
+     motivo (deploy do hebreo-fluido, 06/11/2026). O relógio fica parado no
+     começo de um minuto: o tempo das tentativas não muda mais a resposta. */
+  beforeEach(() => { vi.useFakeTimers({ now: Date.UTC(2026, 10, 6, 13, 56, 0), toFake: ['Date'] }); });
+  afterEach(() => { vi.useRealTimers(); });
+
   const tentar = (env: Record<string, unknown>, email: string, password: string, origem: string) =>
     auth.login({ request: pedido(`${SITE}/api/auth/login`, { email, password }, { 'CF-Connecting-IP': origem }), env, ctx });
 
