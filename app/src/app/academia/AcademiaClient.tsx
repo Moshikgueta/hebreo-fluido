@@ -66,6 +66,8 @@ import { Match, type ResultadoJogo } from '@/components/game/Match';
 import { Blast } from '@/components/game/Blast';
 import { CacaLetra } from '@/components/game/CacaLetra';
 import { PomarComTemas } from '@/components/game/PomarComTemas';
+import { MontarPalavra } from '@/components/game/MontarPalavra';
+import { rodadaDeMontar } from '@/lib/engine/montar';
 import { HebraicoNaVidaReal } from '@/components/learn/HebraicoNaVidaReal';
 import { perguntasDoPomarPorTema } from '@/lib/engine/pomar';
 import { TEMAS } from '@/lib/engine/temas';
@@ -87,7 +89,7 @@ import { tx } from '@/i18n/telas/academia-academia-client';
    descobrir isso num `undefined` em produção. */
 type DadosDeJogo = ReturnType<typeof montarNovo>;
 type JogoDeBaralho = 'match' | 'blast' | 'teste';
-type JogoNovo = 'caca' | 'batalha' | 'cursiva' | 'pomar';
+type JogoNovo = 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'montar';
 type Jogo = JogoDeBaralho | JogoNovo;
 const DE_BARALHO = (j: Jogo): j is JogoDeBaralho =>
   j === 'match' || j === 'blast' || j === 'teste';
@@ -170,6 +172,14 @@ export const JOGOS: Record<Jogo, { titlePt: string; descPt: string; treinaPt: st
     titlePt: tx.jogoPomarTitulo,
     descPt: tx.jogoPomarDesc,
     treinaPt: tx.jogoPomarTreina,
+    minimo: 3
+  },
+  /* Montar a palavra (06/11/2026, pedido do dono): pôr as peças da palavra em
+     ordem, com os pontos ou só as letras (lib/engine/montar.ts). */
+  montar: {
+    titlePt: tx.jogoMontarTitulo,
+    descPt: tx.jogoMontarDesc,
+    treinaPt: tx.jogoMontarTreina,
     minimo: 3
   }
 };
@@ -307,7 +317,8 @@ export function AcademiaClient() {
       } else {
         const d = fazerNovo(jogo, 0);
         falta = jogo === 'caca' ? !d.cacada?.length : jogo === 'cursiva' ? !d.cursiva?.length
-          : jogo === 'pomar' ? !TEMAS.some(t => d.pomar?.[t].length) : !d.batalha;
+          : jogo === 'pomar' ? !TEMAS.some(t => d.pomar?.[t].length)
+          : jogo === 'montar' ? !(d.montar?.pontos.length || d.montar?.letras.length) : !d.batalha;
       }
       if (!falta) continue;
       out[jogo] = unlocked.length < info.minimo
@@ -355,6 +366,7 @@ export function AcademiaClient() {
     const vazio = jogo === 'caca' ? !dados.cacada?.length
       : jogo === 'cursiva' ? !dados.cursiva?.length
       : jogo === 'pomar' ? !TEMAS.some(t => dados.pomar?.[t].length)
+      : jogo === 'montar' ? !(dados.montar?.pontos.length || dados.montar?.letras.length)
       : !dados.batalha;
 
     if (vazio || unlocked.length < info.minimo) {
@@ -391,6 +403,9 @@ export function AcademiaClient() {
         )}
         {jogo === 'pomar' && dados.pomar && (
           <PomarComTemas key={`po-${screen.rodada}`} temas={dados.pomar} onFim={fim} />
+        )}
+        {jogo === 'montar' && dados.montar && (
+          <MontarPalavra key={`mo-${screen.rodada}`} rodadas={dados.montar} onFim={fim} />
         )}
         {jogo === 'cursiva' && dados.cursiva && (
           <ImpressaCursiva key={`cu-${screen.rodada}`} rodadas={dados.cursiva}
@@ -823,7 +838,7 @@ export function AcademiaClient() {
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
               {/* O Pomar das palavras (05/11/2026, pedido do dono): só aqui, na lista
                   principal, e não em primeiro; antes ficava na aba Hebraico na vida real. */}
-              {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste', 'pomar'] as const).map(jogo => (
+              {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste', 'montar', 'pomar'] as const).map(jogo => (
                 <li key={jogo}>
                   {/* Cartão ilustrado (05/11/2026, aprovado pelo dono): a cena do
                       jogo em cima, com as letras que o aluno já aprendeu. */}
@@ -1074,6 +1089,11 @@ function montarNovo(
   /* Com a escolha do que treinar (05/11/2026): letras e sons das letras já
      começadas, palavras e leitura das palavras que ele já lê. */
   if (jogo === 'pomar') return { pomar: perguntasDoPomarPorTema(unlocked, palavrasLegiveis(vocabularioDoCurso(allLetters()), alfabetoDe(unlocked)), rand) };
+  /* Montar a palavra (06/11/2026): as palavras que ele já lê, nos dois jeitos. */
+  if (jogo === 'montar') {
+    const legiveis = palavrasLegiveis(vocabularioDoCurso(allLetters()), alfabetoDe(unlocked));
+    return { montar: { pontos: rodadaDeMontar(legiveis, 'pontos', rand), letras: rodadaDeMontar(legiveis, 'letras', rand) } };
+  }
   /* Vários pares por partida, e não um. `paresParaTreinar` põe primeiro o que
      ELE trocou de verdade e depois o que o conteúdo prevê. */
   /* O giro sai da mesma semente da rodada: cada partida nova traz outros

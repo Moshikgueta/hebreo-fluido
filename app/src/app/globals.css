@@ -1000,3 +1000,22 @@ a:hover > .hf-arco { transform: translateY(-2px); }
 .hf-canhao-bala { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: #E7B65A; box-shadow: 0 0 10px rgba(231, 182, 90, .9); z-index: 2; }
 .hf-canhao-voa { transition: left .26s linear, top .26s linear; }
 @media (max-width: 420px) { .hf-canhao-alvo { min-width: 64px; } }
+
+/* ── Montar a palavra (06/11/2026) ─────────────────────────────────────────
+   components/game/MontarPalavra.tsx: os lugares são pedras de Jerusalém num
+   muro, da direita para a esquerda; as peças, pedras soltas. Certo, o muro
+   se ergue pedra por pedra; errado, a pedra fora do lugar fica vermelha. Com
+   "menos movimento", nada se mexe (regra geral acima). */
+.hf-montar-muro { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 14px 10px; border-radius: 18px;
+  background: linear-gradient(transparent 70%, rgba(183, 138, 90, .25)); }
+.hf-montar-lugar, .hf-montar-peca { display: grid; place-items: center; min-width: 58px; height: 58px; padding: 0 10px; border-radius: 8px;
+  background: #E8D5AB; color: #0E3B43; border: 2px solid #B78A5A; box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .1); }
+.hf-montar-vazio { background: transparent; border-style: dashed; border-color: var(--line); box-shadow: none; }
+.hf-montar-peca { background: #FBF9F5; border-color: #E7B65A; transition: transform .15s var(--ease); }
+.hf-montar-peca:hover:not(:disabled) { transform: translateY(-2px); }
+.hf-montar-peca:disabled { opacity: .25; }
+.hf-montar-errado { background: #FBE7E3; border-color: #C9443A; animation: hf-sacode .4s; }
+.hf-montar-certo { border-color: #1F8A7D; background: #E4F1EE; }
+.hf-montar-ergue .hf-montar-lugar { animation: hf-montar-ergue .5s cubic-bezier(.3, .8, .3, 1) both; }
+@keyframes hf-montar-ergue { 0% { transform: translateY(12px); } 60% { transform: translateY(-6px); } 100% { transform: none; } }
+.hf-montar-texto { font-family: var(--font-he); font-weight: 700; font-size: 28px; line-height: 1; direction: rtl; unicode-bidi: isolate; }
