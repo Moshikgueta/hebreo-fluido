@@ -44,6 +44,7 @@ import * as meusDados from './api/meus-dados.js';
 import * as csp from './api/csp.js';
 import * as marca from './api/marca.js';
 import * as depoimentos from './api/depoimentos.js';
+import * as mensagens from './api/mensagens.js';
 import * as avaliacoes from './api/avaliacoes.js';
 import * as estatisticas from './api/estatisticas.js';
 import { campanhaValida } from './lib/origem.js';
@@ -161,6 +162,12 @@ const ROUTES = {
   'DELETE /api/depoimento': depoimentos.retirar,
   'GET /api/admin/depoimentos': depoimentos.listar,
   'PUT /api/admin/depoimentos': depoimentos.julgar,
+  /* Fale comigo (06/11/2026): as dúvidas e os comentários dos alunos. Ver
+     api/mensagens.js. */
+  'GET /api/mensagens': mensagens.minhas,
+  'POST /api/mensagens': mensagens.enviar,
+  'GET /api/admin/mensagens': mensagens.listar,
+  'PUT /api/admin/mensagens': mensagens.marcar,
   /* "Como foi esta lição?": o aluno avalia, anônimo; o dono lê o resumo.
      Ver api/avaliacoes.js. */
   'POST /api/avaliacao': avaliacoes.avaliar,

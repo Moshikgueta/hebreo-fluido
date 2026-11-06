@@ -68,7 +68,6 @@ const pt = {
   /* a Aula 0 para quem já começou */
   comoFuncionaTexto: 'Dez minutos de leitura: a direção, o alfabeto, o que muda em relação ao português e como este curso funciona.',
   reler: (link: Link) => <>{link('Como o hebraico funciona')}{' '}· a explicação de antes da primeira letra, para reler quando quiser.</>,
-  depoimento: (link: Link) => <>{link('Conte como está sendo')}{' '}· o seu depoimento ajuda o curso e quem está pensando em começar.</>,
 
   /* os números */
   seusNumeros: 'Seus números',
@@ -183,7 +182,6 @@ const en: Traducao<typeof pt> = {
 
   comoFuncionaTexto: 'Ten minutes of reading: the direction, the alphabet, what is different from English and how this course works.',
   reler: (link: Link) => <>{link('How Hebrew works')}{' '}· the explanation from before the first letter, to reread whenever you like.</>,
-  depoimento: (link: Link) => <>{link('Tell us how it is going')}{' '}· your testimonial helps the course and people thinking about starting.</>,
 
   seusNumeros: 'Your numbers',
   letraDominada: 'letter mastered',
@@ -294,7 +292,6 @@ const es: Traducao<typeof pt> = {
 
   comoFuncionaTexto: 'Diez minutos de lectura: la dirección, el alfabeto, lo que cambia respecto al español y cómo funciona este curso.',
   reler: (link: Link) => <>{link('Cómo funciona el hebreo')}{' '}· la explicación de antes de la primera letra, para releer cuando quieras.</>,
-  depoimento: (link: Link) => <>{link('Cuéntanos cómo te va')}{' '}· tu testimonio ayuda al curso y a quien está pensando en empezar.</>,
 
   seusNumeros: 'Tus números',
   letraDominada: 'letra dominada',

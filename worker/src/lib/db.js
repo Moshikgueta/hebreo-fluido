@@ -1481,6 +1481,10 @@ export async function deleteAccount(env, accountId) {
   try {
     await env.DB.prepare('DELETE FROM depoimentos WHERE account_id = ?').bind(id).run();
   } catch { /* tabela ausente */ }
+  /* As dúvidas e os comentários de Fale comigo (06/11/2026) também. */
+  try {
+    await env.DB.prepare('DELETE FROM mensagens WHERE account_id = ?').bind(id).run();
+  } catch { /* tabela ausente */ }
 
   /* A marca invisível do conteúdo, os aparelhos conectados e os avisos de
      fim de acesso só existem por causa da conta: somem com ela. */

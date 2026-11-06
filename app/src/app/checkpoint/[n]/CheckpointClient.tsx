@@ -7,6 +7,7 @@
  * Passing is 70%. Failing is not a failure - it is a suggestion to revisit one
  * or two letters, named specifically, and the retry is unlimited. */
 
+import { tx as txFale } from '@/i18n/telas/fale-comigo';
 import { tx } from '@/i18n/telas/licao-checkpoint-client';
 import { tx as txRevisao } from '@/i18n/telas/revisao-entre-modulos';
 import { ordemDeEnsino, portasDosModulos } from '@/lib/sons';
@@ -147,6 +148,13 @@ export function CheckpointClient({ module: mod, letters }: { module: CourseModul
         {/* O fim de um módulo é o melhor momento para o número: "conheço seis
             letras" vira "leio N palavras". */}
         {passed && <ContadorDeLeitura />}
+        {/* Fale comigo no fim do módulo (06/11/2026, pedido do dono). */}
+        {passed && (
+          <Link href={`/fale-comigo?modulo=${mod.n}`}
+                className="justify-self-start inline-flex items-center min-h-[44px] font-ui text-[14.5px] font-semibold text-[var(--teal-ink)] hover:underline">
+            {txFale.chamadaModulo} →
+          </Link>
+        )}
         <SugestaoDePar />
 
         {weak.length > 0 && (

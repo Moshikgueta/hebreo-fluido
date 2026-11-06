@@ -86,6 +86,8 @@ const GATED = [
   '/depoimento',
   /* 06/11/2026: o pedido de aula particular com o dono, para alunos. */
   '/aula-particular',
+  /* 06/11/2026: Fale comigo, as dúvidas e os comentários dos alunos. */
+  '/fale-comigo',
   /* 06/10/2026: o curso Hebraico A1. É de OUTRO curso: ver `cursoDaRota`. */
   '/a1',
   /* 21/10/2026: o e-book Israel Além do Óbvio (versão interativa e PDF).

@@ -43,7 +43,7 @@ export const PAGAS = [
   '/vocabulario', '/meu-nome', '/teclado-hebraico',
   /* 11/10/2026: o Laboratório de Leitura e a Minha Primeira Leitura. */
   '/leitura', '/leituras', '/hebraico-na-rua', '/cardapios', '/um-dia-em-israel',
-  '/audio', '/stroke-order', '/video', '/som', '/loja', '/bonus', '/nikud-biblico', '/depoimento', '/aula-particular',
+  '/audio', '/stroke-order', '/video', '/som', '/loja', '/bonus', '/nikud-biblico', '/depoimento', '/aula-particular', '/fale-comigo',
   /* 06/10/2026: o curso Hebraico A1 (outro curso; ver worker/src/gate.js). */
   '/a1',
   /* 21/10/2026: o e-book Israel Além do Óbvio (outro produto). */

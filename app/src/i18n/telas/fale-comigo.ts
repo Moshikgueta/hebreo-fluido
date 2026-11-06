@@ -1,0 +1,96 @@
+import type { Traducao } from '..';
+
+/* Fale comigo (06/11/2026, pedido do dono): app/fale-comigo e os links do
+ * Perfil, do Hoje e do fim de cada módulo. */
+const pt = {
+  metaTitulo: 'Fale comigo - Hebraico Fluente',
+  metaDescricao: 'Mande uma dúvida ou um comentário sobre o curso, e deixe o seu depoimento.',
+  kicker: 'Fale comigo',
+  titulo: 'Dúvidas, comentários e o seu depoimento',
+  intro: 'Travou em alguma coisa, tem uma sugestão ou quer só contar como está indo? Escreva aqui: a mensagem chega direto para mim.',
+  sobreModulo: (n: number) => `Sobre o módulo ${n}`,
+  tipoLegenda: 'O que você quer mandar?',
+  duvida: 'Uma dúvida',
+  comentario: 'Um comentário ou sugestão',
+  rotuloTexto: 'A sua mensagem',
+  dicaDuvida: 'Conte em que lição ou exercício você está, se for o caso.',
+  enviar: 'Enviar',
+  enviando: 'Enviando…',
+  enviada: (prazo: string) => `Recebi! Respondo no e-mail da sua conta ${prazo}.`,
+  curta: 'Escreva um pouco mais.',
+  longa: 'A mensagem ficou longa demais. Divida em duas.',
+  limite: 'Você mandou muitas mensagens agora. Tente de novo daqui a pouco.',
+  erro: 'Não consegui enviar agora. Confira a internet e tente de novo.',
+  suas: 'Suas mensagens',
+  enviadaEm: (d: string) => `Enviada em ${d}`,
+  respondida: 'Respondida',
+  depoimentoTitulo: 'Deixe o seu depoimento',
+  depoimentoTexto: 'Conte como está sendo aprender com o curso. Você escolhe como assinar, e só publico se você autorizar.',
+  depoimentoBotao: 'Escrever o depoimento',
+  chamadaHoje: 'Dúvida, sugestão ou depoimento? Fale comigo',
+  chamadaModulo: 'Como foi este módulo? Conte para mim',
+  chamadaPerfil: 'Fale comigo: dúvidas, comentários e depoimento'
+} as const;
+
+const en: Traducao<typeof pt> = {
+  metaTitulo: 'Talk to me - Hebrew Unlocked',
+  metaDescricao: 'Send a question or a comment about the course, and leave your testimonial.',
+  kicker: 'Talk to me',
+  titulo: 'Questions, comments and your testimonial',
+  intro: 'Stuck on something, have a suggestion or just want to tell me how it is going? Write here: the message comes straight to me.',
+  sobreModulo: n => `About module ${n}`,
+  tipoLegenda: 'What do you want to send?',
+  duvida: 'A question',
+  comentario: 'A comment or suggestion',
+  rotuloTexto: 'Your message',
+  dicaDuvida: 'Tell me which lesson or exercise you are on, if it helps.',
+  enviar: 'Send',
+  enviando: 'Sending…',
+  enviada: prazo => `Got it! I will reply to your account e-mail ${prazo}.`,
+  curta: 'Write a little more.',
+  longa: 'The message is too long. Split it in two.',
+  limite: 'You sent many messages just now. Try again in a little while.',
+  erro: 'I could not send it now. Check your connection and try again.',
+  suas: 'Your messages',
+  enviadaEm: d => `Sent on ${d}`,
+  respondida: 'Answered',
+  depoimentoTitulo: 'Leave your testimonial',
+  depoimentoTexto: 'Tell me how learning with the course is going. You choose how to sign, and I only publish it if you allow.',
+  depoimentoBotao: 'Write the testimonial',
+  chamadaHoje: 'A question, a suggestion or a testimonial? Talk to me',
+  chamadaModulo: 'How was this module? Tell me',
+  chamadaPerfil: 'Talk to me: questions, comments and testimonial'
+};
+
+const es: Traducao<typeof pt> = {
+  metaTitulo: 'Habla conmigo - Hebreo Fluido',
+  metaDescricao: 'Manda una duda o un comentario sobre el curso, y deja tu testimonio.',
+  kicker: 'Habla conmigo',
+  titulo: 'Dudas, comentarios y tu testimonio',
+  intro: '¿Te trabaste en algo, tienes una sugerencia o solo quieres contarme cómo va? Escribe aquí: el mensaje me llega directo.',
+  sobreModulo: n => `Sobre el módulo ${n}`,
+  tipoLegenda: '¿Qué quieres mandar?',
+  duvida: 'Una duda',
+  comentario: 'Un comentario o sugerencia',
+  rotuloTexto: 'Tu mensaje',
+  dicaDuvida: 'Cuéntame en qué lección o ejercicio estás, si ayuda.',
+  enviar: 'Enviar',
+  enviando: 'Enviando…',
+  enviada: prazo => `¡Recibido! Te respondo en el correo de tu cuenta ${prazo}.`,
+  curta: 'Escribe un poco más.',
+  longa: 'El mensaje quedó demasiado largo. Divídelo en dos.',
+  limite: 'Mandaste muchos mensajes ahora. Inténtalo de nuevo en un rato.',
+  erro: 'No pude enviarlo ahora. Revisa tu conexión e inténtalo de nuevo.',
+  suas: 'Tus mensajes',
+  enviadaEm: d => `Enviado el ${d}`,
+  respondida: 'Respondido',
+  depoimentoTitulo: 'Deja tu testimonio',
+  depoimentoTexto: 'Cuéntame cómo va tu aprendizaje con el curso. Tú eliges cómo firmar, y solo lo publico si lo autorizas.',
+  depoimentoBotao: 'Escribir el testimonio',
+  chamadaHoje: '¿Una duda, una sugerencia o un testimonio? Habla conmigo',
+  chamadaModulo: '¿Cómo fue este módulo? Cuéntamelo',
+  chamadaPerfil: 'Habla conmigo: dudas, comentarios y testimonio'
+};
+
+export const DICIONARIO = { pt, en, es };
+export const tx = process.env.NEXT_PUBLIC_LOCALE === 'en' ? en : process.env.NEXT_PUBLIC_LOCALE === 'es' ? es : pt;
