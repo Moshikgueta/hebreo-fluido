@@ -20,12 +20,17 @@ describe('as etapas do caminho', () => {
   });
 
   it('o mapa começa na Aula 0 e termina no desafio final', () => {
-    const s = fonte('app/mapa/CourseMapClient.tsx');
-    expect(s.indexOf('<TrechoAula0')).toBeLessThan(s.indexOf('<TrechoFinal />'));
+    /* Desde 06/11/2026 o mapa é uma estrada só (components/aventura/). */
+    expect(fonte('app/mapa/CourseMapClient.tsx')).toContain('<EstradaDoModulo itens={estrada}');
+    const s = fonte('components/aventura/estrada-do-modulo.ts');
+    expect(s.indexOf("chave: 'aula0'")).toBeGreaterThan(-1);
+    expect(s.indexOf("chave: 'aula0'")).toBeLessThan(s.indexOf("chave: 'final'"));
+    /* A meta de cada módulo aparece no cartão da última estação dele. */
+    expect(s).toContain("meta: m.milestonePt && !adiante ? { texto: m.milestonePt, alcancada: estadoM === 'feito' }");
+    expect(fonte('components/aventura/EstradaDoModulo.tsx')).toContain('p.meta.alcancada ? tx.metaAlcancada : tx.meta');
     /* O texto mora no dicionário da tela (app/src/i18n/telas/). */
-    expect(s).toContain("estado === 'feito' ? tx.metaAlcancada : tx.meta");
     expect(fonte('i18n/telas/painel-course-map-client.ts')).toContain("metaAlcancada: '✓ Meta alcançada: '");
-    expect(s).toContain('isLessonMastered(p.state, id)');
+    expect(s).toContain('isLessonMastered(p.state, l.id)');
   });
 
   it('o certificado diz o que o exame verificou', () => {

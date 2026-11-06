@@ -923,7 +923,44 @@ a.hf-topico:hover .hf-livro { transform: rotate(-4deg); }
 @keyframes hf-estrada-aparece { from { opacity: 0; } }
 .hf-arvore { transform-box: fill-box; transform-origin: 50% 100%; animation: hf-arvore 4s ease-in-out infinite; }
 @keyframes hf-arvore { 50% { transform: rotate(3deg); } }
-.hf-estrada-lista { position: relative; display: grid; gap: 20px; }
+.hf-estrada-lista { position: relative; z-index: 2; display: grid; gap: 20px; }
+/* O lugar onde a Yael descansa: em cima da estação de agora, sem nada por
+   perto. Ela anda por baixo das estações e dos textos (z-index), e para aqui. */
+.hf-com-yael { margin-top: 72px; }
+.hf-estacao-botao { display: block; background: none; border: 0; padding: 0; border-radius: 28px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.hf-estacao-botao:focus-visible { outline: 3px solid var(--teal); outline-offset: 4px; }
+.hf-estacao-botao:hover > .hf-arco { transform: translateY(-2px); }
+/* A faixa de cada módulo: o desenho do lugar, o nome e quanto já foi. Em
+   Meu curso ela fica presa no topo enquanto se rola pelo módulo. */
+.hf-modulo, .hf-modulo-lista { display: grid; gap: 20px; }
+.hf-faixa { justify-self: stretch; margin: 10px 0 2px; }
+.hf-faixa-presa { position: sticky; top: 64px; z-index: 4; }
+@media (min-width: 1024px) { .hf-faixa-presa { top: 12px; } }
+.hf-faixa-link { position: relative; display: flex; align-items: stretch; gap: 12px; min-height: 64px; padding: 6px 12px 6px 6px; border-radius: 16px;
+  background: var(--card); border: 1px solid var(--line-soft); box-shadow: 0 8px 20px -16px rgba(14, 59, 67, .5); color: inherit; text-decoration: none; }
+.hf-faixa-agora .hf-faixa-link { border: 2px solid var(--teal); }
+.hf-faixa-adiante .hf-faixa-link { background: var(--paper); border-style: dashed; box-shadow: none; }
+.hf-faixa-cena { position: relative; width: 92px; flex-shrink: 0; border-radius: 11px; overflow: hidden; }
+.hf-faixa-txt { min-width: 0; flex: 1; display: grid; align-content: center; gap: 1px; }
+.hf-faixa-txt small { display: flex; align-items: center; gap: 5px; font: 400 12px var(--font-ui); color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hf-faixa-txt b { font: 600 16px/1.2 var(--font-display); letter-spacing: -0.015em; color: var(--ink); }
+.hf-faixa-adiante .hf-faixa-txt b { color: var(--ink-muted); }
+.hf-faixa-txt > span { font: 400 12.5px/1.35 var(--font-ui); color: var(--ink-muted); }
+.hf-faixa-barra { display: block; height: 5px; margin-top: 4px; border-radius: 99px; background: var(--sand); overflow: hidden; }
+.hf-faixa-barra > span { display: block; height: 100%; border-radius: 99px; background: var(--teal); }
+.hf-faixa-selo { position: absolute; right: 8px; top: -9px; border-radius: 99px; background: var(--gold-solid); color: #fff; padding: 2px 10px; font: 700 12px var(--font-ui); box-shadow: var(--sh); }
+/* O cartão da estação: embaixo, acima da barra de navegação do celular. */
+.hf-cartao-estacao { position: fixed; z-index: 70; left: 12px; right: 12px; bottom: calc(env(safe-area-inset-bottom, 0px) + 84px);
+  max-width: 440px; margin: 0 auto; padding: 16px 16px 14px; border-radius: 20px; background: var(--card); border: 1px solid var(--line);
+  box-shadow: 0 18px 44px -18px rgba(14, 59, 67, .55); animation: hf-cartao-sobe .26s var(--ease-out) both; }
+@media (min-width: 1024px) { .hf-cartao-estacao { bottom: 28px; left: auto; right: 32px; width: 400px; } }
+@keyframes hf-cartao-sobe { from { opacity: 0; translate: 0 14px; } }
+.hf-cartao-fechar { position: absolute; right: 8px; top: 8px; width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 12px; background: transparent; color: var(--ink-muted); cursor: pointer; }
+.hf-cartao-fechar:hover { background: var(--sand); }
+.hf-cartao-icone { position: relative; display: grid; place-items: center; flex-shrink: 0; width: 52px; height: 60px; border-radius: 26px 26px 9px 9px; }
+.hf-cartao-ir { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; margin-top: 12px; border-radius: 14px;
+  background: var(--accent-bg); color: #fff; font: 600 16px var(--font-ui); text-decoration: none; }
+.hf-cartao-ir:hover { filter: brightness(1.1); }
 .hf-estrada-parada { position: relative; display: flex; align-items: center; gap: 14px; width: min(320px, 88%); }
 .hf-centro { justify-self: center; }
 .hf-esq { justify-self: start; }
@@ -960,12 +997,13 @@ a:hover > .hf-arco { transform: translateY(-2px); }
 .hf-carimbo-ok { border-style: solid; border-color: #C9443A; color: #C9443A; animation: hf-carimba .35s var(--ease-out) both; }
 .hf-carimbo-ok:nth-child(2) { animation-delay: .35s; } .hf-carimbo-ok:nth-child(3) { animation-delay: .7s; }
 @keyframes hf-carimba { from { transform: scale(2.2) rotate(-30deg); opacity: 0; } to { transform: scale(1) rotate(-12deg); opacity: 1; } }
-.hf-viajante { position: absolute; left: 0; top: 0; z-index: 2; width: 38px; height: 48px; pointer-events: none; }
+.hf-viajante { position: absolute; left: 0; top: 0; z-index: 1; width: 56px; height: 56px; pointer-events: none; opacity: 0; transition: opacity .3s; }
 .hf-viajante svg { width: 100%; height: 100%; overflow: visible; }
-.hf-perna1, .hf-perna2 { transform-box: fill-box; transform-origin: 50% 0; }
-.hf-andando .hf-perna1 { animation: hf-passo .32s ease-in-out infinite alternate; }
-.hf-andando .hf-perna2 { animation: hf-passo .32s ease-in-out infinite alternate-reverse; }
-@keyframes hf-passo { from { transform: rotate(18deg); } to { transform: rotate(-18deg); } }
+/* A Yael saltita enquanto anda; ao chegar a uma estação, ela dá um pulinho. */
+.hf-andando .yael { animation: hf-saltita .3s ease-in-out infinite alternate; }
+@keyframes hf-saltita { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-7px) rotate(3deg); } }
+.hf-visita { animation: hf-visita .42s var(--ease-out); }
+@keyframes hf-visita { 0% { transform: scale(1); } 45% { transform: scale(1.12); } 100% { transform: scale(1); } }
 .hf-estrada-voltar { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 140px); z-index: 60;
   width: 52px; height: 52px; border-radius: 16px; border: 2px solid var(--line); background: var(--card); color: var(--navy); display: grid; place-items: center; box-shadow: var(--sh-mock); }
 
