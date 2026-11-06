@@ -59,8 +59,12 @@ LOCALE = "es"
 # acrescentar as `routes`. A build em espanhol lê esta linha (app/next.config.ts)
 # para o endereço canônico, o sitemap e o cartão do link.
 SITE_ORIGIN = "https://hebreo-fluido.moshikg10.workers.dev"
-# Pendente do domínio em espanhol: sem ele o Worker não manda e-mail.
-# EMAIL_FROM = "Hebreo Fluido <contacto@<dominio-em-espanhol>>"
+# Enquanto não há domínio em espanhol, o remetente é o endereço do domínio
+# brasileiro, já verificado no Resend, com o nome do site em espanhol (como o
+# site em inglês faz). Sem ele o Worker não manda e-mail nenhum, e o painel
+# de /admin não abre: o código de seis dígitos vai por e-mail. Quando o
+# domínio em espanhol entrar e for verificado no Resend, trocar aqui.
+EMAIL_FROM = "Hebreo Fluido <contato@hebraicofluente.com.br>"
 SUPPORT_EMAIL = "languageswithmoshik@gmail.com"
 CONTATO_DESTINO = "languageswithmoshik@gmail.com"
 ADMIN_EMAILS = "languageswithmoshik@gmail.com"
