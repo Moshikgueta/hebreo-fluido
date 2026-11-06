@@ -287,8 +287,13 @@ espera "o HTML tem tamanho de página" true \
 # vermelho que esta nota acima pede para não existir.
 espera "a capa tem um título com texto" true \
   "$(perl -0ne '$ok = 0; if (/<h1[^>]*>(.*?)<\/h1>/s) { ($t = $1) =~ s/<[^>]+>//g; $t =~ s/\s+/ /g; $ok = length($t) >= 12 } print $ok ? "true" : "false"' <<<"$HOME_HTML")"
-espera "a capa traz a marca" true \
-  "$(grep -q 'Hebraico Fluente' <<<"$HOME_HTML" && echo true || echo false)"
+# A marca de cada site (worker/src/lib/idioma.js, MARCA): Hebraico Fluente no
+# brasileiro, Hebrew Unlocked no inglês, Hebreo Fluido no espanhol.
+MARCA_DO_SITE='Hebraico Fluente'
+grep -qE '^LOCALE *= *"en"' "$RAIZ/wrangler.toml" 2>/dev/null && MARCA_DO_SITE='Hebrew Unlocked'
+grep -qE '^LOCALE *= *"es"' "$RAIZ/wrangler.toml" 2>/dev/null && MARCA_DO_SITE='Hebreo Fluido'
+espera "a capa traz a marca ($MARCA_DO_SITE)" true \
+  "$(grep -q "$MARCA_DO_SITE" <<<"$HOME_HTML" && echo true || echo false)"
 
 # O primeiro script do Next referenciado pela capa. Se ele não vier, o
 # navegador mostra o texto mas nada funciona - e um erro de caminho de
