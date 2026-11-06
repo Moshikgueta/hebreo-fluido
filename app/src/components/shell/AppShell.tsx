@@ -259,13 +259,15 @@ export function AppShell({ children }: { children: ReactNode }) {
 }
 
 /* ── o modo foco (06/11/2026, pedido do dono: "a melhor experiência") ─────
-   Numa lição, num checkpoint, no desafio final, na revisão e dentro de um
-   jogo, a tela é só daquilo: o rodapé de ajuda e o aviso de direitos somem
+   Numa lição, num checkpoint, no desafio final, na revisão, numa estação de
+   Um dia em Israel e dentro de um jogo, a tela é só daquilo: o rodapé de ajuda e o aviso de direitos somem
    (styles: `html:has([data-foco])`). A barra de navegação fica, e a ajuda e o
    aviso continuam em todas as outras telas do curso. A marca d'água fica
    sempre. Os jogos da Academia, que moram na mesma rota do menu, marcam o
    foco com `useModoFoco` enquanto estão abertos. */
-const ROTAS_DE_FOCO = /^\/(licao|som|checkpoint|desafio-final|revisao)(\/|$)/;
+/* As estações de Um dia em Israel também (06/11/2026, pedido do dono); o
+   mapa do dia, /um-dia-em-israel, continua com o rodapé. */
+const ROTAS_DE_FOCO = /^\/(licao|som|checkpoint|desafio-final|revisao|um-dia-em-israel\/[a-z-]+)(\/|$)/;
 
 /** Põe a tela em modo foco enquanto `ativo` for verdade. */
 export function useModoFoco(ativo: boolean) {
