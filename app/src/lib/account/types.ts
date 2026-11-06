@@ -9,8 +9,11 @@
  *   · senha, em qualquer forma. O hash vive no servidor e não sai de lá.
  *   · progresso. O progresso é do aparelho (lib/state), não da conta - ver
  *     a nota em account/store.tsx sobre por que ainda é assim.
- *   · cartão, CPF, endereço. A plataforma nunca vê: quem processa é a
+ *   · cartão e endereço. A plataforma nunca vê: quem processa é a
  *     Mercado Pago, e o que volta é um id de pagamento.
+ *   · o CPF e o nome completo da nota fiscal (06/11/2026): vão do checkout
+ *     para o pedido, no servidor (orders.cpf), e não ficam na conta nem
+ *     voltam para o navegador.
  */
 
 import { empresa, prazoResposta } from '@/lib/empresa';
@@ -111,7 +114,7 @@ export type AuthErrorCode =
   | 'bad-credentials' | 'email-taken' | 'weak-password' | 'invalid-email'
   | 'not-signed-in' | 'offline' | 'server' | 'rate-limited' | 'rate-limited-hora' | 'payments-off'
   | 'bad-token' | 'payment-failed' | 'card-off' | 'pix-off' | 'already-owned'
-  | 'fora-do-prazo' | 'nao-pago' | 'termos' | 'idade';
+  | 'fora-do-prazo' | 'nao-pago' | 'termos' | 'idade' | 'dados-fiscais';
 
 export class AuthError extends Error {
   constructor(readonly code: AuthErrorCode, message?: string) {
@@ -164,7 +167,9 @@ export const MESSAGES: Record<AuthErrorCode, string> = {
   /* A desistência pelo site. Passado o prazo, o caminho é o mesmo da Política
      de Reembolso para depois dos sete dias: escrever. */
   'fora-do-prazo': fmt(tx.foraDoPrazo, { dias: String(empresa.politicas.arrependimentoDias), email: String(empresa.contato.emailSuporte) }),
-  'nao-pago': tx.naoPago
+  'nao-pago': tx.naoPago,
+  /* O nome completo ou o CPF da nota fiscal não passaram (06/11/2026). */
+  'dados-fiscais': tx.dadosFiscais
 };
 
 /* ── regras de acesso ────────────────────────────────────────────────────

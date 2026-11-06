@@ -59,7 +59,7 @@ type AccountValue = {
   /** A caixa do perfil do lembrete para estudar. */
   setLembrete(quero: boolean): Promise<void>;
 
-  startOrder(i: { courseSlug: string; method: PaymentMethod; installments?: number; parceria?: string; origem?: Origem }):
+  startOrder(i: { courseSlug: string; method: PaymentMethod; installments?: number; parceria?: string; origem?: Origem; nomeCompleto?: string; cpf?: string }):
     Promise<CreatedOrder>;
   orderStatus(id: string): Promise<Order>;
   requestWithdrawal(orderId: string, motivo?: string | null): Promise<{ pedidoEm: string }>;

@@ -10,7 +10,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { campanhaDe, fonteDe, FONTES, origemAtual, registrarOrigem } from '@/lib/origem';
 import { crescimentoPorFonte } from '@/lib/painel-estatisticas';
-import { comoAdmin, cookieDe, envDeTeste, pedido } from './ajuda/d1';
+import { comoAdmin, cookieDe, envDeTeste, pedido, DADOS_FISCAIS } from './ajuda/d1';
 // @ts-expect-error - módulo JS do Worker, sem tipos
 import worker from '../../worker/src/worker.js';
 // @ts-expect-error - idem
@@ -195,7 +195,7 @@ describe('a origem no pedido', () => {
     const env = envDeTeste({ MP_ACCESS_TOKEN: TOKEN, SITE_ORIGIN: SITE }) as Env;
     const cookie = await conta(env, 'ana@exemplo.com');
     const criar = (origem: unknown) => pay.create({ request: pedido(`${SITE}/api/pay/create`,
-      { courseSlug: 'alfabetizacao', method: 'pix', origem }, { Cookie: cookie }), env, ctx });
+      { ...DADOS_FISCAIS, courseSlug: 'alfabetizacao', method: 'pix', origem }, { Cookie: cookie }), env, ctx });
     expect((await criar({ fonte: 'stories', campanha: 'alef-1' })).status).toBe(200);
     expect((await criar({ fonte: 'inventada', campanha: 'x' })).status).toBe(200);
     expect((await criar({ fonte: 'busca', campanha: '<b>' })).status).toBe(200);

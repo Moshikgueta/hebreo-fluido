@@ -18,7 +18,7 @@
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cookieDe, envDeTeste, pedido, comoAdmin } from './ajuda/d1';
+import { cookieDe, envDeTeste, pedido, comoAdmin, DADOS_FISCAIS } from './ajuda/d1';
 import { CARTAO_CENTAVOS, PIX_CENTAVOS, PRECO } from './ajuda/preco';
 // @ts-expect-error - módulo JS do Worker, sem tipos
 import * as auth from '../../worker/src/api/auth.js';
@@ -133,7 +133,7 @@ async function aluna(env: Env, email = 'aluna@exemplo.com.br') {
 }
 
 const criar = (env: Env, cookie: string, body: Record<string, unknown>) =>
-  pay.create({ request: pedido(`${SITE}/api/pay/create`, body, { Cookie: cookie }), env, ctx });
+  pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, ...body }, { Cookie: cookie }), env, ctx });
 const get = (env: Env, cookie: string, path: string) =>
   worker.fetch(new Request(`${SITE}${path}`, { headers: { Cookie: cookie } }), env, ctx);
 

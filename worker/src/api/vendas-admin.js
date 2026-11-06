@@ -51,7 +51,7 @@ export async function listar({ request, env }) {
   if (erro) return erro;
   const { results } = await env.DB.prepare(
     `SELECT o.id, o.course_slug, o.amount_cents, o.method, o.installments, o.status,
-            o.created_at, o.paid_at, o.parceria, o.origem, o.campanha, a.name, a.email,
+            o.created_at, o.paid_at, o.parceria, o.origem, o.campanha, a.name, a.email, o.nome_completo, o.cpf,
             p.updated_at AS progresso_em,
             (SELECT d.pedido_em FROM arrependimentos d WHERE d.order_id = o.id) AS desistiu_em,
             CASE WHEN json_valid(p.state) THEN json_extract(p.state, '$.finalChallenge.passedAt') END AS exame_em,
@@ -107,6 +107,8 @@ export async function listar({ request, env }) {
       liquidoCentavos: Number.isFinite(Number(v.liquido)) && v.liquido != null ? Math.round(Number(v.liquido) * 100) : null,
       parcelas: v.installments, status: v.status, pagoEm: v.paid_at || v.created_at,
       parceria: v.parceria || null, origem: v.origem || null, campanha: v.campanha || null, nome: v.name || '', email: v.email || null,
+      /* Os dados da nota fiscal (06/11/2026), nas compras que os têm. */
+      nomeCompleto: v.nome_completo || null, cpf: v.cpf || null,
       estudouEm: v.progresso_em || null, concluidas: lista(v.concluidas),
       /* Desistência pelo site (03/11/2026): quando foi pedida, para o painel
          dizer quantos dias depois da compra e até onde a pessoa chegou. */

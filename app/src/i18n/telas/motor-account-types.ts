@@ -21,7 +21,8 @@ const pt = {
   pixOff: 'No momento só aceitamos cartão de crédito. Volte e escolha cartão - dá para parcelar.',
   alreadyOwned: 'Este curso já está na sua conta. A renovação abre nos últimos 45 dias de acesso.',
   foraDoPrazo: 'O prazo de {dias} dias para desistir desta compra terminou. Se houver problema técnico ou cobrança indevida, escreva para {email}.',
-  naoPago: 'Esta compra não está paga, então não há o que devolver.'
+  naoPago: 'Esta compra não está paga, então não há o que devolver.',
+  dadosFiscais: 'Confira o nome completo e o CPF: eles vão na nota fiscal da compra.'
 } as const;
 
 const en: Traducao<typeof pt> = {
@@ -45,7 +46,8 @@ const en: Traducao<typeof pt> = {
   pixOff: 'Right now we only accept credit cards. Go back and choose card - you can pay in installments.',
   alreadyOwned: 'This course is already in your account. Renewal opens in the last 45 days of access.',
   foraDoPrazo: 'The {dias}-day period to withdraw from this purchase has ended. If there is a technical problem or an incorrect charge, write to {email}.',
-  naoPago: 'This purchase is not paid, so there is nothing to refund.'
+  naoPago: 'This purchase is not paid, so there is nothing to refund.',
+  dadosFiscais: 'Check your full name and CPF: they go on the purchase invoice.'
 };
 
 const es: Traducao<typeof pt> = {
@@ -69,7 +71,8 @@ const es: Traducao<typeof pt> = {
   pixOff: 'Por ahora solo aceptamos tarjeta de crédito. Vuelve y elige tarjeta - puedes pagar en cuotas.',
   alreadyOwned: 'Este curso ya está en tu cuenta. La renovación se abre en los últimos 45 días de acceso.',
   foraDoPrazo: 'El plazo de {dias} días para desistir de esta compra terminó. Si hay un problema técnico o un cobro indebido, escribe a {email}.',
-  naoPago: 'Esta compra no está pagada, así que no hay nada que devolver.'
+  naoPago: 'Esta compra no está pagada, así que no hay nada que devolver.',
+  dadosFiscais: 'Revisa el nombre completo y el CPF: van en la factura de la compra.'
 };
 
 export const DICIONARIO = { pt, en, es };

@@ -722,10 +722,12 @@ export async function createOrder(env, o) {
   const id = newId('HF');
   await env.DB.prepare(
     `INSERT INTO orders (id, account_id, course_slug, amount_cents, currency, method,
-                         installments, status, provider, created_at, parceria, origem, campanha)
-     VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)`
+                         installments, status, provider, created_at, parceria, origem, campanha,
+                         nome_completo, cpf)
+     VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?)`
   ).bind(id, o.accountId, o.courseSlug, o.amountCents, o.currency || 'BRL', o.method,
-         o.installments || 1, o.provider || 'mercadopago', now(), o.parceria || null, o.origem || null, o.campanha || null).run();
+         o.installments || 1, o.provider || 'mercadopago', now(), o.parceria || null, o.origem || null, o.campanha || null,
+         o.nomeCompleto || null, o.cpf || null).run();
   return getOrder(env, id);
 }
 
@@ -1430,6 +1432,13 @@ export async function deleteAccount(env, accountId) {
     /* Convites são chaveados por E-MAIL, e não por conta: um presente
        pendente guarda o endereço de quem ia recebê-lo. */
     env.DB.prepare('DELETE FROM invites       WHERE email = ?').bind(conta.email),
+    /* O nome completo e o CPF (06/11/2026) ficam só nas vendas que
+       aconteceram, porque a nota fiscal é obrigação fiscal (LGPD, art. 16,
+       I). Num pedido que nunca foi pago não há nota nenhuma: eles saem. */
+    env.DB.prepare(
+      `UPDATE orders SET nome_completo = NULL, cpf = NULL
+        WHERE account_id = ? AND status NOT IN ('paid', 'refunded')`
+    ).bind(id),
     env.DB.prepare(
       `UPDATE accounts
           SET email = ?, name = '', pass_hash = ?, pass_salt = ?,

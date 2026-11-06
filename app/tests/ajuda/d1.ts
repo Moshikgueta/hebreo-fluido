@@ -158,3 +158,7 @@ export async function comoAdmin(env: Record<string, unknown>, cookie: string): P
   const admin = String(await cookieDeAdmin(env, sess)).split(';')[0];
   return `${cookie}; ${admin}`;
 }
+
+/** O nome completo e o CPF da nota fiscal (06/11/2026): o site brasileiro não
+ *  cria pedido sem eles. O CPF é um número de teste válido. */
+export const DADOS_FISCAIS = { nomeCompleto: 'Maria da Silva', cpf: '529.982.247-25' } as const;

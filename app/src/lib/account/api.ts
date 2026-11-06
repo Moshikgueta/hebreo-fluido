@@ -93,7 +93,7 @@ export interface PlatformApi {
 
   /** Começa um pedido. Para PIX volta com o copia-e-cola; para cartão, com a
    *  URL do checkout da Mercado Pago em `redirectUrl`. */
-  startOrder(input: { courseSlug: string; method: PaymentMethod; installments?: number; parceria?: string; origem?: Origem }):
+  startOrder(input: { courseSlug: string; method: PaymentMethod; installments?: number; parceria?: string; origem?: Origem; nomeCompleto?: string; cpf?: string }):
     Promise<CreatedOrder>;
 
   /** O estado de um pedido, do servidor - nunca dos parâmetros de redirect.

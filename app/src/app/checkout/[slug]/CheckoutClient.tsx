@@ -47,6 +47,7 @@ import { track } from '@/lib/analytics';
 import { api } from '@/lib/account/api';
 import { deveRetomarPix } from './retomada';
 import { tx } from '@/i18n/telas/conta-checkout-client';
+import { cpfValido, mascaraCpf, nomeCompletoValido } from '@/lib/cpf';
 import { LOCALE_INTL } from '@/i18n';
 
 /** De quanto em quanto tempo perguntar, e por quanto tempo insistir.
@@ -93,6 +94,18 @@ export function CheckoutClient({ slug }: { slug: string }) {
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  /* Os dados da nota fiscal (06/11/2026, pedido do dono, depois de falar com
+     o contador): só no site brasileiro. O nome começa com o da conta quando
+     ele já tem sobrenome. O CPF nunca é guardado no navegador. */
+  const [nomeCompleto, setNomeCompleto] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [erroNome, setErroNome] = useState(false);
+  const [erroCpf, setErroCpf] = useState(false);
+  const nomeDaConta = account.session?.account.name ?? '';
+  useEffect(() => {
+    if (!nomeCompleto && nomeCompletoValido(nomeDaConta)) setNomeCompleto(nomeDaConta);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nomeDaConta]);
   const [gaveUp, setGaveUp] = useState(false);
   const [copied, setCopied] = useState(false);
   /* Estado próprio, e não uma mensagem de erro vermelha: a plataforma pode
@@ -217,6 +230,17 @@ export function CheckoutClient({ slug }: { slug: string }) {
   }, [order, account, slug, CONFIRMA_SOZINHO]);
 
   const pay = useCallback(async () => {
+    /* Os dados da nota, conferidos antes de qualquer coisa (o servidor
+       confere de novo). */
+    const nomeOk = PADDLE ? null : nomeCompletoValido(nomeCompleto);
+    const cpfOk = PADDLE ? null : cpfValido(cpf);
+    if (!PADDLE) {
+      setErroNome(!nomeOk); setErroCpf(!cpfOk);
+      if (!nomeOk || !cpfOk) {
+        document.getElementById(!nomeOk ? 'nota-nome' : 'nota-cpf')?.focus();
+        return;
+      }
+    }
     setBusy(true);
     setError(null);
     setGaveUp(false);
@@ -228,7 +252,8 @@ export function CheckoutClient({ slug }: { slug: string }) {
         ...(method === 'card' ? { installments: parcelas } : {}),
         ...(parceria ? { parceria } : {}),
         /* De onde a pessoa veio (lib/origem.ts): só para o painel do dono. */
-        ...(origemAtual() ? { origem: origemAtual()! } : {})
+        ...(origemAtual() ? { origem: origemAtual()! } : {}),
+        ...(nomeOk && cpfOk ? { nomeCompleto: nomeOk, cpf: cpfOk } : {})
       });
       /* O cartão sai daqui: quem coleta o número é a Mercado Pago, e é assim
          que esta plataforma nunca vê um dado de cartão. */
@@ -259,7 +284,7 @@ export function CheckoutClient({ slug }: { slug: string }) {
     } finally {
       setBusy(false);
     }
-  }, [account, slug, method, parcelas, parceria]);
+  }, [account, slug, method, parcelas, parceria, nomeCompleto, cpf, PADDLE]);
 
   /* ── o pagamento ainda não foi ligado ────────────────────────────── */
   if (paymentsOff) {
@@ -492,6 +517,32 @@ export function CheckoutClient({ slug }: { slug: string }) {
           </p>
         ) : (
           <>
+            {!PADDLE && (
+              <fieldset className="grid gap-3 border-0 p-0 m-0">
+                <legend className="font-ui text-[15px] font-semibold text-ink mb-1">{tx.dadosNota}</legend>
+                <label className="grid gap-1.5">
+                  <span className="font-ui text-[14px] font-semibold text-ink-body">{tx.nomeCompleto}</span>
+                  <input id="nota-nome" type="text" autoComplete="name" value={nomeCompleto} maxLength={120}
+                         onChange={e => { setNomeCompleto(e.target.value); setErroNome(false); }}
+                         aria-invalid={erroNome} aria-describedby={erroNome ? 'nota-nome-erro' : 'nota-ajuda'}
+                         className="min-h-[48px] rounded-[var(--r-md)] border border-line bg-[var(--card)] px-3.5 font-ui text-[16px] text-ink
+                                    aria-[invalid=true]:border-[var(--ember)]" />
+                  {erroNome && <span id="nota-nome-erro" role="alert" className="font-ui text-[13px] text-[var(--ember)]">{tx.nomeInvalido}</span>}
+                </label>
+                <label className="grid gap-1.5">
+                  <span className="font-ui text-[14px] font-semibold text-ink-body">{tx.cpf}</span>
+                  <input id="nota-cpf" type="text" inputMode="numeric" autoComplete="off" value={cpf} placeholder="000.000.000-00"
+                         onChange={e => { setCpf(mascaraCpf(e.target.value)); setErroCpf(false); }}
+                         aria-invalid={erroCpf} aria-describedby={erroCpf ? 'nota-cpf-erro' : 'nota-ajuda'}
+                         className="min-h-[48px] rounded-[var(--r-md)] border border-line bg-[var(--card)] px-3.5 font-ui text-[16px] text-ink tabular-nums
+                                    aria-[invalid=true]:border-[var(--ember)]" />
+                  {erroCpf && <span id="nota-cpf-erro" role="alert" className="font-ui text-[13px] text-[var(--ember)]">{tx.cpfInvalido}</span>}
+                </label>
+                <p id="nota-ajuda" className="m-0 font-ui text-[12.5px] leading-relaxed text-ink-muted">
+                  {tx.dadosNotaAjuda}<Link href="/privacidade" className="underline underline-offset-2">{tx.politica}</Link>.
+                </p>
+              </fieldset>
+            )}
             <CondicoesDaCompra curso={c} renovacao={restam !== null && restam <= JANELA_DE_RENOVACAO_DIAS} />
             <Button size="lg" full onClick={pay} disabled={busy}>
               {busy ? (PADDLE ? tx.paddleAbrindo : tx.gerando) : tx.pagar(brl(PADDLE ? c.price.brl : total))}

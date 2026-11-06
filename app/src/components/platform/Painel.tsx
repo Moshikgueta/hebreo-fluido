@@ -318,8 +318,11 @@ export function PlanoDeHoje({ licao, semDesafio = false }: {
           </p>
         </div>
       </div>
+      {/* Só o que falta (06/11/2026, painel mais curto): o que já foi feito
+          está na conta "N de 3 feitos" logo acima. */}
+      {feitos < linhas.length && (
       <ul className="grid gap-1 list-none p-0 m-0">
-        {linhas.map(l => (
+        {linhas.filter(l => !l.feito).map(l => (
           <li key={l.titulo} className="flex items-center gap-3 rounded-[12px] py-2">
             <span aria-hidden
                   className={`shrink-0 grid place-items-center w-7 h-7 rounded-full border-2 text-[14px] font-bold
@@ -342,6 +345,7 @@ export function PlanoDeHoje({ licao, semDesafio = false }: {
           </li>
         ))}
       </ul>
+      )}
       {/* O desafio do dia fica FORA da conta "N de 3": é opcional, e não
           fazê-lo não deixa nada por fazer (28/10/2026). */}
       {!semDesafio && p.state.lessons && Object.keys(p.state.lessons).length > 0 && (

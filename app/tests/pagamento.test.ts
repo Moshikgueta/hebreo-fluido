@@ -14,7 +14,7 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cookieDe, envDeTeste, pedido } from './ajuda/d1';
+import { cookieDe, envDeTeste, pedido, DADOS_FISCAIS } from './ajuda/d1';
 // @ts-expect-error - módulo JS do Worker, sem tipos
 import * as auth from '../../worker/src/api/auth.js';
 // @ts-expect-error - idem
@@ -115,7 +115,7 @@ async function compradora(env: Record<string, unknown>, email = 'compradora@exem
 }
 
 async function pedidoPix(env: Record<string, unknown>, cookie: string) {
-  const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie }), env, ctx });
+  const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie }), env, ctx });
   expect(r.status).toBe(200);
   return await r.json() as { id: string; status: string };
 }
@@ -386,12 +386,12 @@ describe('4. dá para renovar nos últimos 45 dias, e só neles', () => {
   }
   it('com 10 dias sobrando, o pedido nasce', async () => {
     const { env, cookie } = await comAcessoVencendoEm(10);
-    const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie }), env, ctx });
+    const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie }), env, ctx });
     expect(r.status).toBe(200);
   });
   it('com 200 dias sobrando, continua recusando - e com código próprio', async () => {
     const { env, cookie } = await comAcessoVencendoEm(200);
-    const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie }), env, ctx });
+    const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: 'alfabetizacao', method: 'pix' }, { Cookie: cookie }), env, ctx });
     expect(r.status).toBe(409);
     expect((await r.json() as { error: string }).error).toBe('already-owned');
   });

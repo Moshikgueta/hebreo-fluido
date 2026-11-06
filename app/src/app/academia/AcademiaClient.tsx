@@ -71,6 +71,7 @@ import { rodadaDeMontar } from '@/lib/engine/montar';
 import { OuvirEEncontrar } from '@/components/game/OuvirEEncontrar';
 import { rodadaDeOuvir } from '@/lib/engine/ouvir';
 import { HebraicoNaVidaReal } from '@/components/learn/HebraicoNaVidaReal';
+import { useModoFoco } from '@/components/shell/AppShell';
 import { perguntasDoPomarPorTema } from '@/lib/engine/pomar';
 import { TEMAS } from '@/lib/engine/temas';
 import { alfabetoDe, palavrasLegiveis, vocabularioDoCurso } from '@/lib/engine/palavras';
@@ -80,7 +81,8 @@ import { TestRun, RelatorioTeste, type ResultadoTeste } from '@/components/game/
 import {
   deLetras, habilidadeDoJogo, montarBaralho, perguntasDe, TIPOS_POR_JOGO, type Par, type Pergunta
 } from '@/lib/engine/deck';
-import { letterMastery } from '@/lib/state/rules';
+import { letterMastery, today } from '@/lib/state/rules';
+import { jogoDoDia } from '@/lib/engine/jogo-do-dia';
 import { track } from '@/lib/analytics';
 import { fmt } from '@/i18n';
 import { tx } from '@/i18n/telas/academia-academia-client';
@@ -93,6 +95,9 @@ type DadosDeJogo = ReturnType<typeof montarNovo>;
 type JogoDeBaralho = 'match' | 'blast' | 'teste';
 type JogoNovo = 'caca' | 'batalha' | 'cursiva' | 'pomar' | 'montar' | 'ouvir';
 type Jogo = JogoDeBaralho | JogoNovo;
+/* A ordem dos cartões na lista principal (o Pomar no fim, 05/11/2026). */
+const UMA_LETRA = /^[\u05D0-\u05EA][\u0591-\u05C7]*$/u;
+const LISTA_DE_JOGOS = ['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste', 'montar', 'ouvir', 'pomar'] as const;
 const DE_BARALHO = (j: Jogo): j is JogoDeBaralho =>
   j === 'match' || j === 'blast' || j === 'teste';
 
@@ -201,6 +206,8 @@ export function AcademiaClient() {
   const textosDoCurso = course.modules.flatMap(m =>
     leiturasDoModulo(m, p.state).filter(l => !l.id.startsWith('pl-')).map(l => ({ ...l, modulo: m.n })));
   const [screen, setScreen] = useState<Screen>({ kind: 'menu' });
+  /* Dentro de um jogo ou de um treino, a tela é só dele (06/11/2026). */
+  useModoFoco(screen.kind !== 'menu');
 
   /* Only what has been unlocked. A letter whose lesson was started counts:
      the learner has met it, and practising it is exactly what they should be
@@ -338,6 +345,26 @@ export function AcademiaClient() {
     }
     return out;
   }, [unlocked, fazerJogo, fazerNovo]);
+
+  /* O jogo de hoje (06/11/2026, pedido do dono): um só, escolhido pelo que o
+     aluno fez (lib/engine/jogo-do-dia.ts), no alto da lista. */
+  const doDia = useMemo(() => {
+    const hoje = today();
+    const deHoje = allLetters()
+      .map(l => ({ l, em: p.state.lessons[l.id]?.completedAt ?? null }))
+      .filter(x => x.em && today(new Date(x.em)) === hoje)
+      .sort((a, b) => (a.em! < b.em! ? -1 : 1));
+    return jogoDoDia({
+      abertos: LISTA_DE_JOGOS.filter(j => !fechados[j]),
+      hoje,
+      letraDeHoje: deHoje.at(-1)?.l.namePt ?? null,
+      /* Só trocas entre duas LETRAS (as respostas guardam também sílabas e
+         palavras): é o que a batalha treina e o que o cartão sabe dizer. */
+      trocas: Object.values(p.state.confusions).filter(t => UMA_LETRA.test(t.correct) && UMA_LETRA.test(t.chosen)),
+      ultimaVez: Object.fromEntries(Object.entries(p.state.gym).map(([k, v]) => [k, v.lastOn])),
+      caca: 'caca', batalha: 'batalha'
+    });
+  }, [fechados, p.state.lessons, p.state.confusions, p.state.gym]);
 
   /* Cada tentativa alimenta o mesmo modelo que as lições alimentam: o jogo
      não tem placar próprio, ele escreve na mesma memória.
@@ -846,6 +873,28 @@ export function AcademiaClient() {
               é assunto dele. */}
           {/* Os jogos em primeiro lugar e em destaque (05/11/2026, pedido do dono):
               antes vinham depois da lista dos textos e dos flashcards, longe do topo. */}
+          {doDia && (
+            <section aria-labelledby="jogo-de-hoje" className="grid gap-3">
+              <button type="button" onClick={() => setScreen({ kind: 'jogo', jogo: doDia.jogo, rodada: 0 })}
+                      className="hf-cartao hf-cartao-dia w-full text-left">
+                <CenaDoJogo jogo={doDia.jogo} letras={letrasDaCena} />
+                <span className="grid gap-1.5 content-center p-4 sm:p-5">
+                  <span id="jogo-de-hoje" className="font-ui text-[12.5px] font-bold uppercase tracking-[.08em] text-[var(--gold-ink)]">
+                    {tx.jogoDeHoje}
+                  </span>
+                  <span className="font-display text-[22px] font-semibold tracking-[-0.02em] text-ink">{JOGOS[doDia.jogo].titlePt}</span>
+                  <span className="font-ui text-[14.5px] leading-[1.5] text-ink-body">
+                    {doDia.motivo.tipo === 'letra-nova' ? tx.motivoLetraNova(doDia.motivo.letra)
+                      : doDia.motivo.tipo === 'confusao'
+                        ? <>{tx.motivoTrocou}<He size="inline">{doDia.motivo.a}</He>{tx.motivoE}<He size="inline">{doDia.motivo.b}</He>{tx.motivoBatalha}</>
+                      : doDia.motivo.tipo === 'nunca-jogou' ? tx.motivoNuncaJogou : tx.motivoFazTempo}
+                  </span>
+                  <span className="hf-cartao-dia-ir">{tx.jogarAgora}<span aria-hidden>→</span></span>
+                </span>
+              </button>
+            </section>
+          )}
+
           <section aria-labelledby="jogos" className="grid gap-3">
             <h2 id="jogos" className="font-display text-[23px] sm:text-[26px] font-bold tracking-[-0.02em] text-ink">
               {tx.jogosDePratica}
@@ -853,7 +902,7 @@ export function AcademiaClient() {
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
               {/* O Pomar das palavras (05/11/2026, pedido do dono): só aqui, na lista
                   principal, e não em primeiro; antes ficava na aba Hebraico na vida real. */}
-              {(['caca', 'batalha', 'cursiva', 'match', 'blast', 'teste', 'montar', 'ouvir', 'pomar'] as const).map(jogo => (
+              {LISTA_DE_JOGOS.map(jogo => (
                 <li key={jogo}>
                   {/* Cartão ilustrado (05/11/2026, aprovado pelo dono): a cena do
                       jogo em cima, com as letras que o aluno já aprendeu. */}

@@ -15,7 +15,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { cookieDe, envDeTeste, pedido } from './ajuda/d1';
+import { cookieDe, envDeTeste, pedido, DADOS_FISCAIS } from './ajuda/d1';
 import { readFileSync } from 'node:fs';
 import { allCourses, allProducts } from '@/lib/catalog';
 // @ts-expect-error - script JS sem tipos
@@ -132,7 +132,7 @@ async function conta(env: Record<string, unknown>, email = 'ana@exemplo.com.br')
 
 /** Cria o pedido e aprova o pagamento pela Mercado Pago de mentira. */
 async function comprar(env: Record<string, unknown>, cookie: string, slug: string) {
-  const c = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { courseSlug: slug, method: 'pix' }, { Cookie: cookie }), env, ctx });
+  const c = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: slug, method: 'pix' }, { Cookie: cookie }), env, ctx });
   if (c.status !== 200) return { status: c.status, erro: (await c.json() as { error?: string }).error };
   const ordem = await c.json() as { id: string };
   const p = [...pagamentos.values()].at(-1)!;
@@ -171,7 +171,7 @@ describe('o catálogo', () => {
     const env = envDeTeste();
     const a = await conta(env);
     for (const slug of [LIVRO, PACOTE]) {
-      const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { courseSlug: slug, method: 'pix' }, { Cookie: a.cookie }), env, ctx });
+      const r = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: slug, method: 'pix' }, { Cookie: a.cookie }), env, ctx });
       expect(r.status, slug).toBe(404);
     }
   });
@@ -384,7 +384,7 @@ describe('comprar o e-book e o pacote (o dia em que a venda abrir)', () => {
 describe('os três fluxos: curso, Israel Além do Óbvio e o combo', () => {
   beforeEach(abrirVenda);
   const criar = async (env: Record<string, unknown>, cookie: string, slug: string, method: 'pix' | 'card' = 'pix') => {
-    const c = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { courseSlug: slug, method }, { Cookie: cookie }), env, ctx });
+    const c = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: slug, method }, { Cookie: cookie }), env, ctx });
     expect(c.status).toBe(200);
     return { ordem: (await c.json() as { id: string }).id, p: [...pagamentos.values()].at(-1)! };
   };
@@ -401,7 +401,7 @@ describe('os três fluxos: curso, Israel Além do Óbvio e o combo', () => {
   it('o preço não vem do navegador: um valor no corpo do pedido é ignorado', async () => {
     const env = envCompleto();
     const a = await conta(env);
-    const c = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { courseSlug: PACOTE, method: 'pix', amount: 1, amountCents: 100, price: 1 }, { Cookie: a.cookie }), env, ctx });
+    const c = await pay.create({ request: pedido(`${SITE}/api/pay/create`, { ...DADOS_FISCAIS, courseSlug: PACOTE, method: 'pix', amount: 1, amountCents: 100, price: 1 }, { Cookie: a.cookie }), env, ctx });
     expect(c.status).toBe(200);
     expect([...pagamentos.values()].at(-1)!.transaction_amount).toBe(267.3);
   });

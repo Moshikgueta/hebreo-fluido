@@ -34,7 +34,7 @@ const CODES: readonly string[] = [
   'bad-credentials', 'email-taken', 'weak-password', 'invalid-email',
   'not-signed-in', 'offline', 'server', 'rate-limited', 'rate-limited-hora', 'payments-off',
   'bad-token', 'payment-failed', 'card-off', 'pix-off', 'already-owned',
-  'fora-do-prazo', 'nao-pago'
+  'fora-do-prazo', 'nao-pago', 'dados-fiscais'
 ];
 
 async function call<T>(path: string, init?: RequestInit): Promise<T> {
@@ -153,7 +153,7 @@ export class WorkerApi implements PlatformApi {
     await call<{ ok: true }>('/lembrete', { method: 'PUT', body: JSON.stringify({ quero }) });
   }
 
-  startOrder(input: { courseSlug: string; method: PaymentMethod; installments?: number; parceria?: string; origem?: Origem }) {
+  startOrder(input: { courseSlug: string; method: PaymentMethod; installments?: number; parceria?: string; origem?: Origem; nomeCompleto?: string; cpf?: string }) {
     return call<CreatedOrder>('/pay/create', {
       method: 'POST', body: JSON.stringify(input)
     });

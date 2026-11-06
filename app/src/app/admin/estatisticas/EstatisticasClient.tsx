@@ -18,7 +18,8 @@ import {
 type Campanha = { origem: string; visitas: number };
 type Dados = { dias: number; desde: string; respostas: Resposta[]; etapas: Etapa[]; tempos?: Tempo[]; campanhas?: Campanha[]; demo?: { etapa: string; n: number }[]; portal?: { evento: string; n: number }[]; motivos?: { motivo: string; n: number }[];
   porFonte?: { evento: string; fonte: string; n: number }[]; pedidos?: PedidosDaFonte[]; pedidosDeTeste?: number;
-  interessados?: Interessados | null; semanas?: Semana[] };
+  interessados?: Interessados | null; semanas?: Semana[]; retencao?: Retencao };
+type Retencao = { alunos: number; baseDia2: number; voltouDia2: number; baseSemana2: number; voltouSemana2: number; ativos7: number };
 type Semana = { semana: string; capa: number; venda: number; teste: number; testeFeito: number; checkout: number; conta: number;
   pagar: number; leads: number; pedidos: number; compras: number; receitaCentavos: number; estornos: number };
 type Interessados = { ativos: number; aguardando: number; sairam: number; porInteresse: Record<string, number>; porOrigem: Record<string, number> };
@@ -27,6 +28,32 @@ const INTERESSE_PT: Record<string, string> = {
   curso: 'Próximas letras (fim do teste grátis)', israel: 'Aviso: Israel Além do Óbvio',
   raizes: 'Aviso: Raízes Sefarditas', a1: 'Aviso: Hebraico A1'
 };
+
+/* Os alunos voltam? (06/11/2026, worker/src/lib/retencao.js): só contagens,
+   tiradas dos dias de estudo que o progresso de cada aluno já guarda. */
+function OsAlunosVoltam({ r }: { r: Retencao }) {
+  const parte = (n: number, base: number) => (base ? `${n} de ${base} (${Math.round((n / base) * 100)}%)` : 'ainda sem alunos que começaram há tempo bastante');
+  return (
+    <section className="grid gap-3">
+      <h2 className="text-[20px] font-semibold m-0">Os alunos voltam?</h2>
+      <p className="font-ui text-[14px] text-ink-muted m-0">
+        Dos dias de estudo que o progresso de cada aluno guarda. Só contagens, sem nomes; as contas de administrador
+        ficam de fora. Não depende do período escolhido.
+      </p>
+      <table className="w-full font-ui text-[14px] border-collapse">
+        <tbody>
+          <tr className="border-t border-[color:var(--line-soft)]"><td className="py-2 pr-3">Alunos que já estudaram</td><td className="py-2 text-right tabular-nums">{r.alunos}</td></tr>
+          <tr className="border-t border-[color:var(--line-soft)]"><td className="py-2 pr-3">Voltaram no dia seguinte ao primeiro</td><td className="py-2 text-right tabular-nums">{parte(r.voltouDia2, r.baseDia2)}</td></tr>
+          <tr className="border-t border-[color:var(--line-soft)]"><td className="py-2 pr-3">Estudaram na segunda semana (do 7º ao 13º dia)</td><td className="py-2 text-right tabular-nums">{parte(r.voltouSemana2, r.baseSemana2)}</td></tr>
+          <tr className="border-t border-[color:var(--line-soft)]"><td className="py-2 pr-3">Estudaram nos últimos 7 dias</td><td className="py-2 text-right tabular-nums">{parte(r.ativos7, r.alunos)}</td></tr>
+        </tbody>
+      </table>
+      <p className="font-ui text-[13.5px] text-ink-muted m-0">
+        Onde eles param dentro das lições está mais abaixo, em "Onde param".
+      </p>
+    </section>
+  );
+}
 
 /* A lista de interessados (23/10/2026, worker/src/api/interessados.js): só contagens. */
 function ListaDeInteressados({ l }: { l: Interessados }) {
@@ -268,6 +295,7 @@ export function EstatisticasClient() {
               ) : <p className="font-ui text-[14px] m-0">Ainda não há respostas bastantes para comparar.</p>}
             </section>
 
+            {estado.dados.retencao && <OsAlunosVoltam r={estado.dados.retencao} />}
             {estado.dados.semanas && <FunilPorSemana semanas={estado.dados.semanas} />}
             <Crescimento dados={estado.dados} />
             {estado.dados.interessados && <ListaDeInteressados l={estado.dados.interessados} />}

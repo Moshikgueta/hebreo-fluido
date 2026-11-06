@@ -130,11 +130,14 @@ function Portao() {
 }
 
 
-function Faixa({ f, presa, novo }: { f: FaixaDaEstrada; presa: boolean; novo: boolean }) {
+function Faixa({ f, presa, novo, aberta, onAlternar }: {
+  f: FaixaDaEstrada; presa: boolean; novo: boolean;
+  /** Em Meu curso, a faixa abre e fecha as estações do módulo. */
+  aberta?: boolean; onAlternar?: () => void;
+}) {
   const adiante = f.estado === 'adiante';
-  return (
-    <div className={`hf-faixa ${presa ? 'hf-faixa-presa' : ''} hf-faixa-${f.estado}`}>
-      <Link href={f.href} className="hf-faixa-link">
+  const miolo = (
+    <>
         {f.n >= 1 && f.n <= 7 && (
           <span aria-hidden className={`hf-faixa-cena ${novo ? 'hf-desbloqueio' : ''}`}>
             <Cenario n={f.n as IdDoCenario} vivo={f.estado === 'agora'} trancado={adiante} />
@@ -160,7 +163,18 @@ function Faixa({ f, presa, novo }: { f: FaixaDaEstrada; presa: boolean; novo: bo
             <span className="sr-only" role="status">{tx.lugarNovoAberto(f.lugar?.pt ?? f.titulo)}</span>
           </>
         )}
-      </Link>
+        {onAlternar && (
+          <span aria-hidden className={`hf-faixa-seta ${aberta ? 'hf-faixa-seta-aberta' : ''}`}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+          </span>
+        )}
+    </>
+  );
+  return (
+    <div className={`hf-faixa ${presa && aberta !== false ? 'hf-faixa-presa' : ''} hf-faixa-${f.estado}`}>
+      {onAlternar
+        ? <button type="button" onClick={onAlternar} aria-expanded={!!aberta} className="hf-faixa-link w-full text-left">{miolo}</button>
+        : <Link href={f.href} className="hf-faixa-link">{miolo}</Link>}
     </div>
   );
 }
@@ -203,7 +217,7 @@ function CartaoDaEstacao({ p, onFechar }: { p: ParadaDaEstrada; onFechar: () => 
   );
 }
 
-export function EstradaDoModulo({ itens, pronto, onAbrirJarro, seguir = false, janela, memoria = 'curso', novo = null }: {
+export function EstradaDoModulo({ itens, pronto, onAbrirJarro, seguir = false, janela, memoria = 'curso', novo = null, recolher = false }: {
   itens: ItemDaEstrada[];
   /** O progresso já carregou: antes disso a Yael não anda nem guarda nada. */
   pronto: boolean;
@@ -217,6 +231,9 @@ export function EstradaDoModulo({ itens, pronto, onAbrirJarro, seguir = false, j
   memoria?: string;
   /** O módulo que acabou de abrir: a faixa dele se anuncia. */
   novo?: number | null;
+  /** Meu curso mais curto (06/11/2026, pedido do dono): só o módulo de agora
+   *  aparece aberto; os outros ficam na faixa, que abre com um toque. */
+  recolher?: boolean;
 }) {
   const caixa = useRef<HTMLDivElement>(null);
   const via = useRef<SVGPathElement>(null);
@@ -226,240 +243,274 @@ export function EstradaDoModulo({ itens, pronto, onAbrirJarro, seguir = false, j
   const [foraDeVista, setForaDeVista] = useState(false);
   const [aberto, setAberto] = useState<string | null>(null);
   const [humor, setHumor] = useState<'parada' | 'feliz'>('parada');
+  /* Os módulos abertos à mão (só com `recolher`). */
+  const [abertas, setAbertas] = useState<Set<string>>(() => new Set());
+  const andando = useRef(false);
 
   /* A estação de agora; sem nenhuma, a última feita. */
   const todas = itens.filter((i): i is ParadaDaEstrada => !ehFaixa(i));
   const iAgora = todas.findIndex(p => p.estado === 'agora');
   const aquiTotal = Math.max(0, iAgora >= 0 ? iAgora : todas.map(p => p.estado).lastIndexOf('feita'));
-  /* Com `janela`, só um pedaço: as estações em volta da de agora e a faixa
-     do módulo delas. */
+  const chaveDeAgora = todas[aquiTotal]?.chave ?? '';
+
+  /* Cada módulo num grupo: a faixa e as estações dele. A Aula 0, antes da
+     primeira faixa, fica num grupo sem faixa. */
+  const todosOsGrupos: { faixa: FaixaDaEstrada | null; paradas: ParadaDaEstrada[] }[] = [];
+  for (const it of itens) {
+    if (ehFaixa(it)) todosOsGrupos.push({ faixa: it, paradas: [] });
+    else {
+      if (!todosOsGrupos.length) todosOsGrupos.push({ faixa: null, paradas: [] });
+      todosOsGrupos[todosOsGrupos.length - 1]!.paradas.push(it);
+    }
+  }
+  const grupoDeAgora = todosOsGrupos.find(g => g.paradas.some(p => p.chave === chaveDeAgora));
+  /* Com `janela`, só as estações em volta da de agora; com `recolher`, só as
+     do módulo de agora e as dos módulos que o aluno abriu. */
   const de = janela != null ? Math.max(0, aquiTotal - janela) : 0;
   const ate = janela != null ? Math.min(todas.length - 1, aquiTotal + janela) : todas.length - 1;
-  const visiveis: ItemDaEstrada[] = [];
-  {
-    let k = 0;
-    itens.forEach((it, idx) => {
-      if (ehFaixa(it)) {
-        const prox = itens.slice(idx + 1).find(x => !ehFaixa(x));
-        const kProx = prox ? todas.indexOf(prox as ParadaDaEstrada) : -1;
-        if (kProx >= de && kProx <= ate) visiveis.push(it);
-        return;
-      }
-      if (k >= de && k <= ate) visiveis.push(it);
-      k++;
-          });
-        }
-        const paradas = visiveis.filter((i): i is ParadaDaEstrada => !ehFaixa(i));
-        const aqui = aquiTotal - de;
-        const chaveDeAgora = todas[aquiTotal]?.chave ?? '';
+  const estaAberto = (g: (typeof todosOsGrupos)[number]) =>
+    !recolher || !g.faixa || g === grupoDeAgora || abertas.has(g.faixa.chave);
+  const grupos = todosOsGrupos
+    .map(g => ({ ...g, aberto: estaAberto(g), paradas: g.paradas.filter(p => { const i = todas.indexOf(p); return i >= de && i <= ate; }) }))
+    .filter(g => janela == null || g.paradas.length > 0)
+    .map(g => ({ ...g, visiveis: g.aberto ? g.paradas : [] }));
+  const paradas = grupos.flatMap(g => g.visiveis);
+  const aqui = Math.max(0, paradas.findIndex(p => p.chave === chaveDeAgora));
+  const alternar = (chave: string) => setAbertas(a => {
+    const n = new Set(a);
+    if (n.has(chave)) n.delete(chave); else n.add(chave);
+    return n;
+  });
 
-        const formas = useCallback(() => [...(caixa.current?.querySelectorAll<HTMLElement>('[data-parada]') ?? [])], []);
-        const centros = useCallback(() => {
-          const el = caixa.current; if (!el) return [];
-          const r = el.getBoundingClientRect();
-          return formas().map(n => { const b = n.getBoundingClientRect(); return [b.left - r.left + b.width / 2, b.top - r.top + b.height / 2, b.top - r.top] as const; });
-        }, [formas]);
+  const formas = useCallback(() => [...(caixa.current?.querySelectorAll<HTMLElement>('[data-parada]') ?? [])], []);
+  const centros = useCallback(() => {
+    const el = caixa.current; if (!el) return [];
+    const r = el.getBoundingClientRect();
+    return formas().map(n => { const b = n.getBoundingClientRect(); return [b.left - r.left + b.width / 2, b.top - r.top + b.height / 2, b.top - r.top] as const; });
+  }, [formas]);
 
-        /* A estrada passa pelo centro de cada estação. Refeita quando o tamanho muda. */
-        useLayoutEffect(() => {
-          const el = caixa.current; if (!el) return;
-          const medir = () => {
-            const r = el.getBoundingClientRect(), pts = centros(); if (!pts.length) return;
-            let d = `M${pts[0]![0]} ${pts[0]![2] - 40}L${pts[0]![0]} ${pts[0]![1]}`;
-            for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1]!, [x, y] = pts[i]!; const my = (y0 + y) / 2; d += ` C${x0} ${my} ${x} ${my} ${x} ${y}`; }
-            const arv = pts.map(([x, y], i) => ({ x: x > r.width / 2 ? x - r.width * 0.3 : x + r.width * 0.3, y, c: i % 2 === 1 }));
-            setGeo({ w: r.width, h: r.height, d, arv });
-          };
-          medir();
-          const ro = new ResizeObserver(medir); ro.observe(el);
-          return () => ro.disconnect();
-        }, [centros, paradas.length]);
+  /* A estrada passa pelo centro de cada estação. Refeita quando o tamanho muda
+     (e quando um módulo abre ou fecha). */
+  useLayoutEffect(() => {
+    const el = caixa.current; if (!el) return;
+    const medir = () => {
+      const r = el.getBoundingClientRect(), pts = centros(); if (!pts.length) return;
+      let d = `M${pts[0]![0]} ${pts[0]![2] - 40}L${pts[0]![0]} ${pts[0]![1]}`;
+      for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1]!, [x, y] = pts[i]!; const my = (y0 + y) / 2; d += ` C${x0} ${my} ${x} ${my} ${x} ${y}`; }
+      const arv = pts.map(([x, y], i) => ({ x: x > r.width / 2 ? x - r.width * 0.3 : x + r.width * 0.3, y, c: i % 2 === 1 }));
+      setGeo({ w: r.width, h: r.height, d, arv });
+    };
+    medir();
+    const ro = new ResizeObserver(medir); ro.observe(el);
+    return () => ro.disconnect();
+  }, [centros, paradas.length]);
 
-        /* O ponto da estrada logo acima da estação i: onde a Yael pisa. */
-        /* A estrada é amostrada uma vez (o caminho do curso inteiro tem milhares de
-           pixels e dezenas de estações); cada estação procura nas amostras. */
-        const amostras = useRef<{ d: string; pts: [number, number, number][] }>({ d: '', pts: [] });
-        const comprimentoDe = useCallback((i: number) => {
-          const path = via.current, c = centros()[i]; if (!path || !c) return 0;
-          const d = path.getAttribute('d') ?? '';
-          if (amostras.current.d !== d) {
-            const L = path.getTotalLength(), pts: [number, number, number][] = [];
-            for (let s = 0; s <= L; s += 4) { const q = path.getPointAtLength(s); pts.push([s, q.x, q.y]); }
-            amostras.current = { d, pts };
-          }
-          const alvoY = c[2] - 2; let melhor = 0, dist = Infinity;
-          for (const [s, x, y] of amostras.current.pts) { const dd = (x - c[0]) ** 2 + (y - alvoY) ** 2; if (dd < dist) { dist = dd; melhor = s; } }
-          return melhor;
-        }, [centros]);
-        const poe = useCallback((l: number) => {
-          const path = via.current, v = viajante.current; if (!path || !v) return;
-          const q = path.getPointAtLength(l); v.style.transform = `translate(${q.x - 28}px, ${q.y - 66}px)`; v.style.opacity = '1';
-        }, []);
+  /* O ponto da estrada logo acima da estação i: onde a Yael pisa. A estrada
+     é amostrada uma vez (o caminho do curso inteiro tem milhares de pixels e
+     dezenas de estações); cada estação procura nas amostras. */
+  const amostras = useRef<{ d: string; pts: [number, number, number][] }>({ d: '', pts: [] });
+  const comprimentoDe = useCallback((i: number) => {
+    const path = via.current, c = centros()[i]; if (!path || !c) return 0;
+    const d = path.getAttribute('d') ?? '';
+    if (amostras.current.d !== d) {
+      const L = path.getTotalLength(), pts: [number, number, number][] = [];
+      for (let s = 0; s <= L; s += 4) { const q = path.getPointAtLength(s); pts.push([s, q.x, q.y]); }
+      amostras.current = { d, pts };
+    }
+    const alvoY = c[2] - 2; let melhor = 0, dist = Infinity;
+    for (const [s, x, y] of amostras.current.pts) { const dd = (x - c[0]) ** 2 + (y - alvoY) ** 2; if (dd < dist) { dist = dd; melhor = s; } }
+    return melhor;
+  }, [centros]);
+  const poe = useCallback((l: number) => {
+    const path = via.current, v = viajante.current; if (!path || !v) return;
+    const q = path.getPointAtLength(l); v.style.transform = `translate(${q.x - 28}px, ${q.y - 66}px)`; v.style.opacity = '1';
+  }, []);
 
-        /* A Yael anda só quando há progresso novo: da estação onde parou da última
-           vez até a de agora (na primeira visita, das seis anteriores), parando um
-           instante em cada uma, que pula de leve quando ela chega. */
-        useEffect(() => {
-          if (!geo || !pronto) return;
-          const paradasEl = formas();
-          const fim = comprimentoDe(aqui);
-          const antes = ondeParou(memoria);
-          const iAntesTotal = antes ? todas.findIndex(p => p.chave === antes) : -1;
-          guardar(memoria, chaveDeAgora);
-          const inicio = iAntesTotal < 0 ? Math.max(0, aqui - 6) : Math.max(0, iAntesTotal - de);
-          if (calmo() || inicio >= aqui) {
-            poe(fim);
-            if (seguir && aqui > 0) paradasEl[aqui]?.scrollIntoView({ block: 'center' });
+  /* A Yael anda só quando há progresso novo: da estação onde parou da última
+     vez até a de agora (na primeira visita, das seis anteriores), parando um
+     instante em cada uma, que pula de leve quando ela chega. Roda uma vez,
+     quando o progresso e a estrada estão prontos. */
+  useEffect(() => {
+    if (!geo || !pronto) return;
+    const paradasEl = formas();
+    const fim = comprimentoDe(aqui);
+    const antes = ondeParou(memoria);
+    const iAntes = antes ? todas.findIndex(p => p.chave === antes) : -1;
+    guardar(memoria, chaveDeAgora);
+    /* De onde ela sai, entre as estações à vista: a última à vista que não
+       passa de onde ela parou. */
+    let inicio = Math.max(0, aqui - 6);
+    if (iAntes >= aquiTotal) inicio = aqui;
+    else if (iAntes >= 0) {
+      inicio = 0;
+      paradas.forEach((p, i) => { if (i <= aqui && todas.indexOf(p) <= iAntes) inicio = i; });
+    }
+    if (calmo() || inicio >= aqui) {
+      poe(fim);
+      if (seguir && aqui > 0) paradasEl[aqui]?.scrollIntoView({ block: 'center' });
+      return;
+    }
+    const marcos = Array.from({ length: aqui + 1 }, (_, i) => (i < inicio ? 0 : comprimentoDe(i)));
+    const v = viajante.current!;
+    const trechos = aqui - inicio;
+    /* Cada trecho entre 450 e 900 ms: no máximo uns seis segundos. */
+    const porTrecho = Math.max(450, Math.min(900, 6000 / trechos)), pausa = 220;
+    let raf = 0, trecho = inicio, t0 = 0, parado = false, solto = false;
+    const largar = () => { solto = true; };
+    const acompanhar = () => {
+      if (!seguir || solto) return;
+      const r = v.getBoundingClientRect(), alvo = window.innerHeight * 0.5;
+      const dy = r.top + r.height / 2 - alvo;
+      if (Math.abs(dy) > 24) window.scrollBy(0, dy * 0.12);
+    };
+    const chegou = (i: number) => {
+      const el = paradasEl[i]; if (!el) return;
+      el.classList.remove('hf-visita'); void el.getBoundingClientRect(); el.classList.add('hf-visita');
+    };
+    const passo = (t: number) => {
+      if (!t0) t0 = t;
+      const ini = marcos[trecho]!, alvoL = marcos[trecho + 1]!;
+      if (parado) {
+        if (t - t0 >= pausa) { parado = false; t0 = t; v.classList.add('hf-andando'); }
+      } else {
+        const k = Math.min(1, (t - t0) / porTrecho), e = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+        poe(ini + (alvoL - ini) * e);
+        if (k >= 1) {
+          trecho++; chegou(trecho); v.classList.remove('hf-andando');
+          if (trecho >= aqui) {
+            andando.current = false;
+            setHumor('feliz');
+            if (seguir && !solto) paradasEl[aqui]?.scrollIntoView({ block: 'center', behavior: 'smooth' });
             return;
           }
-          const marcos = Array.from({ length: aqui + 1 }, (_, i) => (i < inicio ? 0 : comprimentoDe(i)));
-          const v = viajante.current!;
-          const trechos = aqui - inicio;
-          /* Cada trecho entre 450 e 900 ms: no máximo uns seis segundos. */
-          const porTrecho = Math.max(450, Math.min(900, 6000 / trechos)), pausa = 220;
-          let raf = 0, trecho = inicio, t0 = 0, parado = false, solto = false;
-          const largar = () => { solto = true; };
-          const acompanhar = () => {
-            if (!seguir || solto) return;
-            const r = v.getBoundingClientRect(), alvo = window.innerHeight * 0.5;
-            const dy = r.top + r.height / 2 - alvo;
-            if (Math.abs(dy) > 24) window.scrollBy(0, dy * 0.12);
-          };
-          const chegou = (i: number) => {
-            const el = paradasEl[i]; if (!el) return;
-            el.classList.remove('hf-visita'); void el.getBoundingClientRect(); el.classList.add('hf-visita');
-          };
-          const passo = (t: number) => {
-            if (!t0) t0 = t;
-            const ini = marcos[trecho]!, alvoL = marcos[trecho + 1]!;
-            if (parado) {
-              if (t - t0 >= pausa) { parado = false; t0 = t; v.classList.add('hf-andando'); }
-            } else {
-              const k = Math.min(1, (t - t0) / porTrecho), e = k < .5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
-              poe(ini + (alvoL - ini) * e);
-              if (k >= 1) {
-                trecho++; chegou(trecho); v.classList.remove('hf-andando');
-                if (trecho >= aqui) {
-                  setHumor('feliz');
-                  if (seguir && !solto) paradasEl[aqui]?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-                  return;
-                }
-                parado = true; t0 = t;
-              }
-            }
-            acompanhar();
-            raf = requestAnimationFrame(passo);
-          };
-          poe(marcos[inicio]!);
-          if (seguir) paradasEl[inicio]?.scrollIntoView({ block: 'center' });
-          window.addEventListener('wheel', largar, { passive: true });
-          window.addEventListener('touchstart', largar, { passive: true });
-          window.addEventListener('keydown', largar);
-          const atraso = setTimeout(() => { v.classList.add('hf-andando'); raf = requestAnimationFrame(passo); }, 600);
-          return () => {
-            clearTimeout(atraso); cancelAnimationFrame(raf);
-            window.removeEventListener('wheel', largar); window.removeEventListener('touchstart', largar); window.removeEventListener('keydown', largar);
-          };
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [geo === null, pronto, aqui, chaveDeAgora]);
-
-        /* O botão de voltar aparece quando a estação de agora sai da tela. */
-        useEffect(() => {
-          const alvo = formas()[aqui]; if (!alvo) return;
-          const io = new IntersectionObserver(([e]) => setForaDeVista(!e!.isIntersecting && e!.boundingClientRect.top > -4000));
-          io.observe(alvo); return () => io.disconnect();
-        }, [aqui, geo, formas]);
-        const voltar = () => formas()[aqui]?.scrollIntoView({ block: 'center', behavior: calmo() ? 'auto' : 'smooth' });
-
-        /* O cartão fecha com Esc (e o foco volta à estação) ou tocando fora. */
-        const cartao = aberto ? paradas.find(p => p.chave === aberto) ?? null : null;
-        const fechar = useCallback(() => {
-          const chave = aberto; setAberto(null);
-          if (chave) caixa.current?.querySelector<HTMLElement>(`[data-chave="${chave}"]`)?.focus();
-        }, [aberto]);
-        useEffect(() => {
-          if (!aberto) return;
-          const tecla = (e: KeyboardEvent) => { if (e.key === 'Escape') fechar(); };
-          const fora = (e: PointerEvent) => {
-            const alvo = e.target as HTMLElement;
-            if (!alvo.closest('#cartao-da-estacao') && !alvo.closest('[data-chave]')) setAberto(null);
-          };
-          document.addEventListener('keydown', tecla); document.addEventListener('pointerdown', fora);
-          return () => { document.removeEventListener('keydown', tecla); document.removeEventListener('pointerdown', fora); };
-        }, [aberto, fechar]);
-
-        /* Cada módulo num bloco: a faixa dele fica presa no topo só enquanto se
-           rola pelas estações DELE, e solta quando o próximo módulo chega. */
-        const grupos: { faixa: FaixaDaEstrada | null; paradas: ParadaDaEstrada[] }[] = [];
-        for (const it of visiveis) {
-          if (ehFaixa(it)) grupos.push({ faixa: it, paradas: [] });
-          else { if (!grupos.length) grupos.push({ faixa: null, paradas: [] }); grupos[grupos.length - 1]!.paradas.push(it); }
+          parado = true; t0 = t;
         }
-        let k = -1;
-        return (
-          <div className="relative z-[1]">
-            <div ref={caixa} className="hf-estrada">
-              {geo && (
-                <svg aria-hidden className="hf-estrada-svg" viewBox={`0 0 ${geo.w} ${geo.h}`} width={geo.w} height={geo.h}>
-                  {geo.arv.map((a, i) => a.c
-                    ? <path key={i} className="hf-arvore" style={{ animationDelay: `-${i * .7}s` }} d={`M${a.x} ${a.y + 24}l-7-32 7-14 7 14z`} fill="var(--il-cipreste)" opacity=".55" />
-                    : <g key={i} className="hf-arvore" style={{ animationDelay: `-${i * .5}s` }}><circle cx={a.x} cy={a.y + 6} r="13" fill="var(--il-oliva)" opacity=".45" /><path d={`M${a.x} ${a.y + 18}v10`} stroke="var(--il-tronco)" strokeWidth="3" opacity=".55" /></g>)}
-                  <path ref={via} className="hf-via" d={geo.d} fill="none" stroke="var(--il-pedra)" strokeWidth="24" strokeLinecap="round" />
-                  <path className="hf-via-det" d={geo.d} fill="none" stroke="var(--il-pedra-2)" strokeWidth="24" strokeLinecap="round" strokeDasharray="1 9" opacity=".7" />
-                  <path className="hf-via-det" d={geo.d} fill="none" stroke="#FBF9F5" strokeWidth="2" strokeDasharray="6 10" strokeLinecap="round" opacity=".8" />
-                </svg>
+      }
+      acompanhar();
+      raf = requestAnimationFrame(passo);
+    };
+    andando.current = true;
+    poe(marcos[inicio]!);
+    if (seguir) paradasEl[inicio]?.scrollIntoView({ block: 'center' });
+    window.addEventListener('wheel', largar, { passive: true });
+    window.addEventListener('touchstart', largar, { passive: true });
+    window.addEventListener('keydown', largar);
+    const atraso = setTimeout(() => { v.classList.add('hf-andando'); raf = requestAnimationFrame(passo); }, 600);
+    return () => {
+      andando.current = false;
+      clearTimeout(atraso); cancelAnimationFrame(raf);
+      window.removeEventListener('wheel', largar); window.removeEventListener('touchstart', largar); window.removeEventListener('keydown', largar);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [geo === null, pronto, chaveDeAgora]);
+
+  /* Um módulo abriu ou fechou (ou a tela mudou de largura): a estrada é outra,
+     e a Yael, parada, volta para cima da estação de agora. */
+  useEffect(() => {
+    if (!geo || !pronto || andando.current) return;
+    poe(comprimentoDe(aqui));
+  }, [geo, pronto, aqui, comprimentoDe, poe]);
+
+  /* O botão de voltar aparece quando a estação de agora sai da tela. */
+  useEffect(() => {
+    const alvo = formas()[aqui]; if (!alvo) return;
+    const io = new IntersectionObserver(([e]) => setForaDeVista(!e!.isIntersecting && e!.boundingClientRect.top > -4000));
+    io.observe(alvo); return () => io.disconnect();
+  }, [aqui, geo, formas]);
+  const voltar = () => formas()[aqui]?.scrollIntoView({ block: 'center', behavior: calmo() ? 'auto' : 'smooth' });
+
+  /* O cartão fecha com Esc (e o foco volta à estação) ou tocando fora. */
+  const cartao = aberto ? paradas.find(p => p.chave === aberto) ?? null : null;
+  const fechar = useCallback(() => {
+    const chave = aberto; setAberto(null);
+    if (chave) caixa.current?.querySelector<HTMLElement>(`[data-chave="${chave}"]`)?.focus();
+  }, [aberto]);
+  useEffect(() => {
+    if (!aberto) return;
+    const tecla = (e: KeyboardEvent) => { if (e.key === 'Escape') fechar(); };
+    const fora = (e: PointerEvent) => {
+      const alvo = e.target as HTMLElement;
+      if (!alvo.closest('#cartao-da-estacao') && !alvo.closest('[data-chave]')) setAberto(null);
+    };
+    document.addEventListener('keydown', tecla); document.addEventListener('pointerdown', fora);
+    return () => { document.removeEventListener('keydown', tecla); document.removeEventListener('pointerdown', fora); };
+  }, [aberto, fechar]);
+
+  let k = -1;
+  const estacao = (p: ParadaDaEstrada) => {
+    k++;
+    const lado = k % 2 ? 'hf-esq' : 'hf-dir';
+    const comYael = k === aqui ? 'hf-com-yael' : '';
+    const texto = (
+      <span className="hf-estrada-txt">
+        {p.estado === 'agora' && <span className="hf-estrada-agora">{tx.jAgora}</span>}
+        <b>{p.nome}</b>
+        <span>{p.sub}</span>
+        {p.tipo === 'checkpoint' && (
+          <span className="hf-carimbos" aria-label={tx.jCarimbos(p.carimbos ?? 0)}>
+            {[0, 1, 2].map(c => <span key={c} aria-hidden className={`hf-carimbo ${c < (p.carimbos ?? 0) ? 'hf-carimbo-ok' : ''}`}>✓</span>)}
+          </span>
+        )}
+      </span>
+    );
+    if (p.tipo === 'jarro') {
+      const estado = ganhou === p.modulo ? 'aberto' : p.jarro ?? 'fechado';
+      return (
+        <li key={p.chave} className={`hf-estrada-parada ${lado} ${comYael}`}>
+          <button type="button" disabled={estado !== 'pronto'} aria-label={p.rotuloAcessivel}
+                  onClick={() => { if (p.modulo && onAbrirJarro(p.modulo)) setGanhou(p.modulo); }}
+                  className="relative bg-transparent border-0 p-0 disabled:cursor-default">
+            <Jarro estado={estado} />
+            {ganhou === p.modulo && <span aria-hidden className="hf-jarro-ganho">+20 XP</span>}
+          </button>
+          {texto}
+        </li>
+      );
+    }
+    const forma = p.tipo === 'checkpoint' ? <Portao /> : <Arco p={p} />;
+    return (
+      <li key={p.chave} className={`hf-estrada-parada ${lado} ${comYael}`}>
+        <button type="button" data-chave={p.chave} aria-label={p.rotuloAcessivel} aria-haspopup="dialog"
+                aria-expanded={aberto === p.chave} aria-current={p.estado === 'agora' ? 'step' : undefined}
+                onClick={() => setAberto(a => (a === p.chave ? null : p.chave))}
+                className="hf-estacao-botao">{forma}</button>
+        {texto}
+      </li>
+    );
+  };
+
+  return (
+    <div className="relative z-[1]">
+      <div ref={caixa} className="hf-estrada">
+        {geo && (
+          <svg aria-hidden className="hf-estrada-svg" viewBox={`0 0 ${geo.w} ${geo.h}`} width={geo.w} height={geo.h}>
+            {geo.arv.map((a, i) => a.c
+              ? <path key={i} className="hf-arvore" style={{ animationDelay: `-${i * .7}s` }} d={`M${a.x} ${a.y + 24}l-7-32 7-14 7 14z`} fill="var(--il-cipreste)" opacity=".55" />
+              : <g key={i} className="hf-arvore" style={{ animationDelay: `-${i * .5}s` }}><circle cx={a.x} cy={a.y + 6} r="13" fill="var(--il-oliva)" opacity=".45" /><path d={`M${a.x} ${a.y + 18}v10`} stroke="var(--il-tronco)" strokeWidth="3" opacity=".55" /></g>)}
+            <path ref={via} className="hf-via" d={geo.d} fill="none" stroke="var(--il-pedra)" strokeWidth="24" strokeLinecap="round" />
+            <path className="hf-via-det" d={geo.d} fill="none" stroke="var(--il-pedra-2)" strokeWidth="24" strokeLinecap="round" strokeDasharray="1 9" opacity=".7" />
+            <path className="hf-via-det" d={geo.d} fill="none" stroke="#FBF9F5" strokeWidth="2" strokeDasharray="6 10" strokeLinecap="round" opacity=".8" />
+          </svg>
+        )}
+        {/* Por baixo das estações e dos textos: ela nunca os cobre. */}
+        <div ref={viajante} aria-hidden className="hf-viajante"><Yael key={humor} humor={humor} /></div>
+        {/* Cada módulo num bloco: a faixa dele fica presa no topo só enquanto
+            se rola pelas estações DELE, e solta quando o próximo módulo chega. */}
+        <ol className="hf-estrada-lista list-none m-0 p-0">
+          {grupos.map(g => (
+            <li key={g.faixa?.chave ?? 'inicio'} className="hf-modulo">
+              {g.faixa && (
+                <Faixa f={g.faixa} presa={janela == null} novo={novo === g.faixa.n}
+                       {...(recolher && g.faixa.chave !== grupoDeAgora?.faixa?.chave
+                         ? { aberta: g.aberto, onAlternar: () => alternar(g.faixa!.chave) } : {})} />
               )}
-              {/* Por baixo das estações e dos textos: ela nunca os cobre. */}
-              <div ref={viajante} aria-hidden className="hf-viajante"><Yael key={humor} humor={humor} /></div>
-              <ol className="hf-estrada-lista list-none m-0 p-0">
-              {grupos.map(g => (
-                <li key={g.faixa?.chave ?? 'inicio'} className="hf-modulo">
-                  {g.faixa && <Faixa f={g.faixa} presa={janela == null} novo={novo === g.faixa.n} />}
-                  <ol className="hf-modulo-lista list-none m-0 p-0">
-                  {g.paradas.map(p => {
-                    k++;
-                const lado = k % 2 ? 'hf-esq' : 'hf-dir';
-                const comYael = k === aqui ? 'hf-com-yael' : '';
-                const texto = (
-                  <span className="hf-estrada-txt">
-                    {p.estado === 'agora' && <span className="hf-estrada-agora">{tx.jAgora}</span>}
-                    <b>{p.nome}</b>
-                    <span>{p.sub}</span>
-                    {p.tipo === 'checkpoint' && (
-                      <span className="hf-carimbos" aria-label={tx.jCarimbos(p.carimbos ?? 0)}>
-                        {[0, 1, 2].map(c => <span key={c} aria-hidden className={`hf-carimbo ${c < (p.carimbos ?? 0) ? 'hf-carimbo-ok' : ''}`}>✓</span>)}
-                      </span>
-                    )}
-                  </span>
-                );
-                if (p.tipo === 'jarro') {
-                  const estado = ganhou === p.modulo ? 'aberto' : p.jarro ?? 'fechado';
-                  return (
-                    <li key={p.chave} className={`hf-estrada-parada ${lado} ${comYael}`}>
-                      <button type="button" disabled={estado !== 'pronto'} aria-label={p.rotuloAcessivel}
-                              onClick={() => { if (p.modulo && onAbrirJarro(p.modulo)) setGanhou(p.modulo); }}
-                              className="relative bg-transparent border-0 p-0 disabled:cursor-default">
-                        <Jarro estado={estado} />
-                        {ganhou === p.modulo && <span aria-hidden className="hf-jarro-ganho">+20 XP</span>}
-                      </button>
-                      {texto}
-                    </li>
-                  );
-                }
-                const forma = p.tipo === 'checkpoint' ? <Portao /> : <Arco p={p} />;
-                return (
-                  <li key={p.chave} className={`hf-estrada-parada ${lado} ${comYael}`}>
-                    <button type="button" data-chave={p.chave} aria-label={p.rotuloAcessivel} aria-haspopup="dialog"
-                            aria-expanded={aberto === p.chave} aria-current={p.estado === 'agora' ? 'step' : undefined}
-                            onClick={() => setAberto(a => (a === p.chave ? null : p.chave))}
-                            className="hf-estacao-botao">{forma}</button>
-                    {texto}
-                  </li>
-                );
-              })}
-            </ol>
-          </li>
-        ))}
+              {g.visiveis.length > 0 && (
+                <ol className="hf-modulo-lista list-none m-0 p-0">
+                  {g.visiveis.map(estacao)}
+                </ol>
+              )}
+            </li>
+          ))}
         </ol>
       </div>
       {cartao && <CartaoDaEstacao p={cartao} onFechar={fechar} />}
