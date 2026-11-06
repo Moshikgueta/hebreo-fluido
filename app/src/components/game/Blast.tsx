@@ -1,19 +1,19 @@
-'use client';
-
-/* Blast: rápido, uma pergunta por vez.
+/* O Canhão de letras (o antigo Blast; 05/11/2026, pedido do dono).
  * ─────────────────────────────────────────────────────────────────────────
- * Mostra um lado do par e pede o outro entre quatro alternativas. O que ele
- * treina não é a mesma coisa que a lição treina: a lição ensina a DEDUZIR a
- * letra, e o Blast ensina a RECONHECER sem deduzir - que é o que acontece
- * quando alguém lê de verdade uma placa na rua.
+ * Em cima, o pedido em português ("Qual é esta letra? Bet", "Qual palavra
+ * quer dizer isto? casa"); embaixo, uma arena com quatro alvos em hebraico -
+ * letras, sílabas com vogal e palavras - que passam pela tela, e um canhão.
+ * Tocar num alvo vira o canhão para ele e dispara: a bala voa até o alvo, e
+ * só então a resposta conta. O nome mudou para não lembrar o jogo de outro
+ * site; por dentro, o id continua `blast` (o progresso e as métricas são os
+ * mesmos).
  *
- * Por isso o ritmo é curto: acerto avança sozinho em meio segundo, erro
- * segura um pouco mais e mostra qual era a certa. Não há cronômetro global e
- * não há tempo por questão - pressa aqui viraria chute, e chute não ensina.
- *
- * A sequência de acertos é o único número que sobe na tela, e ela zera sem
- * drama: quem erra volta para zero e continua jogando. Nada é perdido, nada
- * é bloqueado.
+ * O que ele treina: RECONHECER sem deduzir, que é o que acontece quando
+ * alguém lê de verdade uma placa na rua. Não há cronômetro nem tempo por
+ * pergunta - os alvos se movem devagar, para mirar, e não para apressar.
+ * Acerto avança sozinho, erro segura um pouco mais e mostra qual era a certa.
+ * A sequência de acertos zera sem drama. Com "menos movimento", os alvos
+ * ficam parados e a bala não voa.
  */
 
 import { useFocoDaRodada } from './foco-da-rodada';
@@ -45,6 +45,12 @@ export function Blast({
   const [erradas, setErradas] = useState<string[]>([]);
   const inicio = useRef(Date.now());
   const avanco = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const arena = useRef<HTMLDivElement | null>(null);
+  const alvos = useRef<(HTMLButtonElement | null)[]>([]);
+  /* A mira e o tiro: o ângulo do canhão (graus) e a bala, do cano até o alvo. */
+  const [angulo, setAngulo] = useState(0);
+  const [bala, setBala] = useState<{ x: number; y: number; voando: boolean } | null>(null);
+  const [mirando, setMirando] = useState<number | null>(null);
 
   /* A TRAVA, e o defeito que ela conserta.
      ─────────────────────────────────────────────────────────────────────
@@ -127,16 +133,34 @@ export function Blast({
     agendar(seguinte, 1400);
   }, [escolha, q, sequencia, i, perguntas.length, acertos, erradas, onFim, onResposta, seguinte, agendar, foco.segurar]);
 
+  /* O tiro: mira no alvo onde ele está AGORA, a bala voa, e a resposta conta
+     quando ela chega. Com "menos movimento", conta na hora. */
+  const atirar = useCallback((idx: number) => {
+    if (escolha !== null || mirando !== null || !q) return;
+    const caixa = arena.current?.getBoundingClientRect();
+    const alvo = alvos.current[idx]?.getBoundingClientRect();
+    const parado = typeof window !== 'undefined' && (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+      || document.documentElement.dataset.a11yMovimento === 'reduzido');
+    if (!caixa || !alvo || parado) { responder(idx); return; }
+    const bocaX = caixa.width / 2, bocaY = caixa.height - 40;
+    const x = alvo.left - caixa.left + alvo.width / 2, y = alvo.top - caixa.top + alvo.height / 2;
+    setAngulo(Math.atan2(x - bocaX, bocaY - y) * 180 / Math.PI);
+    setMirando(idx);
+    setBala({ x: bocaX, y: bocaY, voando: false });
+    requestAnimationFrame(() => requestAnimationFrame(() => setBala({ x, y, voando: true })));
+    window.setTimeout(() => { setBala(null); setMirando(null); responder(idx); }, 300);
+  }, [escolha, mirando, q, responder]);
+
   /* Teclado: 1-4 respondem. O mesmo atalho do resto do curso. */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!q || escolha !== null) return;
       const n = Number(e.key);
-      if (n >= 1 && n <= q.opcoes.length) { e.preventDefault(); responder(n - 1); }
+      if (n >= 1 && n <= q.opcoes.length) { e.preventDefault(); atirar(n - 1); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [q, escolha, responder]);
+  }, [q, escolha, atirar]);
 
   if (!q) return null;
   const emHebraico = q.sentido === 'he';
@@ -156,56 +180,54 @@ export function Blast({
       </div>
 
       <div ref={foco.ref} tabIndex={-1} role="group" aria-label={tx.perguntaDe(i + 1, perguntas.length)}
-           className="grid gap-4 outline-none">
-      <div className="rounded-[20px] bg-[var(--sand)] px-5 py-7 text-center relative overflow-hidden">
-        <p className="font-ui text-[14.5px] text-ink-muted mb-3">{q.enunciadoPt}</p>
-        {emHebraico
-          ? <div><He size="plate" tone="navy" className="animate-pop">{q.alvo}</He></div>
-          : <p className="font-display text-[34px] sm:text-[40px] font-semibold tracking-[-0.02em]
-                          text-[var(--accent)] animate-pop">{q.alvo}</p>}
-        {elogio && (
-          <p role="status"
-             className="absolute inset-x-0 bottom-2 font-ui text-[14px] font-bold text-[var(--teal-ink)] animate-rise">
-            {elogio}
-          </p>
-        )}
-      </div>
+           className="grid gap-3 outline-none">
+        <div className="rounded-[18px] bg-[var(--sand)] px-4 py-3 text-center">
+          <p className="m-0 font-ui text-[14px] text-ink-muted">{q.enunciadoPt}</p>
+          {emHebraico
+            ? <He size="lg" tone="navy">{q.alvo}</He>
+            : <p key={q.id} className="m-0 font-display text-[28px] sm:text-[32px] font-semibold tracking-[-0.02em] text-[var(--accent)] animate-pop">{q.alvo}</p>}
+        </div>
 
-      <ul className="grid grid-cols-2 gap-2.5 list-none p-0 m-0" role="list">
-        {q.opcoes.map((op, idx) => {
-          const estado = escolha === null ? 'neutro'
-            : idx === q.resposta ? 'certo'
-            : idx === escolha ? 'errado' : 'apagado';
-          return (
-            <li key={`${q.id}-${idx}`}>
-              <button
-                type="button"
-                onClick={() => responder(idx)}
-                disabled={escolha !== null}
-                data-resposta={estado === 'certo' ? 'right' : undefined}
-                className={`w-full min-h-[64px] rounded-[16px] border-2 px-3 py-3
-                  grid place-items-center gap-1 transition-[border-color,background-color,opacity,translate,scale] duration-[180ms] enabled:active:scale-[.98]
-                  ${estado === 'certo' ? 'border-[var(--teal)] bg-[var(--teal-soft)]'
-                    : estado === 'errado' ? 'border-[#D9B872] bg-[var(--gold-soft)]'
-                    : estado === 'apagado' ? 'border-line bg-[var(--card)] opacity-50'
-                    : 'border-line bg-[var(--card)] hover:border-[var(--teal)] hover:-translate-y-[2px]'}`}
-              >
-                {emHebraico
-                  ? <span className="font-ui text-[16px] font-medium text-ink">{op}</span>
-                  : <He size="lg" tone={estado === 'certo' ? 'teal' : 'navy'}>{op}</He>}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+        {/* A arena: os alvos passam, o canhão mira e dispara. */}
+        <div ref={arena} className={`hf-canhao-arena ${escolha !== null || mirando !== null ? 'hf-canhao-pausa' : ''}`}>
+          <ul className="list-none m-0 p-0" role="list">
+            {q.opcoes.map((op, idx) => {
+              const estado = escolha === null ? 'neutro'
+                : idx === q.resposta ? 'certo'
+                : idx === escolha ? 'errado' : 'apagado';
+              return (
+                <li key={`${q.id}-${idx}`} className={`hf-canhao-faixa hf-canhao-faixa-${idx}`}>
+                  <button
+                    type="button"
+                    ref={el => { alvos.current[idx] = el; }}
+                    onClick={() => atirar(idx)}
+                    disabled={escolha !== null || mirando !== null}
+                    aria-label={tx.alvo(idx + 1, op)}
+                    data-resposta={estado === 'certo' ? 'right' : undefined}
+                    className={`hf-canhao-alvo hf-canhao-alvo-${estado}`}
+                  >
+                    {emHebraico
+                      ? <span className="font-ui text-[15px] font-semibold">{op}</span>
+                      : <span lang="he" dir="rtl" className="he hf-canhao-texto">{op}</span>}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          {bala && <span aria-hidden className={`hf-canhao-bala ${bala.voando ? 'hf-canhao-voa' : ''}`} style={{ left: bala.x, top: bala.y }} />}
+          <span aria-hidden className="hf-canhao" style={{ ['--ang' as string]: `${angulo}deg` }}>
+            <span className="hf-canhao-cano" />
+            <span className="hf-canhao-base" />
+          </span>
+        </div>
 
-      <p aria-live="polite" className="min-h-[22px] font-ui text-[14px] text-center">
-        {escolha === null ? '' : escolha === q.resposta
-          ? <span className="text-[var(--teal-ink)] font-semibold">{tx.boa}</span>
-          : <span className="text-[var(--gold-ink)] font-semibold">
-              {tx.quase(q.opcoes[q.resposta])}
-            </span>}
-      </p>
+        <p aria-live="polite" className="min-h-[22px] m-0 font-ui text-[14px] text-center">
+          {escolha === null ? (mirando === null ? <span className="text-ink-muted">{tx.mire}</span> : '') : escolha === q.resposta
+            ? <span className="text-[var(--teal-ink)] font-semibold">{elogio ?? tx.boa}</span>
+            : <span className="text-[var(--gold-ink)] font-semibold">
+                {tx.quase(emHebraico ? q.opcoes[q.resposta] : <span lang="he" dir="rtl" className="he">{q.opcoes[q.resposta]}</span>)}
+              </span>}
+        </p>
       </div>
     </div>
   );

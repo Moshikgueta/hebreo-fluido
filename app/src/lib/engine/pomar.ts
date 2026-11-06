@@ -11,6 +11,8 @@
 
 import type { PalavraDoCurso } from './palavras';
 import { shuffled, type Rand } from './rng';
+import { TEMAS, itensDoTema, perguntasDoTema, type Tema } from './temas';
+import type { Letter } from '@/lib/content';
 
 export const FRUTAS = ['roma', 'oliva', 'tamara', 'laranja', 'uva', 'figo'] as const;
 export type Fruta = (typeof FRUTAS)[number];
@@ -21,7 +23,10 @@ export const OPCOES = 4;
 export const SEQUENCIA_BONUS = 3;
 
 export type Tabuleiro = (Fruta | null)[][];
-export type PerguntaDoPomar = { he: string; translit: string; pt: string; opcoes: string[] };
+/** `pt` é a resposta certa e `translit` o detalhe do retorno; nas palavras,
+ *  o sentido e a leitura. `comPontos`: o hebraico vai sempre com os pontos
+ *  (letras, sons e leitura; ver lib/engine/temas.ts). */
+export type PerguntaDoPomar = { he: string; translit: string; pt: string; opcoes: string[]; comPontos?: boolean };
 
 /* ── as perguntas ──────────────────────────────────────────────────────── */
 
@@ -36,6 +41,22 @@ export function perguntasDoPomar(legiveis: readonly PalavraDoCurso[], rand: Rand
     he: w.he, translit: w.translit, pt: w.pt,
     opcoes: shuffled([w.pt, ...shuffled(unicas.filter(x => x !== w), rand).slice(0, OPCOES - 1).map(x => x.pt)], rand)
   }));
+}
+
+/** As perguntas de cada tema (05/11/2026, pedido do dono: escolher o que
+ *  treinar). As palavras seguem `perguntasDoPomar`; letras, sons e leitura
+ *  vêm de lib/engine/temas.ts, com o mesmo tamanho de rodada. */
+export function perguntasDoPomarPorTema(
+  letras: readonly Letter[], palavras: readonly PalavraDoCurso[], rand: Rand
+): Record<Tema, PerguntaDoPomar[]> {
+  const out = {} as Record<Tema, PerguntaDoPomar[]>;
+  for (const tema of TEMAS) {
+    out[tema] = tema === 'palavras'
+      ? perguntasDoPomar(palavras, rand)
+      : perguntasDoTema(itensDoTema(tema, letras, palavras), PALAVRAS_POR_RODADA, OPCOES, rand)
+        .map(q => ({ he: q.he, translit: q.detalhe, pt: q.resposta, opcoes: q.opcoes, comPontos: q.comPontos }));
+  }
+  return out;
 }
 
 /** Jogadas que um acerto vale, dado o tamanho da sequência DEPOIS dele. */

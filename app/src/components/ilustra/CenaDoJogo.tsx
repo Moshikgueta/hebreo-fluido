@@ -75,11 +75,16 @@ export function CenaDoJogo({ jogo, letras }: { jogo: JogoIlustrado; letras: read
     case 'blast':
       return cena('linear-gradient(#2A4A50, #0E3B43)', { cor: '#155059', y: 98 }, <>
         <g fill="#FBF9F5" opacity=".6"><circle cx="30" cy="20" r="1.5" /><circle cx="70" cy="40" r="1" /><circle cx="190" cy="24" r="1.5" /><circle cx="214" cy="52" r="1" /></g>
+        {/* O Canhão de letras (05/11/2026): o canhão embaixo, mirando um alvo
+            com uma letra do aluno; a bala a caminho. */}
         <g className="hf-flutua">
-          <path d="M120 22v12M120 86v12M84 60h12M144 60h12M95 35l8 8M137 77l8 8M145 35l-8 8M103 77l-8 8" stroke="#E7B65A" strokeWidth="4" strokeLinecap="round" />
-          <circle cx="120" cy="60" r="22" fill="#FBF9F5" />
-          <text x="120" y="72" fontFamily={HE} fontSize="30" fill="#0E3B43" textAnchor="middle">{a}</text>
+          <rect x="146" y="20" width="56" height="34" rx="17" fill="#FBF9F5" stroke="#E7B65A" strokeWidth="3" />
+          <text x="174" y="46" fontFamily={HE} fontSize="24" fill="#0E3B43" textAnchor="middle">{a}</text>
         </g>
+        <circle cx="146" cy="62" r="4" fill="#E7B65A" />
+        <circle cx="134" cy="72" r="2.5" fill="#E7B65A" opacity=".6" />
+        <g transform="rotate(38 112 96)"><rect x="104" y="58" width="16" height="40" rx="5" fill="#6B7B7D" /></g>
+        <path d="M86 98a26 22 0 0152 0z" fill="#E7B65A" />
       </>);
     case 'teste':
       return cena(ceu, { cor: 'var(--il-colina-1)', y: 98 }, <>

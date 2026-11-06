@@ -12,6 +12,8 @@ import { cair, grupos, jogadasDoAcerto, novoTabuleiro, temJogada, tentarTroca, t
 import { stripNikud } from '@/lib/hebrew';
 import { tocarResposta } from '@/lib/som-do-acerto';
 import { nomeDaFruta, tx } from '@/i18n/telas/jogo-pomar';
+import { textoDoTema, tx as txTemas } from '@/i18n/telas/temas';
+import type { Tema } from '@/lib/engine/temas';
 
 const DESENHO: Record<Fruta, string> = {
   roma: '<circle cx="20" cy="22" r="13" fill="#C9443A"/><path d="M16 9l4-4 4 4z" fill="#9E2B1E"/><circle cx="15" cy="18" r="3" fill="#fff" opacity=".35"/>',
@@ -25,7 +27,9 @@ const DESENHO: Record<Fruta, string> = {
 const reduzido = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 const espera = (ms: number) => new Promise(r => setTimeout(r, reduzido() ? 0 : ms));
 
-export function Pomar({ perguntas, onFim }: { perguntas: PerguntaDoPomar[]; onFim: (r: ResultadoJogo) => void }) {
+/** `tema` (05/11/2026): o que o aluno escolheu treinar; muda a pergunta e o
+ *  contador. Sem tema, são as palavras, como antes. */
+export function Pomar({ perguntas, onFim, tema = 'palavras' }: { perguntas: PerguntaDoPomar[]; onFim: (r: ResultadoJogo) => void; tema?: Tema }) {
   const inicio = useRef(Date.now());
   const [tab, setTab] = useState<Tabuleiro>(() => novoTabuleiro(Math.random));
   const [marcas, setMarcas] = useState<Record<string, 'some' | 'cai'>>({});
@@ -105,9 +109,9 @@ export function Pomar({ perguntas, onFim }: { perguntas: PerguntaDoPomar[]; onFi
           </div>
         ) : (
           <>
-            <span className="font-ui text-[13px] text-[#BFD3CF]">{tx.palavraN(i + 1, perguntas.length)}</span>
-            <span key={i} lang="he" dir="rtl" className="he hf-pomar-palavra">{pontos ? q.he : stripNikud(q.he)}</span>
-            <p className="m-0 -mt-1 text-center font-ui text-[14.5px] text-[#BFD3CF]">{tx.oQueQuerDizer}</p>
+            <span className="font-ui text-[13px] text-[#BFD3CF]">{tema === 'palavras' ? tx.palavraN(i + 1, perguntas.length) : txTemas.itemN(i + 1, perguntas.length)}</span>
+            <span key={i} lang="he" dir="rtl" className="he hf-pomar-palavra">{pontos || q.comPontos ? q.he : stripNikud(q.he)}</span>
+            <p className="m-0 -mt-1 text-center font-ui text-[14.5px] text-[#BFD3CF]">{tema === 'palavras' ? tx.oQueQuerDizer : textoDoTema(tema).pergunta}</p>
             <div className="grid grid-cols-2 gap-2">
               {q.opcoes.map(o => {
                 const est = resposta === undefined ? '' : o === q.pt ? 'hf-pomar-ok' : o === resposta ? 'hf-pomar-no' : '';
@@ -119,10 +123,10 @@ export function Pomar({ perguntas, onFim }: { perguntas: PerguntaDoPomar[]; onFi
             </p>
             <div className="flex items-center justify-between gap-2">
               <button type="button" onClick={() => responder(null)} className="min-h-[44px] font-ui text-[14px] font-semibold text-[#BFD3CF] underline">{tx.naoSei}</button>
-              <button type="button" aria-pressed={pontos} onClick={() => setPontos(v => !v)}
+              {!q.comPontos && <button type="button" aria-pressed={pontos} onClick={() => setPontos(v => !v)}
                       className={`min-h-[40px] px-3 rounded-full border-2 font-ui text-[13.5px] font-semibold ${pontos ? 'border-[var(--teal-lite)] text-[var(--teal-lite)]' : 'border-white/25 text-white'}`}>
                 {tx.mostrarPontos}
-              </button>
+              </button>}
             </div>
           </>
         )}

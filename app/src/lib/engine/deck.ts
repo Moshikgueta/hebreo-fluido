@@ -5,7 +5,8 @@
  * entre eles é só o que se faz com o par:
  *
  *   Match  mostra os dois lados embaralhados e pede que se juntem;
- *   Blast  mostra um lado e pede o outro entre quatro alternativas;
+ *   Blast  (o Canhão de letras) pede em português e o aluno acerta, entre
+ *          quatro alvos em hebraico que se movem, o certo;
  *   Teste  mistura os dois sentidos e guarda os erros para revisão.
  *
  * Por que uma camada em vez de três jogos com dados próprios:
@@ -285,7 +286,8 @@ export function cartasDoMatch(baralho: readonly Par[], semente: string): {
 /** Um atalho honesto para quem monta baralho de letras: tipos por modo. */
 export const TIPOS_POR_JOGO: Record<'match' | 'blast' | 'teste', TipoPar[]> = {
   match: ['nome', 'som', 'palavra'],
-  blast: ['nome', 'som'],
+  /* O canhão (05/11/2026, pedido do dono): letras, vogais e palavras como alvos. */
+  blast: ['nome', 'som', 'silaba', 'palavra'],
   teste: ['nome', 'som', 'silaba', 'palavra']
 };
 

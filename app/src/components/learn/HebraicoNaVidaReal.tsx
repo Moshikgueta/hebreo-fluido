@@ -13,7 +13,8 @@ import { useMemo } from 'react';
 import { CenaDaVidaReal, type CenaReal } from '@/components/ilustra/CenaDaVidaReal';
 import { IconeCadeado } from '@/components/shell/NavIcons';
 import { allLetters, cardapiosDoCurso, placasDaRua, umDiaEmIsrael } from '@/lib/content';
-import { corridaAberta, palavrasDaCorrida, palavrasDasParadas } from '@/lib/engine/corrida';
+import { corridaAberta, palavrasDaCorrida, palavrasDasParadas, pistaDoTema } from '@/lib/engine/corrida';
+import { TEMAS } from '@/lib/engine/temas';
 import { placasParaLer } from '@/lib/engine/rua';
 import { placasLegiveis } from '@/lib/engine/um-dia';
 import { letrasConcluidas } from '@/lib/vocabulario';
@@ -37,8 +38,10 @@ export function HebraicoNaVidaReal({ state }: { state: LearnerState }) {
     if (rua.length) out.push({ id: 'rua', titulo: tx.vrRuaTitulo, desc: tx.vrRuaDesc, conta: tx.vrFotos(ruaLe, rua.length), aberto: true, cena: 'rua', href: '/hebraico-na-rua' });
     if (cardapiosDoCurso().length) out.push({ id: 'cardapio', titulo: tx.vrCardapioTitulo, desc: tx.vrCardapioDesc, conta: tem22 ? tx.vrCardapioAberto : tx.vrCom22, aberto: tem22, cena: 'cardapio', href: '/cardapios' });
     /* A corrida das palavras (05/11/2026): as palavras das paradas que o aluno já lê. */
+    /* Com os temas (05/11/2026), a corrida abre com as letras antes de haver palavras. */
     const corrida = palavrasDaCorrida(palavrasDasParadas(umDiaEmIsrael(), cardapiosDoCurso(), tem22), concluidas);
-    out.push({ id: 'corrida', titulo: tx.vrCorridaTitulo, desc: tx.vrCorridaDesc, conta: corridaAberta(corrida) ? tx.vrCorridaConta(corrida.length) : tx.abreMais, aberto: corridaAberta(corrida), cena: 'corrida', href: '/um-dia-em-israel/corrida' });
+    const corridaAbre = TEMAS.some(t => pistaDoTema(t, concluidas, corrida).length > 0);
+    out.push({ id: 'corrida', titulo: tx.vrCorridaTitulo, desc: tx.vrCorridaDesc, conta: corridaAberta(corrida) ? tx.vrCorridaConta(corrida.length) : corridaAbre ? tx.vrCorridaLetras : tx.abreMais, aberto: corridaAbre, cena: 'corrida', href: '/um-dia-em-israel/corrida' });
     return out;
   }, [state]);
 
