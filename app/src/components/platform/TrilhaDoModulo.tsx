@@ -8,6 +8,12 @@
  * as que vêm: apagadas. Tocar numa pedra feita ou na da vez abre a lição; as
  * que vêm ainda não são links (a trava da lição diria o mesmo, uma tela
  * depois). Só lê o progresso: nada novo no estado.
+ *
+ * Desde 06/11/2026 (pedido do dono: o mapa interativo na página principal),
+ * o painel mostra aqui a MESMA estrada do mapa: os arcos, a viajante, o jarro
+ * e o portão do checkpoint (components/aventura/estrada-do-modulo.ts). A
+ * fila de pedras abaixo fica só para o módulo sem letras (o dos sons), que
+ * no mapa também não tem estrada.
  */
 
 import Link from 'next/link';
@@ -18,6 +24,8 @@ import { getLetter, type CourseModule } from '@/lib/content';
 import { isLessonComplete } from '@/lib/state/rules';
 import { idDoSom } from '@/lib/sons';
 import { tx } from '@/i18n/telas/painel-trilha-do-modulo';
+import { EstradaDoModulo } from '@/components/aventura/EstradaDoModulo';
+import { useEstradaDoModulo } from '@/components/aventura/estrada-do-modulo';
 
 type Pedra = { id: string; he: string; nome: string; href: string; feita: boolean };
 
@@ -37,6 +45,7 @@ export function pedrasDoModulo(m: CourseModule, feita: (id: string) => boolean):
 export function TrilhaDoModulo({ modulo }: { modulo: CourseModule }) {
   const p = useProgress();
   const fila = useRef<HTMLOListElement>(null);
+  const { estrada, jarro } = useEstradaDoModulo(modulo, true);
   const pedras = pedrasDoModulo(modulo, id => isLessonComplete(p.state, id));
   const daVez = pedras.findIndex(x => !x.feita);
   /* Num módulo de sete lições a fila passa da tela: ela abre rolada até a
@@ -47,6 +56,25 @@ export function TrilhaDoModulo({ modulo }: { modulo: CourseModule }) {
     if (el && alvo) el.scrollLeft = alvo.offsetLeft - el.clientWidth / 2 + alvo.clientWidth / 2;
   }, [daVez]);
   if (!pedras.length) return null;
+  const cabecalho = (
+    <div className="flex items-baseline justify-between gap-3">
+      <h2 id="trilha" className="m-0 font-display text-[18px] font-semibold tracking-[-0.018em] text-ink">
+        {tx.titulo(modulo.n)}
+      </h2>
+      <Link href="/mapa" className="inline-flex items-center min-h-[44px] font-ui text-[13px] text-[var(--teal-ink)] hover:underline">
+        {tx.verOMapa}
+      </Link>
+    </div>
+  );
+  /* A estrada do mapa, quando o módulo tem letras. */
+  if (estrada.length) {
+    return (
+      <section aria-labelledby="trilha" className="grid gap-2.5 min-w-0">
+        {cabecalho}
+        <EstradaDoModulo paradas={estrada} jarro={jarro} onAbrirJarro={() => p.abrirJarro(modulo.id)} />
+      </section>
+    );
+  }
   const cp = modulo.checkpoint ? p.state.checkpoints[modulo.checkpoint.id] : undefined;
   const feitas = pedras.filter(x => x.feita).length;
 

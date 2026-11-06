@@ -32,46 +32,19 @@ import { IconeCadeado } from '@/components/shell/NavIcons';
 import Link from 'next/link';
 import { He } from '@/components/hebrew/He';
 import { useProgress } from '@/lib/state/store';
-import { allLetters, course, getLetter, type CourseModule } from '@/lib/content';
+import { allLetters, course, type CourseModule } from '@/lib/content';
 import { totalLicoes } from '@/lib/content-publico';
 import { Prose } from '@/components/learn/Blocks';
 import { OrdemPedagogica } from '@/components/learn/OrdemPedagogica';
-import { aula0Feita, idDoJarro, isLessonComplete, isLessonMastered, letraLiberada, REGRA_DO_DOMINIO, STAGE_COUNT } from '@/lib/state/rules';
-import { EstradaDoModulo, carimbosDaNota, type ParadaDaEstrada } from '@/components/aventura/EstradaDoModulo';
-import { leiturasDoModulo } from '@/lib/leituras-do-curso';
+import { aula0Feita, isLessonComplete, isLessonMastered, letraLiberada, REGRA_DO_DOMINIO, STAGE_COUNT } from '@/lib/state/rules';
+import { EstradaDoModulo } from '@/components/aventura/EstradaDoModulo';
+import { itensDoModulo, useEstradaDoModulo } from '@/components/aventura/estrada-do-modulo';
 import { ETAPA_AULA0, ETAPA_DO_MODULO, ETAPA_FINAL } from '@/lib/jornada';
 import { flagship } from '@/lib/catalog';
-import { idDoSom, ordemDeEnsino, portasDosModulos } from '@/lib/sons';
+import { ordemDeEnsino, portasDosModulos } from '@/lib/sons';
 import { fmt } from '@/i18n';
 import { tx } from '@/i18n/telas/painel-course-map-client';
 
-/* Uma lição do caminho dentro do módulo: uma letra ou um som (Vet, Tch...). */
-type Item = { id: string; he: string; nome: string; href: string };
-
-function itensDoModulo(m: CourseModule): Item[] {
-  /* Bet, Kaf, Pe e Shin têm, no mesmo módulo, a lição do outro som: o
-     cartão da letra mostra o lado dela (בּ "Bet", שׁ "Shin") e o do som
-     mostra o outro (ב "Vet", שׂ "Sin"). Sem isso eram dois cartões com o
-     mesmo desenho. Os sons modernos ficam fora: a letra sem guéresh está em
-     outro módulo. */
-  const ladoDe = (letra: string) =>
-    m.lessons.find(l => l.som && l.parHe && [...l.parHe][0] === letra)?.parHe;
-  return m.lessons.flatMap(ls => {
-    if (ls.som) {
-      return [{ id: idDoSom(ls.som), he: ls.he ?? '', nome: ls.nomePt ?? ls.som, href: `/som/${ls.som}` }];
-    }
-    return (ls.letters ?? []).map(getLetter).filter(l => !!l)
-      .map(L => {
-        const lado = ladoDe(L!.letter);
-        return {
-          id: L!.id,
-          he: lado ?? L!.letter,
-          nome: lado ? L!.namePt.split('/')[0]!.trim() : L!.namePt,
-          href: `/licao/${L!.id}`
-        };
-      });
-  });
-}
 
 type Estado = 'feito' | 'agora' | 'adiante';
 type Progresso = ReturnType<typeof useProgress>;
@@ -444,56 +417,9 @@ function Trecho({ module: m, estado, novo = false }: {
   const proxima = estado === 'agora' ? pendente?.id ?? null : null;
   const lugar = m.n >= 1 && m.n <= 7 ? LUGAR[m.n as IdDoCenario] : null;
 
-  /* A estrada do módulo atual (05/11/2026, aprovada pelo dono): as mesmas
-     letras, travas e links de sempre, desenhados em fila, com o jarro na
-     metade, as leituras do módulo e o portão do checkpoint. */
-  const estrada: ParadaDaEstrada[] = [];
-  let jarro: 'fechado' | 'pronto' | 'aberto' = 'fechado';
-  if (estado === 'agora' && !extra && itens.length) {
-    const meio = Math.max(1, Math.floor(itens.length / 2));
-    jarro = p.state.firsts[idDoJarro(m.id)] ? 'aberto' : feitas >= Math.ceil(itens.length / 2) ? 'pronto' : 'fechado';
-    itens.forEach((L, i) => {
-      const feita = isLessonComplete(p.state, L.id);
-      const etapasFeitas = p.state.lessons[L.id]?.stagesDone.length ?? 0;
-      const comecada = etapasFeitas > 0 && !feita;
-      const bloqueada = p.ready && !feita && !comecada && !letraLiberada(p.state, ordem, L.id, portas);
-      const liberada = feita || comecada || (p.ready && !bloqueada);
-      const agora = p.ready && L.id === proxima && liberada;
-      const estadoDaLetra = feita ? tx.letraConcluida
-        : comecada ? fmt(tx.letraEtapas, { n: etapasFeitas, total: STAGE_COUNT })
-        : bloqueada ? tx.letraBloqueada : agora ? tx.letraProxima : '';
-      estrada.push({
-        chave: L.id, tipo: L.href.startsWith('/som/') ? 'som' : 'letra', he: L.he, nome: L.nome,
-        sub: L.href.startsWith('/som/') ? tx.jSomNovo : tx.jLetraNova,
-        href: liberada ? L.href : null,
-        estado: feita ? 'feita' : agora ? 'agora' : bloqueada ? 'trancada' : 'livre',
-        rotuloAcessivel: liberada ? `${fmt(tx.abrirLicao, { nome: L.nome })}${estadoDaLetra}` : `${L.nome}${estadoDaLetra}`
-      });
-      if (i + 1 === meio) {
-        const sub = jarro === 'aberto' ? tx.jJarroAberto : jarro === 'pronto' ? tx.jJarroPronto : tx.jJarroFechado;
-        estrada.push({ chave: 'jarro', tipo: 'jarro', nome: tx.jJarro, sub, estado: jarro === 'aberto' ? 'feita' : 'livre', rotuloAcessivel: `${tx.jJarro}: ${sub}` });
-      }
-    });
-    for (const l of leiturasDoModulo(m, p.state)) {
-      estrada.push({
-        chave: l.id, tipo: l.id.startsWith('pl-') ? 'leitura' : l.id.startsWith('rv-') ? 'revisao' : 'texto',
-        nome: l.titulo, sub: l.desc, href: l.feita ? l.href : `/modulo/${m.n}`,
-        estado: l.feita ? 'feita' : 'livre', rotuloAcessivel: `${l.titulo}${l.feita ? tx.letraConcluida : ''}`
-      });
-    }
-    if (m.checkpoint) {
-      const cp = p.state.checkpoints[m.checkpoint.id];
-      const aprovado = !!cp?.passedAt;
-      const nota = cp?.best != null ? Math.round(cp.best * 100) : null;
-      const estadoDoCp = aprovado ? tx.checkpointAprovado(nota) : !pendente ? tx.checkpointPronto : tx.checkpointDepois;
-      estrada.push({
-        chave: 'checkpoint', tipo: 'checkpoint', nome: tx.checkpointRotulo,
-        sub: aprovado && nota != null ? `${nota}%` : tx.checkpointDo(m.n), href: `/checkpoint/${m.n}`,
-        estado: aprovado ? 'feita' : !pendente ? 'agora' : 'livre',
-        rotuloAcessivel: `${tx.abrirCheckpoint(m.n)}${estadoDoCp}`, carimbos: carimbosDaNota(cp?.best, aprovado)
-      });
-    }
-  }
+  /* A estrada do módulo atual (05/11/2026): montada em
+     components/aventura/estrada-do-modulo.ts, a mesma do painel. */
+  const { estrada, jarro } = useEstradaDoModulo(m, estado === 'agora');
 
   /* `--locked` e não um cinza escrito à mão (alto contraste e tema escuro);
      "Abre depois do módulo N" e não "Em breve": o módulo só espera o
