@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Traducao } from '..';
 
-/* components/game/Blast.tsx */
+/* components/game/Blast.tsx: o Canhão de letras. */
 const pt = {
   elogio3: '3 acertos seguidos!',
   elogio5: 'Você está pegando o jeito!',
@@ -11,6 +11,8 @@ const pt = {
   acertos: (n: number) => `${n} acertos`,
   perguntaDe: (n: number, total: number) => `Pergunta ${n} de ${total}`,
   boa: 'Boa!',
+  mire: 'Toque no alvo certo para atirar.',
+  alvo: (n: number, texto: string) => `Alvo ${n}: ${texto}`,
   quase: (resposta: ReactNode): ReactNode => <>Quase. A resposta era {resposta}.</>
 } as const;
 
@@ -23,6 +25,8 @@ const en: Traducao<typeof pt> = {
   acertos: n => `${n} right`,
   perguntaDe: (n, total) => `Question ${n} of ${total}`,
   boa: 'Nice!',
+  mire: 'Tap the right target to fire.',
+  alvo: (n, texto) => `Target ${n}: ${texto}`,
   quase: resposta => <>Almost. The answer was {resposta}.</>
 };
 
@@ -35,6 +39,8 @@ const es: Traducao<typeof pt> = {
   acertos: n => `${n} aciertos`,
   perguntaDe: (n, total) => `Pregunta ${n} de ${total}`,
   boa: '¡Bien!',
+  mire: 'Toca el blanco correcto para disparar.',
+  alvo: (n, texto) => `Blanco ${n}: ${texto}`,
   quase: resposta => <>Casi. La respuesta era {resposta}.</>
 };
 

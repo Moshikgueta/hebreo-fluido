@@ -15,6 +15,7 @@ import type { DadosDoDia } from './um-dia';
 import { nomeCurto } from './supermercado';
 import { alfabetoDe, consegueLer } from './palavras';
 import { shuffled, type Rand } from './rng';
+import { itensDoTema, perguntasDoTema, type PerguntaDoTema, type Tema } from './temas';
 import { stripNikud } from '@/lib/hebrew';
 
 export type PalavraDaCorrida = { he: string; translit: string; pt: string };
@@ -67,3 +68,15 @@ export function opcoesDaCorrida(alvo: PalavraDaCorrida, prontas: readonly Palavr
 
 /** Os pontos de um acerto: 10, e mais 2 por acerto seguido, até +10. */
 export const pontosDoAcerto = (seguidas: number) => 10 + Math.min(Math.max(seguidas - 1, 0), 5) * 2;
+
+/** A pista de um tema (05/11/2026, pedido do dono: escolher o que treinar).
+ *  Palavras e leitura vêm das paradas que o aluno já lê; letras e sons, das
+ *  letras que ele já concluiu. */
+export function pistaDoTema(
+  tema: Tema, concluidas: readonly Letter[], prontas: readonly PalavraDaCorrida[], rand: Rand = Math.random
+): PerguntaDoTema[] {
+  return perguntasDoTema(itensDoTema(tema, concluidas, prontas), PALAVRAS_POR_CORRIDA, OPCOES_DA_CORRIDA, rand);
+}
+
+/** O recorde de cada tema; o das palavras mantém a chave de antes. */
+export const chaveDoRecorde = (tema: Tema) => (tema === 'palavras' ? CHAVE_DO_RECORDE : `${CHAVE_DO_RECORDE}-${tema}`);

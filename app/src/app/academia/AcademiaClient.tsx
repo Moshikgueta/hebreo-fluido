@@ -65,9 +65,10 @@ import { rng } from '@/lib/engine/rng';
 import { Match, type ResultadoJogo } from '@/components/game/Match';
 import { Blast } from '@/components/game/Blast';
 import { CacaLetra } from '@/components/game/CacaLetra';
-import { Pomar } from '@/components/game/Pomar';
+import { PomarComTemas } from '@/components/game/PomarComTemas';
 import { HebraicoNaVidaReal } from '@/components/learn/HebraicoNaVidaReal';
-import { perguntasDoPomar } from '@/lib/engine/pomar';
+import { perguntasDoPomarPorTema } from '@/lib/engine/pomar';
+import { TEMAS } from '@/lib/engine/temas';
 import { alfabetoDe, palavrasLegiveis, vocabularioDoCurso } from '@/lib/engine/palavras';
 import { Batalha } from '@/components/game/Batalha';
 import { ImpressaCursiva } from '@/components/game/ImpressaCursiva';
@@ -276,7 +277,8 @@ export function AcademiaClient() {
     const baralho = montarBaralho(fontes, { quantos, semente, peso });
     const perguntas = jogo === 'match' ? [] : perguntasDe(baralho, fontes, {
       semente: `${semente}-q`,
-      sentido: jogo === 'teste' ? 'misto' : 'he'
+      /* No canhão o pedido vem em português e os alvos são o hebraico. */
+      sentido: jogo === 'teste' ? 'misto' : jogo === 'blast' ? 'pt' : 'he'
     });
     return { baralho, perguntas };
   }, [unlocked, peso]);
@@ -305,7 +307,7 @@ export function AcademiaClient() {
       } else {
         const d = fazerNovo(jogo, 0);
         falta = jogo === 'caca' ? !d.cacada?.length : jogo === 'cursiva' ? !d.cursiva?.length
-          : jogo === 'pomar' ? !d.pomar?.length : !d.batalha;
+          : jogo === 'pomar' ? !TEMAS.some(t => d.pomar?.[t].length) : !d.batalha;
       }
       if (!falta) continue;
       out[jogo] = unlocked.length < info.minimo
@@ -352,7 +354,7 @@ export function AcademiaClient() {
 
     const vazio = jogo === 'caca' ? !dados.cacada?.length
       : jogo === 'cursiva' ? !dados.cursiva?.length
-      : jogo === 'pomar' ? !dados.pomar?.length
+      : jogo === 'pomar' ? !TEMAS.some(t => dados.pomar?.[t].length)
       : !dados.batalha;
 
     if (vazio || unlocked.length < info.minimo) {
@@ -388,7 +390,7 @@ export function AcademiaClient() {
                    onResposta={registrar} onFim={fim} />
         )}
         {jogo === 'pomar' && dados.pomar && (
-          <Pomar key={`po-${screen.rodada}`} perguntas={dados.pomar} onFim={fim} />
+          <PomarComTemas key={`po-${screen.rodada}`} temas={dados.pomar} onFim={fim} />
         )}
         {jogo === 'cursiva' && dados.cursiva && (
           <ImpressaCursiva key={`cu-${screen.rodada}`} rodadas={dados.cursiva}
@@ -1069,7 +1071,9 @@ function montarNovo(
   if (jogo === 'caca') return { cacada: montarCacada(state, unlocked, rand, nivel) };
   if (jogo === 'cursiva') return { cursiva: montarCursiva(state, unlocked, rand, nivel) };
   /* As palavras do curso que o aluno já lê, como no resto da Academia. */
-  if (jogo === 'pomar') return { pomar: perguntasDoPomar(palavrasLegiveis(vocabularioDoCurso(allLetters()), alfabetoDe(unlocked)), rand) };
+  /* Com a escolha do que treinar (05/11/2026): letras e sons das letras já
+     começadas, palavras e leitura das palavras que ele já lê. */
+  if (jogo === 'pomar') return { pomar: perguntasDoPomarPorTema(unlocked, palavrasLegiveis(vocabularioDoCurso(allLetters()), alfabetoDe(unlocked)), rand) };
   /* Vários pares por partida, e não um. `paresParaTreinar` põe primeiro o que
      ELE trocou de verdade e depois o que o conteúdo prevê. */
   /* O giro sai da mesma semente da rodada: cada partida nova traz outros

@@ -818,6 +818,18 @@ html[data-a11y-movimento='reduzido'] .hf-pista-anel { display: none; }
 .hf-pista-op-certa { border-color: #8FD6C8; background: rgba(143, 214, 200, .18); }
 .hf-pista-op-errada { border-color: #F2A08A; color: #F2A08A; animation: hf-sacode .4s; }
 
+/* ── O que treinar (05/11/2026) ────────────────────────────────────────────
+   A escolha de tema do Pomar e da Corrida (components/game/EscolhaDeTema.tsx):
+   um botão por tema, com o hebraico da primeira pergunta dele. */
+.hf-tema { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 72px; padding: 10px 14px; border-radius: 16px;
+  border: 2px solid var(--line); background: var(--card); color: var(--ink); text-align: start; transition: transform .15s var(--ease), border-color .15s; }
+.hf-tema:hover:not(:disabled) { border-color: var(--teal); transform: translateY(-1px); }
+.hf-tema:disabled { opacity: .55; }
+.hf-tema-escuro { border-color: rgba(251, 249, 245, .25); background: rgba(255, 255, 255, .06); color: #FBF9F5; }
+.hf-tema-escuro:hover:not(:disabled) { border-color: #8FD6C8; }
+.hf-tema-simbolo { display: grid; place-items: center; flex: none; min-width: 52px; height: 52px; padding: 0 6px; border-radius: 12px;
+  background: rgba(231, 182, 90, .18); color: #E7B65A; font-family: var(--font-he); font-weight: 700; font-size: 24px; unicode-bidi: isolate; }
+
 /* ── os cartões ilustrados (05/11/2026, aprovados pelo dono) ─────────────
    Uma cena desenhada em cima (components/ilustra/), o texto embaixo, sombra
    macia e o cartão que sobe um pouco no toque. A cena é um SVG em "meet",
@@ -956,3 +968,35 @@ a:hover > .hf-arco { transform: translateY(-2px); }
 @keyframes hf-passo { from { transform: rotate(18deg); } to { transform: rotate(-18deg); } }
 .hf-estrada-voltar { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 140px); z-index: 60;
   width: 52px; height: 52px; border-radius: 16px; border: 2px solid var(--line); background: var(--card); color: var(--navy); display: grid; place-items: center; box-shadow: var(--sh-mock); }
+
+/* ── O Canhão de letras (05/11/2026, o antigo Blast) ──────────────────────
+   components/game/Blast.tsx. Quatro faixas, cada alvo indo e voltando numa
+   velocidade; o canhão embaixo, no centro, gira para o alvo tocado (--ang) e
+   a bala voa até ele. Quando a resposta conta, os alvos param (hf-canhao-pausa).
+   Com "menos movimento", tudo fica parado (regra geral acima) e a bala some. */
+.hf-canhao-arena { position: relative; height: 340px; overflow: hidden; border-radius: 20px;
+  background: radial-gradient(circle at 50% 120%, #1F5A62 0, #0E3B43 60%); box-shadow: var(--sh-mock); }
+.hf-canhao-arena::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(251, 249, 245, .5) 1px, transparent 1.5px); background-size: 46px 46px; opacity: .25; }
+.hf-canhao-faixa { position: absolute; left: 0; right: 0; height: 64px; }
+.hf-canhao-faixa-0 { top: 10px; } .hf-canhao-faixa-1 { top: 78px; } .hf-canhao-faixa-2 { top: 146px; } .hf-canhao-faixa-3 { top: 214px; }
+.hf-canhao-alvo { position: absolute; top: 4px; left: 4%; min-width: 76px; height: 56px; padding: 0 14px; border-radius: 999px;
+  display: grid; place-items: center; background: #FBF9F5; color: #0E3B43; border: 3px solid #E7B65A;
+  box-shadow: 0 6px 14px -6px rgba(0, 0, 0, .5); animation: hf-canhao-vai var(--vel, 7s) ease-in-out infinite alternate; }
+.hf-canhao-faixa-0 .hf-canhao-alvo { --vel: 7.5s; }
+.hf-canhao-faixa-1 .hf-canhao-alvo { --vel: 6s; animation-delay: -2s; }
+.hf-canhao-faixa-2 .hf-canhao-alvo { --vel: 8.5s; animation-delay: -5s; }
+.hf-canhao-faixa-3 .hf-canhao-alvo { --vel: 6.8s; animation-delay: -3.5s; }
+@keyframes hf-canhao-vai { from { left: 4%; } to { left: calc(96% - 120px); } }
+.hf-canhao-pausa .hf-canhao-alvo { animation-play-state: paused; }
+.hf-canhao-alvo:hover:not(:disabled) { border-color: #8FD6C8; }
+.hf-canhao-texto { font-family: var(--font-he); font-weight: 700; font-size: 26px; line-height: 1; unicode-bidi: isolate; }
+.hf-canhao-alvo-certo { border-color: #1F8A7D; background: #E4F1EE; animation-play-state: paused; transform: scale(1.12); transition: transform .2s; }
+.hf-canhao-alvo-errado { border-color: #C9443A; background: #FBE7E3; animation: hf-sacode .4s, hf-canhao-vai var(--vel, 7s) ease-in-out infinite alternate; animation-play-state: running, paused; }
+.hf-canhao-alvo-apagado { opacity: .45; }
+.hf-canhao { position: absolute; left: 50%; bottom: 0; width: 70px; height: 62px; translate: -50% 0; pointer-events: none; }
+.hf-canhao-cano { position: absolute; left: 50%; bottom: 22px; width: 18px; height: 50px; margin-left: -9px; border-radius: 6px 6px 3px 3px;
+  background: linear-gradient(90deg, #3B4A4C, #6B7B7D 45%, #3B4A4C); transform-origin: 50% 100%; transform: rotate(var(--ang, 0deg)); transition: transform .15s ease-out; }
+.hf-canhao-base { position: absolute; left: 0; right: 0; bottom: 0; height: 32px; border-radius: 36px 36px 6px 6px; background: #E7B65A; box-shadow: inset 0 -5px 0 rgba(0, 0, 0, .15); }
+.hf-canhao-bala { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: #E7B65A; box-shadow: 0 0 10px rgba(231, 182, 90, .9); z-index: 2; }
+.hf-canhao-voa { transition: left .26s linear, top .26s linear; }
+@media (max-width: 420px) { .hf-canhao-alvo { min-width: 64px; } }
