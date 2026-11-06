@@ -53,8 +53,14 @@ export async function dadosDaConta(env, account, agora = Date.now()) {
       .map(o => ({
         id: o.id, curso: o.course_slug, valorCentavos: o.amount_cents, moeda: o.currency, forma: o.method,
         parcelas: o.installments, situacao: o.status, criadoEm: iso(o.created_at), pagoEm: iso(o.paid_at),
-        versaoDosTermos: o.termos_versao ?? null
+        versaoDosTermos: o.termos_versao ?? null,
+        /* Os dados da nota fiscal (06/11/2026), quando o pedido os tem. */
+        nomeCompleto: o.nome_completo ?? null, cpf: o.cpf ?? null
       })),
+    /* Fale comigo (06/11/2026). */
+    mensagens: (await todas(env,
+      'SELECT tipo, texto, contexto, criado_em, respondida_em FROM mensagens WHERE account_id = ? ORDER BY criado_em', id))
+      .map(m => ({ tipo: m.tipo, texto: m.texto, contexto: m.contexto ?? null, enviadaEm: iso(m.criado_em), respondidaEm: iso(m.respondida_em) })),
     desistencias: (await todas(env,
       'SELECT order_id, pedido_em, ip FROM arrependimentos WHERE account_id = ?', id))
       .map(a => ({ pedido: a.order_id, pedidaEm: iso(a.pedido_em), ip: a.ip })),

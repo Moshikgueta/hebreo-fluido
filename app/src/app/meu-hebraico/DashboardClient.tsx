@@ -12,6 +12,7 @@
  * hoje quer a aula de hoje.
  */
 
+import { tx as txFale } from '@/i18n/telas/fale-comigo';
 import { AULA_PARTICULAR, tx as txAula } from '@/i18n/telas/aula-particular';
 import { somPt } from '@/lib/som-pt';
 import Link from 'next/link';
@@ -466,13 +467,14 @@ export function DashboardClient() {
         </p>
       )}
 
-      {licoesFeitas >= 6 && (
+      {/* Fale comigo (06/11/2026, pedido do dono): dúvidas, comentários e o
+          depoimento num lugar só. A linha antiga só do depoimento (depois de
+          seis lições) virou esta, para quem já começou. */}
+      {licoesFeitas > 0 && (
         <p className="font-ui text-[13.5px] text-ink-muted">
-          {tx.depoimento(t => (
-            <Link href="/depoimento" className="hover:text-[var(--accent)] underline underline-offset-2">
-              {t}
-            </Link>
-          ))}
+          <Link href="/fale-comigo" className="inline-flex items-center min-h-[44px] hover:text-[var(--accent)] underline underline-offset-2">
+            {txFale.chamadaHoje}
+          </Link>
         </p>
       )}
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { tx as txFale } from '@/i18n/telas/fale-comigo';
 import Link from 'next/link';
 
 /* Sua conta.
@@ -190,6 +191,8 @@ export function PerfilClient() {
         </p>
         <div className="flex flex-wrap gap-2">
           <LinkButton href="/conquistas" variant="secondary" size="sm">{tx.verConquistas}</LinkButton>
+          {/* Fale comigo (06/11/2026): dúvidas, comentários e o depoimento. */}
+          <LinkButton href="/fale-comigo" variant="secondary" size="sm">{txFale.chamadaPerfil}</LinkButton>
           {p.state.finalChallenge.passedAt && (
             <LinkButton href="/certificado" variant="secondary" size="sm">{tx.meuCertificado}</LinkButton>
           )}

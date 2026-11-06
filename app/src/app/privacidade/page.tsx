@@ -105,6 +105,10 @@ export default function Page() {
     ['Depoimento (só se você escrever um em /depoimento): o texto, a forma de assinar que você escolher (nome e cidade, iniciais ou sem nome) e as suas duas escolhas, publicar e ser contatado',
      'ouvir a sua opinião sobre o curso e, só com a sua autorização, publicá-la no site e em materiais de divulgação - base legal: o seu consentimento, que você retira quando quiser na mesma página',
      'até você retirar o depoimento ou apagar a conta; se ele estiver publicado, sai em até 7 dias'],
+    /* 06/11/2026: Fale comigo (worker/src/api/mensagens.js). */
+    ['Dúvidas e comentários que você mandar em Fale comigo: o texto, se é dúvida ou comentário, o módulo de onde veio e a data',
+     'responder você e melhorar o curso. A mensagem chega por e-mail ao professor, e a resposta vai para o e-mail da sua conta',
+     'até você apagar a conta'],
     ['E-mail de quem recebe um curso de presente',
      'liberar o curso quando a pessoa presenteada criar a conta',
      'até o presente ser usado ou cancelado'],
@@ -261,7 +265,7 @@ export default function Page() {
              recebe endereço e nome de todo mundo que pede um link de
              senha. Omiti-la deixava a política descrevendo menos
              compartilhamento do que o sistema faz. */
-          <><strong>Resend</strong>: entrega os nossos e-mails (recuperação de senha, confirmação da compra, até três lembretes para começar o curso nos primeiros dias depois da compra e avisos da sua conta). Para isso, recebe o <strong>seu endereço de e-mail e o nome da sua conta</strong>. E-mail de propaganda, só para quem pediu: o aviso de que o próximo curso abriu, para quem marcou esse pedido em Sua conta, e a lista de interessados descrita no artigo 4, para quem se inscreveu e confirmou. Cada um desses e-mails traz o link para sair da lista.</>,
+          <><strong>Resend</strong>: entrega os nossos e-mails (recuperação de senha, confirmação da compra, até três lembretes para começar o curso nos primeiros dias depois da compra e avisos da sua conta). Para isso, recebe o <strong>seu endereço de e-mail e o nome da sua conta</strong> e, quando você manda uma mensagem em Fale comigo, o texto dela, no aviso que vai para o professor. E-mail de propaganda, só para quem pediu: o aviso de que o próximo curso abriu, para quem marcou esse pedido em Sua conta, e a lista de interessados descrita no artigo 4, para quem se inscreveu e confirmou. Cada um desses e-mails traz o link para sair da lista.</>,
           <><strong>Infraestrutura</strong>: a plataforma roda na Cloudflare, que hospeda o site, o banco de dados e as cópias de segurança. Uma segunda cópia de segurança, cifrada, fica no Google Drive; o Google guarda o arquivo, mas não consegue lê-lo.</>,
           /* 28/09/2026 (auditoria, LEGAL-003): o GitHub e o atendimento
              estavam fora da lista, e os dois recebem dado pessoal. */

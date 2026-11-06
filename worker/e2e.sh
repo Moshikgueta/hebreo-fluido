@@ -564,6 +564,7 @@ Para apagá-la do banco de produção:
      DELETE FROM marcas              WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
      DELETE FROM aparelhos           WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
      DELETE FROM depoimentos         WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
+     DELETE FROM mensagens           WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
      DELETE FROM aceites             WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
      DELETE FROM admin_codigos       WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');
      DELETE FROM provas_a1           WHERE account_id = (SELECT id FROM accounts WHERE email = '$MAIL');

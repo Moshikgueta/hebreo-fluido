@@ -492,6 +492,20 @@ CREATE TABLE IF NOT EXISTS depoimentos (
 );
 CREATE INDEX IF NOT EXISTS depoimentos_estado ON depoimentos(estado, atualizado_em);
 
+-- Fale comigo (06/11/2026): as dúvidas e os comentários dos alunos para o
+-- dono. Ver worker/src/api/mensagens.js. Saem com a conta.
+CREATE TABLE IF NOT EXISTS mensagens (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id    INTEGER NOT NULL REFERENCES accounts(id),
+  tipo          TEXT    NOT NULL,              -- 'duvida' | 'comentario'
+  texto         TEXT    NOT NULL,
+  contexto      TEXT,                          -- 'modulo-N' quando veio do fim de um módulo
+  criado_em     INTEGER NOT NULL,
+  respondida_em INTEGER                        -- o dono marcou como respondida
+);
+CREATE INDEX IF NOT EXISTS mensagens_conta ON mensagens(account_id, criado_em);
+CREATE INDEX IF NOT EXISTS mensagens_abertas ON mensagens(respondida_em, criado_em);
+
 -- O aceite dos Termos de Uso no cadastro (30/09/2026): quando e qual versão
 -- (a data de `politicas.atualizadoEm` em data/empresa.json). Nada além disso:
 -- nem IP, nem aparelho. Sai com a conta (deleteAccount).

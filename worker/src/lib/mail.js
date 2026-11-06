@@ -72,7 +72,7 @@ const duvida = suporte => `Qualquer dúvida, responda esta mensagem ou escreva p
  *   { ok: false, motivo: 'recusado', detalhe, status }
  *   { ok: false, motivo: 'rede', detalhe }
  */
-export async function sendMail(env, { to, subject, text, html, headers }) {
+export async function sendMail(env, { to, subject, text, html, headers, replyTo }) {
   if (!mailReady(env)) return { ok: false, motivo: 'sem-provedor' };
 
   /* Para onde vai a RESPOSTA. Os textos dizem "responda este e-mail", e sem
@@ -90,7 +90,9 @@ export async function sendMail(env, { to, subject, text, html, headers }) {
     subject: String(subject),
     text: String(text),
     ...(html ? { html: String(html) } : {}),
-    ...(suporte ? { reply_to: suporte } : {}),
+    /* `replyTo` (06/11/2026): no aviso de uma mensagem de aluno, a resposta
+       do dono vai direto para o aluno. */
+    ...(replyTo ? { reply_to: String(replyTo) } : suporte ? { reply_to: suporte } : {}),
     /* Cabeçalhos extras: hoje só o List-Unsubscribe da lista de interessados. */
     ...(headers && Object.keys(headers).length ? { headers } : {})
   };
