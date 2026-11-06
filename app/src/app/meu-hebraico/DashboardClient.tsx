@@ -12,6 +12,7 @@
  * hoje quer a aula de hoje.
  */
 
+import { AULA_PARTICULAR, tx as txAula } from '@/i18n/telas/aula-particular';
 import { somPt } from '@/lib/som-pt';
 import Link from 'next/link';
 import { useMemo } from 'react';
@@ -455,6 +456,16 @@ export function DashboardClient() {
       {/* O pedido de depoimento (29/09/2026), só depois de seis lições - antes
           disso a pessoa ainda não tem o que contar. Discreto e sem troca:
           nada de XP ou desconto por depoimento. Ver /depoimento. */}
+      {/* A aula particular com o dono (06/11/2026): uma linha, só no site
+          brasileiro, para quem já começou. */}
+      {AULA_PARTICULAR && licoesFeitas > 0 && (
+        <p className="font-ui text-[13.5px] text-ink-muted">
+          <Link href="/aula-particular" className="inline-flex items-center min-h-[44px] hover:text-[var(--accent)] underline underline-offset-2">
+            {txAula.chamada}
+          </Link>
+        </p>
+      )}
+
       {licoesFeitas >= 6 && (
         <p className="font-ui text-[13.5px] text-ink-muted">
           {tx.depoimento(t => (

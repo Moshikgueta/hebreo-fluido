@@ -84,6 +84,8 @@ const GATED = [
   '/nikud-biblico',
   /* 29/09/2026: o depoimento do aluno. Só quem tem o curso escreve. */
   '/depoimento',
+  /* 06/11/2026: o pedido de aula particular com o dono, para alunos. */
+  '/aula-particular',
   /* 06/10/2026: o curso Hebraico A1. É de OUTRO curso: ver `cursoDaRota`. */
   '/a1',
   /* 21/10/2026: o e-book Israel Além do Óbvio (versão interativa e PDF).
