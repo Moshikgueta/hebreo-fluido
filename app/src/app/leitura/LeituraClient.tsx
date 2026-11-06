@@ -32,6 +32,7 @@ import { useProgress } from '@/lib/state/store';
 import { aula0Feita, isLessonComplete, letraAtual } from '@/lib/state/rules';
 import type { LearnerState } from '@/lib/state/types';
 import { useLeitura } from '@/lib/vocabulario';
+import { stripNikud } from '@/lib/hebrew';
 import { idDoSom, ordemDeEnsino, portasDosModulos, rotaDaLicao } from '@/lib/sons';
 import { rng } from '@/lib/engine/rng';
 import {
@@ -91,8 +92,6 @@ function Laboratorio() {
     return Math.min(7, Math.max(1, ...comecadas.map(l => l.module), 1)) as IdDoCenario;
   }, [p.state.lessons]);
 
-  /* Sem nikud só depois da etapa "Sem o ponto" (etapa 3 do módulo 6). */
-  const semPontosLiberado = (p.state.lessons.mod6?.stagesDone ?? []).includes(3);
   const sons = useMemo(() => sonsConcluidos(p.state), [p.state]);
 
   const palavras = useMemo(
@@ -168,11 +167,6 @@ function Laboratorio() {
               <span className="font-semibold text-ink-body">{NIVEIS.find(n => n.id === nivel)?.tituloPt}.</span>{' '}
               {NIVEIS.find(n => n.id === nivel)?.resumoPt}
             </p>
-            {nivel === 'independente' && !semPontosLiberado && (
-              <p className="font-ui text-[13.5px] leading-snug text-ink-muted m-0">
-                {tx.aindaComNikud}
-              </p>
-            )}
           </fieldset>
 
           {acabou ? (
@@ -202,7 +196,7 @@ function Laboratorio() {
               key={`${rodada}-${i}-${palavra.id}`}
               palavra={palavra}
               nivel={nivel}
-              semPontos={nivel === 'independente' && semPontosLiberado && !!palavra.semNikud}
+              semPontos={nivel === 'independente'}
               posicao={tx.posicao(i + 1, palavras.length)}
               onFim={leuCerto => {
                 if (leuCerto) setMarco(marcoAlcancado(lidasNoNivel(p.state, nivel), nivel));
@@ -242,7 +236,9 @@ export function LerPalavra({ palavra, nivel, semPontos, posicao, onFim }: {
   const [translit, setTranslit] = useState(false);
   const [ouviuAntes, setOuviuAntes] = useState(false);
   const temAudio = hasAudio(palavra.audioId);
-  const escrita = semPontos && palavra.semNikud ? palavra.semNikud : palavra.he;
+  /* Sem ajuda é sem nikud (06/11/2026, pedido do dono): a palavra aparece só
+     com as letras, e os pontos voltam na hora de conferir. */
+  const escrita = semPontos ? (palavra.semNikud ?? stripNikud(palavra.he)) : palavra.he;
   const mostraTranslit = temAudio || translit;
 
   return (
