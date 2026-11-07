@@ -23,7 +23,7 @@
  */
 
 import { receberEmail } from './email.js';
-import { json } from './lib/http.js';
+import { DESLIGADO, json } from './lib/http.js';
 import { comRange } from './lib/range.js';
 import { gate, isGatedPath, canonical } from './gate.js';
 import { runReconcile } from './reconcile.js';
@@ -221,7 +221,10 @@ export default {
     /* Toda resposta 5xx vira um contador por hora no D1, que o alerta
        diário soma (alertas.js, auditoria de 01/10/2026, SEC-A-005). Fora do
        caminho da resposta: quem já recebeu um erro não espera pela conta. */
-    if (res.status >= 500) {
+    /* Um serviço ainda não ligado (http.js, `desligado`) não é pane: fica
+       fora da conta, e a marca não sai para o navegador. */
+    if (res.headers.has(DESLIGADO)) res.headers.delete(DESLIGADO);
+    else if (res.status >= 500) {
       const contar = contar5xx(env);
       if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(contar);
       else await contar;

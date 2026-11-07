@@ -32,7 +32,7 @@
  * e nenhum serve para a lista de novidades. Não expiram.
  */
 
-import { fail, json, readJson } from '../lib/http.js';
+import { desligado, fail, json, readJson } from '../lib/http.js';
 import { hmacB64, sha256hex, timingSafeEqual } from '../lib/crypto.js';
 import { normalizeEmail, throttled } from '../lib/db.js';
 import { mailReady, sendMail } from '../lib/mail.js';
@@ -120,7 +120,7 @@ export async function entrar({ request, env }) {
   if (!b || b.consentiu !== true) return fail('consentimento');
   const interesse = String(b.interesse || '');
   if (!INTERESSES.includes(interesse)) return fail('bad-request');
-  if (!mailReady(env)) return fail('sem-email', 503);
+  if (!mailReady(env)) return desligado('sem-email');
   if (await throttled(env, `interessados:${await sha256hex(email)}`, 3, DIA)) return json({ ok: true });
 
   const r = await inscrever(env, { email, interesse, origem: b.origem });
