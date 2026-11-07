@@ -19,7 +19,7 @@
  * jeito, para a tela não servir de oráculo de quem pediu o quê.
  */
 
-import { fail, json, readJson } from '../lib/http.js';
+import { desligado, fail, json, readJson } from '../lib/http.js';
 import { normalizeEmail, throttled } from '../lib/db.js';
 import { sha256hex } from '../lib/crypto.js';
 import { mailReady, sendMail } from '../lib/mail.js';
@@ -35,7 +35,7 @@ export async function pedir({ request, env }) {
   const b = await readJson(request, 1024);
   const email = normalizeEmail(b && b.email);
   if (!emailOk(email)) return fail('email-invalido');
-  if (!mailReady(env)) return fail('sem-email', 503);
+  if (!mailReady(env)) return desligado('sem-email');
   if (await throttled(env, `segunda-letra-ip:${ip(request)}`, 5, 3_600_000)) return fail('rate-limited', 429);
   if (await throttled(env, `segunda-letra:${await sha256hex(email)}`, 1, DIA_MS)) return json({ ok: true });
 

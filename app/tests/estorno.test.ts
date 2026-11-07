@@ -376,6 +376,19 @@ describe('a saúde do dia, no alerta ao dono', () => {
     expect(linhas(env, 'SELECT COUNT(*) AS n FROM respostas_5xx')).toEqual([{ n: 2 }]);
   });
 
+  it('um serviço ainda não ligado (503 sem-email, payments-off) não conta como erro', async () => {
+    /* A conferência de produção pede o checkout a cada publicação; sem a
+       chave do pagamento isso é 503, e nove publicações num dia viravam o
+       aviso "10 erros do servidor" sem pane nenhuma (07/11/2026). */
+    const env = envCompleto({ RESEND_API_KEY: '' });
+    const r = await worker.fetch(pedido(`${SITE}/api/interessados`, { email: 'a@exemplo.com', consentiu: true, interesse: 'curso' }), env, ctx);
+    expect(r.status).toBe(503);
+    expect(await r.json()).toEqual({ error: 'sem-email' });
+    expect(r.headers.has('X-HF-Desligado')).toBe(false);
+    await assentar();
+    expect(linhas(env, 'SELECT n FROM respostas_5xx')).toEqual([]);
+  });
+
   it('a resposta 500 do Worker é contada', async () => {
     const env = envCompleto();
     const db = env.DB as unknown as { prepare(sql: string): unknown };

@@ -18,7 +18,7 @@
  */
 
 import { cpfValido, nomeCompletoValido } from '../lib/cpf.js';
-import { fail, json, notSignedIn, readJson } from '../lib/http.js';
+import { desligado, fail, json, notSignedIn, readJson } from '../lib/http.js';
 import { ip, ipCompleto, requireAccount } from './auth.js';
 import { MOTIVOS_DESISTENCIA, motivoValido } from '../lib/motivos.js';
 import { contarChave } from './estatisticas.js';
@@ -161,12 +161,12 @@ export async function create({ request, env }) {
   if (paddle(env)) {
     /* Sem a chave, ou com o token do Paddle.js de outro ambiente, o checkout
        abriria e recusaria todo cartão: melhor dizer que não está ligado. */
-    if (!paddlePronto(env) || !tokenDoCliente(env)) return fail('payments-off', 503);
+    if (!paddlePronto(env) || !tokenDoCliente(env)) return desligado('payments-off');
     if (!(Number(course.price && course.price.usd) > 0)) return fail('server', 404);
   } else if (stripe(env)) {
-    if (!stripePronto(env)) return fail('payments-off', 503);
+    if (!stripePronto(env)) return desligado('payments-off');
     if (!(Number(course.price && course.price.usd) > 0)) return fail('server', 404);
-  } else if (!pixDireto() && !env.MP_ACCESS_TOKEN) return fail('payments-off', 503);
+  } else if (!pixDireto() && !env.MP_ACCESS_TOKEN) return desligado('payments-off');
 
   /* Já é dono: não cobra de novo. Vender duas vezes a mesma coisa para a mesma
      pessoa é estorno garantido - e é um erro fácil de cometer quando o

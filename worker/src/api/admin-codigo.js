@@ -9,7 +9,7 @@
  * e cada tentativa, certa ou errada, vai para a trilha.
  */
 
-import { fail, json, notSignedIn, readJson } from '../lib/http.js';
+import { desligado, fail, json, notSignedIn, readJson } from '../lib/http.js';
 import { log, throttled } from '../lib/db.js';
 import { sha256hex, timingSafeEqual } from '../lib/crypto.js';
 import { cookieDeAdmin, isAdmin, ADMIN_HORAS } from '../lib/admin.js';
@@ -37,7 +37,7 @@ async function administrador(request, env) {
 export async function enviar({ request, env }) {
   const { account, erro } = await administrador(request, env);
   if (erro) return erro;
-  if (!mailReady(env)) return fail('sem-email', 503);
+  if (!mailReady(env)) return desligado('sem-email');
   if (await throttled(env, `admin-codigo:${account.id}`, 5, 3_600_000)) return fail('rate-limited-hora', 429);
   const codigo = seisDigitos();
   await env.DB.prepare(

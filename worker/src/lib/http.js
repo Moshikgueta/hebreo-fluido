@@ -31,6 +31,15 @@ export function json(body, status = 200, headers = {}) {
 /** Códigos fechados, iguais aos de app/src/lib/account/types.ts. */
 export const fail = (code, status = 400) => json({ error: code }, status);
 
+/* Um serviço que o dono ainda não ligou (pagamento sem chave, e-mail sem
+ * RESEND_API_KEY). É 503, como sempre foi, para a tela dizer "ainda não está
+ * ligado"; mas é um estado conhecido, que a saúde já mostra, e não uma pane.
+ * A marca abaixo tira esta resposta da conta de erros do alerta diário
+ * (worker.js): a conferência de produção pede o checkout a cada publicação,
+ * e nove publicações num dia viravam "10 erros do servidor" sem erro nenhum. */
+export const DESLIGADO = 'X-HF-Desligado';
+export const desligado = (code) => json({ error: code }, 503, { [DESLIGADO]: '1' });
+
 export const notSignedIn = () => fail('not-signed-in', 401);
 export const serverError = () => fail('server', 500);
 
